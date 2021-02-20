@@ -1,0 +1,28 @@
+{
+  "name": "ditto-react",
+  "version": "0.0.1",
+  "description": "React SDK for using product copy from Ditto in development.",
+  "main": "src/index.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dittowords/ditto-react.git"
+  },
+  "keywords": [
+    "react",
+    "ditto",
+    "dittowords",
+    "copy",
+    "microcopy",
+    "product",
+    "react-app"
+  ],
+  "author": "Ditto Tech Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dittowords/ditto-react/issues"
+  },
+  "homepage": "https://github.com/dittowords/ditto-react#readme"
+}
