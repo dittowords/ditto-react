@@ -2,7 +2,7 @@
   "name": "ditto-react",
   "version": "0.0.1",
   "description": "React SDK for using product copy from Ditto in development.",
-  "main": "src/index.jsx",
+  "main": "./lib/index.js",
   "scripts": {
     "build": "webpack"
   },
