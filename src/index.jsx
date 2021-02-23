@@ -25,15 +25,34 @@ const useDittoSingleText = (textId) => {
       return copy.frames[frameId].otherText[textId].text;
     }
   }
-  return "[Text not found in this Ditto project for the provided ID]";
+
+  console.error("Text not found in this Ditto project for the provided ID:", textId);
+  return `[Text not found in this Ditto project for the provided ID: ${textId}]`;
 }
 
 const useDitto = (frameId, blockId, textId, filters) => {
   const copy = useContext(DittoContext);
 
+  // Error:
+  if (!textId && !blockId && !frameId) {
+    console.error("No ID provided.");
+    return {};
+  }
+  // Error: frames not found in project
+  if (!copy.frames) {
+    console.error("Source JSON for DittoProvider does not have frames.");
+    return {};
+  }
+
   // textId only
   if (textId) {
     return useDittoSingleText(textId);
+  }
+
+  // Error: frameId not found in project
+  if (!(frameId in copy.frames)) {
+    console.error(`Frame of ID [${frameId}] not found in this Ditto project.`);
+    return {};
   }
 
   // frameId only
@@ -41,7 +60,13 @@ const useDitto = (frameId, blockId, textId, filters) => {
     const frame = copy.frames[frameId];
     return frame;
   }
+
+  //frameId and blockId
   if (frameId && blockId) {
+    if (!(blockId in copy.frames[frameId].blocks)) {
+      console.error(`Block of ID [${blockId}] not found in frame of ID [${frameId}] in this Ditto project.`);
+      return {};
+    }
     const raw_block = copy.frames[frameId].blocks[blockId];
     const block = Object.keys(raw_block).filter(textId => {
       if (!filters) return true;
