@@ -1,7 +1,5 @@
 # Ditto React SDK
 
-(for the README)
-
 `ditto-react` is a package to pull in product copy from Ditto into React applications. Ditto allows for end-to-end syncing of text from mockups (Figma) all the way to production. For more information, visit [dittowords.com](http://dittowords.com).
 
 ## Getting Started
@@ -25,7 +23,7 @@ yarn add ditto-react
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| source | JSON (required) | product copy to be used by Ditto wherever DittoProvider wraps — see Source (link to bottom) for more info  |
+| `source` | JSON (required) | product copy to be used by Ditto wherever DittoProvider wraps — see Source (link to bottom) for more info  |
 
 
 ### DittoProvider **Example**
@@ -47,10 +45,10 @@ import source from "/.ditto/text.json";
 
 | Prop | Type | Description | Example |
 | --- | --- | --- | --- |
-| frameId | string (optional) | ID of a frame in Ditto |  |
-| blockId | string (optional) | ID of a block in Ditto |  |
-| textId | string (optional) | ID of a single text item in Ditto |  |
-| filters | object (option) | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
+| `frameId` | string (optional) | ID of a frame in Ditto |  |
+| `blockId` | string (optional) | ID of a block in Ditto |  |
+| `textId` | string (optional) | ID of a single text item in Ditto |  |
+| `filters` | object (option) | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
 
 
 ### Example: Single Text
@@ -153,4 +151,4 @@ If you're using manual exports from our web-app, turn on Developer Mode in the t
 
 Have feedback? We’d love to hear it! Ditto's developer integrations are constantly being improved by feedback from users like you. :)
 
-Message us at [support@dittowords.com](mailto:support@dittowords.com) or join our developer community here [LINK].
+Message us at [support@dittowords.com](mailto:support@dittowords.com).
