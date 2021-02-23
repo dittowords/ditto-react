@@ -1,6 +1,6 @@
 {
   "name": "ditto-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React SDK for using product copy from Ditto in development.",
   "main": "./lib/index.js",
   "scripts": {
