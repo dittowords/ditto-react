@@ -93,7 +93,7 @@ export const Ditto = ({
   textId = null,
   filters = null
 }) => {
-  if (!children && textId) return useDitto(frameId, blockId, textId, filters)
+  if (!children) return useDitto(frameId, blockId, textId, filters)
   return children(useDitto(frameId, blockId, textId, filters))
 }
 
