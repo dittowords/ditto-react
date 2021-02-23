@@ -3,12 +3,13 @@
 //returns block filtered by parameters provided in filters
 const filterBlock = (blockObj, filters) => {
   const block = Object.keys(blockObj).filter(textId => {
+    if (!filters || !filters.tags) return true;
     return filters.tags.every(tag => (
-      raw_block[textId].tags &&
-      raw_block[textId].tags.includes(tag)
+      blockObj[textId].tags &&
+      blockObj[textId].tags.includes(tag)
     ));
   }).reduce((obj, id) => {
-    obj[id] = raw_block[id].text;
+    obj[id] = blockObj[id].text;
     return obj;
   }, {});
   return block;
@@ -21,6 +22,7 @@ const filterFrame = (frameObj, filters) => {
     }
   }
   frameObj.otherText = filterBlock(frameObj.otherText, filters);
+  return frameObj;
 }
 
 module.exports = {

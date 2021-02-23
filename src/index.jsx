@@ -65,10 +65,7 @@ const useDitto = (frameId, blockId, textId, filters) => {
   // frameId only
   if (frameId && !blockId) {
     const frame = copy.frames[frameId];
-    if (filters) {
-      return filterFrame(frame, filters);
-    }
-    return frame;
+    return filterFrame(frame, filters);
   }
 
   //frameId and blockId
@@ -78,12 +75,8 @@ const useDitto = (frameId, blockId, textId, filters) => {
       return {};
     }
     const block = copy.frames[frameId].blocks[blockId];
-    if (filters) {
-      return filterBlock(block, filters);
-    }
-    return block;
+    return filterBlock(block, filters);
   }
-
   return {};
 }
 
@@ -94,7 +87,10 @@ export const Ditto = ({
   textId = null,
   filters = null
 }) => {
-  if (!children) return useDitto(frameId, blockId, textId, filters)
+  if (!children) {
+    if (textId) return useDittoSingleText(textId);
+    console.error(`Please provide either a textId or children to Ditto component.`);
+  }
   return children(useDitto(frameId, blockId, textId, filters))
 }
 
