@@ -5,6 +5,11 @@ import React, {
   useContext
 } from 'react';
 
+const {
+  filterBlock,
+  filterFrame
+} = require('./utils.js')
+
 export const DittoContext = createContext({});
 
 const useDittoSingleText = (textId) => {
@@ -26,19 +31,17 @@ const useDittoSingleText = (textId) => {
     }
   }
 
-  console.error("Text not found in this Ditto project for the provided ID:", textId);
-  return `[Text not found in this Ditto project for the provided ID: ${textId}]`;
+  console.error(`[Text not found in Ditto project with ID: [${textId}]]`);
+  return `[Text not found in Ditto project with ID: [${textId}]]`;
 }
 
 const useDitto = (frameId, blockId, textId, filters) => {
   const copy = useContext(DittoContext);
 
-  // Error:
   if (!textId && !blockId && !frameId) {
-    console.error("No ID provided.");
+    console.error("No ID(s) provided.");
     return {};
   }
-  // Error: frames not found in project
   if (!copy.frames) {
     console.error("Source JSON for DittoProvider does not have frames.");
     return {};
@@ -49,6 +52,10 @@ const useDitto = (frameId, blockId, textId, filters) => {
     return useDittoSingleText(textId);
   }
 
+  if (blockId && !frameId) {
+    console.error("Block ID provided without frame ID.");
+    return {};
+  }
   // Error: frameId not found in project
   if (!(frameId in copy.frames)) {
     console.error(`Frame of ID [${frameId}] not found in this Ditto project.`);
@@ -58,6 +65,9 @@ const useDitto = (frameId, blockId, textId, filters) => {
   // frameId only
   if (frameId && !blockId) {
     const frame = copy.frames[frameId];
+    if (filters) {
+      return filterFrame(frame, filters);
+    }
     return frame;
   }
 
@@ -67,19 +77,10 @@ const useDitto = (frameId, blockId, textId, filters) => {
       console.error(`Block of ID [${blockId}] not found in frame of ID [${frameId}] in this Ditto project.`);
       return {};
     }
-    const raw_block = copy.frames[frameId].blocks[blockId];
-    const block = Object.keys(raw_block).filter(textId => {
-      if (!filters) return true;
-      //filter so only text items that have all of the tags in filters
-      return filters.tags.every(tag => (
-        raw_block[textId].tags &&
-        raw_block[textId].tags.includes(tag)
-      ));
-    }).reduce((obj, id) => {
-      obj[id] = raw_block[id].text;
-      return obj;
-    }, {});
-
+    const block = copy.frames[frameId].blocks[blockId];
+    if (filters) {
+      return filterBlock(block, filters);
+    }
     return block;
   }
 
