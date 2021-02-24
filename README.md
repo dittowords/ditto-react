@@ -40,7 +40,7 @@ import source from "/.ditto/text.json";
 
 ### Ditto Props
 
-`Ditto` is used to fetch specific text, blocks, and frames from the source.
+`Ditto` is used to fetch specific text, blocks, and frames from the source. You must specify at least a `textId` or a `frameId`.
 
 
 | Prop | Type | Description | Example |
@@ -48,7 +48,7 @@ import source from "/.ditto/text.json";
 | `frameId` | string (optional) | ID of a frame in Ditto |  |
 | `blockId` | string (optional) | ID of a block in Ditto |  |
 | `textId` | string (optional) | ID of a single text item in Ditto |  |
-| `filters` | object (option) | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
+| `filters` | object (optional) | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
 
 
 ### Example: Single Text
