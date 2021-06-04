@@ -1,103 +1,116 @@
-import React, {
-  useEffect,
-  useState,
-  createContext,
-  useContext
-} from 'react';
+import React, { createContext, useContext } from 'react'
 
-const {
-  filterBlock,
-  filterFrame
-} = require('./utils.js')
+const { filterBlock, filterFrame } = require('./utils.js');
 
-export const DittoContext = createContext({});
+export const DittoContext = createContext({})
 
 const useDittoSingleText = (textId) => {
   const copy = useContext(DittoContext);
 
-  for (var frameId in copy.frames) {
-    // Look in Blocks
-    for (var blockId in copy.frames[frameId].blocks) {
-      if (textId in copy.frames[frameId].blocks[blockId]) {
-        return copy.frames[frameId].blocks[blockId][textId].text;
+  for (const projectId in copy.projects) {
+    const project = copy.projects[projectId];
+
+    for (const frameId in project.frames) {
+      const frame = project.frames[frameId];
+
+      for (const blockId in frame.blocks) {
+        const block = frame.blocks[blockId];
+
+        if (textId in block) 
+          return block[textId].text
       }
-    }
-    // Look in otherText
-    if (
-      copy.frames[frameId].otherText &&
-      textId in copy.frames[frameId].otherText
-    ) {
-      return copy.frames[frameId].otherText[textId].text;
+
+      if (frame.otherText && textId in frame.otherText) 
+        return frame.otherText[textId].text
     }
   }
 
-  console.error(`[Text not found in Ditto project with ID: [${textId}]]`);
-  return `[Text not found in Ditto project with ID: [${textId}]]`;
+  console.error(`[Text not found in Ditto project with ID: [${textId}]]`)
+  return `[Text not found in Ditto project with ID: [${textId}]]`
 }
 
-const useDitto = (frameId, blockId, textId, filters) => {
-  const copy = useContext(DittoContext);
+const useDitto = ({ projectId, frameId, blockId, filters }) => {
+  const copy = useContext(DittoContext)
 
-  if (!textId && !blockId && !frameId) {
-    console.error("No ID(s) provided.");
-    return {};
-  }
-  if (!copy.frames) {
-    console.error("Source JSON for DittoProvider does not have frames.");
-    return {};
-  }
+  if (!copy.projects) 
+    return console.error('Source JSON for DittoProvider does not have projects.');
 
-  // textId only
-  if (textId) {
-    return useDittoSingleText(textId);
-  }
+  if (!projectId) 
+    return console.error('No Project ID provided.');
 
-  if (blockId && !frameId) {
-    console.error("Block ID provided without frame ID.");
-    return {};
-  }
-  // Error: frameId not found in project
-  if (!(frameId in copy.frames)) {
-    console.error(`Frame of ID [${frameId}] not found in this Ditto project.`);
-    return {};
-  }
+  const project = copy.projects[projectId];
 
-  // frameId only
-  if (frameId && !blockId) {
-    const frame = copy.frames[frameId];
+  if (!frameId) {
+    return console.error('No Frame ID provided.');
+  }
+  if (!(frameId in project.frames)) 
+    return console.error(`Frame of ID [${frameId}] not found in this Ditto project.`);
+
+  const frame = project.frames[frameId];
+
+  if (!blockId) 
     return filterFrame(frame, filters);
-  }
 
-  //frameId and blockId
-  if (frameId && blockId) {
-    if (!(blockId in copy.frames[frameId].blocks)) {
-      console.error(`Block of ID [${blockId}] not found in frame of ID [${frameId}] in this Ditto project.`);
-      return {};
-    }
-    const block = copy.frames[frameId].blocks[blockId];
-    return filterBlock(block, filters);
-  }
-  return {};
+  if (!(blockId in frame.blocks)) 
+    return console.error(
+      `Block of ID [${blockId}] not found in frame of ID [${frameId}] in this Ditto project.`
+    );
+  
+  const block = frame.blocks[blockId];
+  
+  return filterBlock(block, filters);
 }
 
-export const Ditto = ({
-  children = null,
-  frameId = null,
-  blockId = null,
-  textId = null,
-  filters = null
-}) => {
-  if (!children) {
-    if (textId) return useDittoSingleText(textId);
-    console.error(`Please provide either a textId or children to Ditto component.`);
+const DittoDefault = (props) => {
+  const { children, ...otherProps } = props;
+  const data = useDitto(otherProps);
+
+  const childIsFunction = typeof children === 'function';
+
+  if (!data)
+    return <React.Fragment />;
+
+  if (!childIsFunction) {
+    console.error(`Please provide either a textId or function child to your Ditto component.`);
+    return <React.Fragment />;
   }
-  return children(useDitto(frameId, blockId, textId, filters))
+
+  return props.children(data);
+};
+
+const DittoText = (props) => {
+  const { textId } = props;
+  const text = useDittoSingleText(textId)
+
+  return (
+    <React.Fragment>
+      {text}
+    </React.Fragment>
+  )
 }
 
-const DittoProvider = ({
-  children,
-  source
-}) => {
+function getDittoType(props) {
+  const { textId } = props;
+
+  if (textId) {
+    return 'text';
+  }
+
+  return 'default';
+}
+
+export const Ditto = (props) => {
+  const type = getDittoType(props);
+
+  switch (type) {
+    case 'text':
+      return <DittoText {...props} />;
+    default:
+      return <DittoDefault {...props} />;
+  }
+}
+
+const DittoProvider = ({ children, source }) => {
   return (
     <DittoContext.Provider value={source}>
       {children}
@@ -105,4 +118,5 @@ const DittoProvider = ({
   )
 }
 
-export default DittoProvider;
+export default DittoProvider
+
