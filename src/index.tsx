@@ -1,10 +1,36 @@
 import React, { createContext, useContext } from 'react'
 
-const { filterBlock, filterFrame } = require('./utils.js');
+import { filterBlock, filterFrame } from './utils';
 
-export const DittoContext = createContext({})
+interface Text {
+  text: string;
+  tags: string[];
+}
 
-const error = (message, returnValue = message) => {
+interface DittoContext {
+  projects: {
+    [projectId: string]: {
+      project_name: string;
+      frames: {
+        [frameId: string]: {
+          frameName: string;
+          blocks: {
+            [blockId: string]: {
+              [textId: string]: Text;
+            }
+          }
+          otherText?: {
+            [textId: string]: Text;
+          }
+        }
+      }
+    }
+  } 
+}
+
+export const DittoContext = createContext({} as DittoContext)
+
+const error = (message: string, returnValue: any = message) => {
   console.error(message);
   return returnValue;
 };
@@ -37,7 +63,17 @@ const useDittoSingleText = ({ projectId, textId }) => {
   return error(`[Text not found in Ditto project with ID: [${textId}]]`);
 }
 
-const useDitto = ({ projectId, frameId, blockId, filters }) => {
+interface useDittoProps {
+  projectId: string;
+  frameId: string;
+  blockId?: string;
+  filters?: {
+    tags: string[];
+  }
+}
+
+const useDitto = (props: useDittoProps) => {
+  const { projectId, frameId, blockId, filters } = props;
   const copy = useContext(DittoContext);
 
   if (!copy.projects) 
@@ -67,7 +103,18 @@ const useDitto = ({ projectId, frameId, blockId, filters }) => {
   return filterBlock(block, filters);
 }
 
-const DittoDefault = (props) => {
+interface DittoDefaultProps {
+  projectId: string;
+  frameId: string;
+  blockId?: string;
+  filters?: {
+    tags: string[];
+  }
+  // TODO: type data 
+  children: (data: any) => React.ReactNode;
+}
+
+const DittoDefault = (props: DittoDefaultProps) => {
   const { children, ...otherProps } = props;
   const data = useDitto(otherProps);
 
@@ -82,7 +129,12 @@ const DittoDefault = (props) => {
   return props.children(data);
 };
 
-const DittoText = (props) => {
+interface DittoTextProps {
+  projectId: string;
+  textId: string;
+}
+
+const DittoText = (props: DittoTextProps) => {
   const { projectId, textId } = props;
   const text = useDittoSingleText({ projectId, textId });
 
@@ -93,17 +145,17 @@ const DittoText = (props) => {
   )
 }
 
-function getDittoType(props) {
-  const { textId } = props;
+type DittoProps = DittoDefaultProps | DittoTextProps;
 
-  if (textId) {
+function getDittoType(props: DittoProps) {
+  if ('textId' in props) {
     return 'text';
   }
 
   return 'default';
 }
 
-export const Ditto = (props) => {
+export const Ditto = (props: DittoProps) => {
   if (!props.projectId) 
     return fragmentError('No Project ID provided to Ditto component.');
 
@@ -111,9 +163,9 @@ export const Ditto = (props) => {
 
   switch (type) {
     case 'text':
-      return <DittoText {...props} />;
+      return <DittoText {...(props as DittoTextProps)} />;
     default:
-      return <DittoDefault {...props} />;
+      return <DittoDefault {...(props as DittoDefaultProps)} />;
   }
 }
 
@@ -125,5 +177,4 @@ const DittoProvider = ({ children, source }) => {
   )
 }
 
-export default DittoProvider
-
+export default DittoProvider;

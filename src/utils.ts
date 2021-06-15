@@ -1,7 +1,8 @@
+
 //Utility functions for ditto-react (Ditto and DittoProvider)
 
 //returns block filtered by parameters provided in filters
-const filterBlock = (blockObj, filters) => {
+export const filterBlock = (blockObj, filters) => {
   const block = Object.keys(blockObj).filter(textId => {
     if (!filters || !filters.tags) return true;
     return filters.tags.every(tag => (
@@ -15,7 +16,7 @@ const filterBlock = (blockObj, filters) => {
   return block;
 }
 
-const filterFrame = (frameObj, filters) => {
+export const filterFrame = (frameObj, filters) => {
   if (frameObj.blocks) {
     for (var blockId in frameObj.blocks) {
       frameObj.blocks[blockId] = filterBlock(frameObj.blocks[blockId], filters);
@@ -24,8 +25,3 @@ const filterFrame = (frameObj, filters) => {
   frameObj.otherText = filterBlock(frameObj.otherText, filters);
   return frameObj;
 }
-
-module.exports = {
-  filterBlock,
-  filterFrame
-};
