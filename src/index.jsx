@@ -16,7 +16,7 @@ const useDittoSingleText = ({ projectId, textId }) => {
   const copy = useContext(DittoContext);
 
   if (!projectId) 
-    return error('No Project ID provided.');
+    return nullError('No Project ID provided.');
   
   const project = copy.projects[projectId];
 
