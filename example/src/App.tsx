@@ -1,4 +1,4 @@
-import DittoProvider, { Ditto } from 'ditto-react-2'
+import DittoProvider, { Ditto } from 'ditto-react'
 import source from './ditto/text.json';
 
 const App = () => {

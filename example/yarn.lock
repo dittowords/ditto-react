@@ -4176,7 +4176,7 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-"ditto-react-2@link:..":
+"ditto-react@link:..":
   version "0.0.0"
   uid ""
 
