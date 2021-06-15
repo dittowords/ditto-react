@@ -4,25 +4,23 @@ const { filterBlock, filterFrame } = require('./utils.js');
 
 export const DittoContext = createContext({})
 
-const useDittoSingleText = (textId) => {
+const useDittoSingleText = ({ projectId, textId }) => {
   const copy = useContext(DittoContext);
 
-  for (const projectId in copy.projects) {
-    const project = copy.projects[projectId];
+  const project = copy.projects[projectId];
 
-    for (const frameId in project.frames) {
-      const frame = project.frames[frameId];
+  for (const frameId in project.frames) {
+    const frame = project.frames[frameId];
 
-      for (const blockId in frame.blocks) {
-        const block = frame.blocks[blockId];
+    for (const blockId in frame.blocks) {
+      const block = frame.blocks[blockId];
 
-        if (textId in block) 
-          return block[textId].text
-      }
-
-      if (frame.otherText && textId in frame.otherText) 
-        return frame.otherText[textId].text
+      if (textId in block) 
+        return block[textId].text
     }
+
+    if (frame.otherText && textId in frame.otherText) 
+      return frame.otherText[textId].text
   }
 
   console.error(`[Text not found in Ditto project with ID: [${textId}]]`)
@@ -79,8 +77,8 @@ const DittoDefault = (props) => {
 };
 
 const DittoText = (props) => {
-  const { textId } = props;
-  const text = useDittoSingleText(textId)
+  const { projectId, textId } = props;
+  const text = useDittoSingleText({ projectId, textId });
 
   return (
     <React.Fragment>
@@ -100,6 +98,11 @@ function getDittoType(props) {
 }
 
 export const Ditto = (props) => {
+  if (!props.projectId) {
+    console.error("No Project ID provided to Ditto component.");
+    return <React.Fragment />;
+  }
+
   const type = getDittoType(props);
 
   switch (type) {
