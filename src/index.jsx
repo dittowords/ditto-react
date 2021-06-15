@@ -4,9 +4,20 @@ const { filterBlock, filterFrame } = require('./utils.js');
 
 export const DittoContext = createContext({})
 
+const error = (message, returnValue = message) => {
+  console.error(message);
+  return returnValue;
+};
+
+const nullError = (message) => error(message, null);
+const fragmentError = (message) => error(message, <React.Fragment />);
+
 const useDittoSingleText = ({ projectId, textId }) => {
   const copy = useContext(DittoContext);
 
+  if (!projectId) 
+    return error('No Project ID provided.');
+  
   const project = copy.projects[projectId];
 
   for (const frameId in project.frames) {
@@ -23,26 +34,25 @@ const useDittoSingleText = ({ projectId, textId }) => {
       return frame.otherText[textId].text
   }
 
-  console.error(`[Text not found in Ditto project with ID: [${textId}]]`)
-  return `[Text not found in Ditto project with ID: [${textId}]]`
+  return error(`[Text not found in Ditto project with ID: [${textId}]]`);
 }
 
 const useDitto = ({ projectId, frameId, blockId, filters }) => {
-  const copy = useContext(DittoContext)
+  const copy = useContext(DittoContext);
 
   if (!copy.projects) 
-    return console.error('Source JSON for DittoProvider does not have projects.');
+    return nullError('Source JSON for DittoProvider does not have projects.');
 
   if (!projectId) 
-    return console.error('No Project ID provided.');
+    return nullError('No Project ID provided.');
 
   const project = copy.projects[projectId];
 
   if (!frameId) {
-    return console.error('No Frame ID provided.');
+    return nullError('No Frame ID provided.');
   }
   if (!(frameId in project.frames)) 
-    return console.error(`Frame of ID [${frameId}] not found in this Ditto project.`);
+    return nullError(`Frame of ID [${frameId}] not found in this Ditto project.`);
 
   const frame = project.frames[frameId];
 
@@ -50,9 +60,7 @@ const useDitto = ({ projectId, frameId, blockId, filters }) => {
     return filterFrame(frame, filters);
 
   if (!(blockId in frame.blocks)) 
-    return console.error(
-      `Block of ID [${blockId}] not found in frame of ID [${frameId}] in this Ditto project.`
-    );
+    return nullError(`Block of ID [${blockId}] not found in frame of ID [${frameId}] in this Ditto project.`);
   
   const block = frame.blocks[blockId];
   
@@ -68,10 +76,8 @@ const DittoDefault = (props) => {
   if (!data)
     return <React.Fragment />;
 
-  if (!childIsFunction) {
-    console.error(`Please provide either a textId or function child to your Ditto component.`);
-    return <React.Fragment />;
-  }
+  if (!childIsFunction) 
+    return fragmentError(`Please provide either a textId or function child to your Ditto component.`);
 
   return props.children(data);
 };
@@ -98,10 +104,8 @@ function getDittoType(props) {
 }
 
 export const Ditto = (props) => {
-  if (!props.projectId) {
-    console.error("No Project ID provided to Ditto component.");
-    return <React.Fragment />;
-  }
+  if (!props.projectId) 
+    return fragmentError('No Project ID provided to Ditto component.');
 
   const type = getDittoType(props);
 
