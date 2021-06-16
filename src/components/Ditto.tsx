@@ -4,13 +4,19 @@ import { DittoFrameOrBlock, DittoFrameOrBlockProps } from "./DittoFrameOrBlock";
 import { DittoContext } from "../lib/context";
 import {fragmentError} from "../lib/utils";
 
-type DittoProps = DittoFrameOrBlockProps | DittoTextProps;
+interface DittoProps {
+  projectId?: string;
+  textId?: string;
+  frameId?: string;
+  blockId?: string;
+  children?: React.ReactNode;
+}
 
 const isDittoTextProps = (props: DittoProps): props is DittoTextProps =>
-  'projectId' in props && 'textId' in props;
+  'textId' in props;
 
 const isDittoFrameOrBlockProps = (props: DittoProps): props is DittoFrameOrBlockProps =>
-  'projectId' in props && 'frameId' in props;
+  'frameId' in props;
 
 export const Ditto = (_props: DittoProps) => {
   const { projectId: projectId_context } = useContext(DittoContext);
