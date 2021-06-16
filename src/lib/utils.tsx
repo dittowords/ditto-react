@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 
 //Utility functions for ditto-react (Ditto and DittoProvider)
 
@@ -25,3 +26,11 @@ export const filterFrame = (frameObj, filters) => {
   frameObj.otherText = filterBlock(frameObj.otherText, filters);
   return frameObj;
 }
+
+export const error = (message: string, returnValue: any = message) => {
+  console.error(message);
+  return returnValue;
+};
+
+export const nullError = (message: string) => error(message, null);
+export const fragmentError = (message: string) => error(message, <Fragment />);
