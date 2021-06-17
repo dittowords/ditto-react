@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { DittoText, DittoTextProps } from "./DittoText";
 import { DittoFrameOrBlock, DittoFrameOrBlockProps } from "./DittoFrameOrBlock";
 import { DittoContext } from "../lib/context";
-import {fragmentError} from "../lib/utils";
+import { fragmentError } from "../lib/utils";
 
 interface DittoProps {
   projectId?: string;
@@ -10,6 +10,9 @@ interface DittoProps {
   frameId?: string;
   blockId?: string;
   children?: React.ReactNode;
+  filters?: {
+    tags: string[];
+  };
 }
 
 const isDittoTextProps = (props: DittoProps): props is DittoTextProps =>
