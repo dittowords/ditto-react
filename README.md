@@ -16,29 +16,35 @@ yarn add ditto-react
 
 ## Usage
 
-### DittoProvider Props
+### DittoProvider
 
-`DittoProvider` is used to wrap anywhere in your app you'd like to use `Ditto` components. Use `DittoProvider` to specify the source of any `Ditto` components inside.
+The `DittoProvider` component should wrap any parts of your app you'd like to use `Ditto` components in; it needs to specify where any descendent `Ditto` components should pull text from.
 
+#### DittoProvider Props
 
 | Prop | Type | Description |
 | --- | --- | --- |
 | `source` | JSON (required) | product copy to be used by Ditto wherever DittoProvider wraps — see Source (link to bottom) for more info  |
+| `projectId` | String (optional) | ID of a project in Ditto; can alternatively be passed/overwritten with a prop passed directly to `Ditto` components
 
 
-### DittoProvider **Example**
+#### DittoProvider Example
 
 ```jsx
+import DittoProvider from 'ditto-react';
 import source from "/.ditto/text.json";
 
-<DittoProvider source={source}>
+<DittoProvider projectId="my_project" source={source}>
 	{/* insert any app components here,
 	including Ditto components and regular
 	React components */}
 </DittoProvider>
 ```
 
-### Ditto Props
+### Ditto
+
+
+#### Ditto Props
 
 `Ditto` is used to fetch specific text, blocks, and frames from the source. You must specify at least a `textId` or a `frameId`.
 
@@ -49,6 +55,7 @@ import source from "/.ditto/text.json";
 | `blockId` | string (optional) | ID of a block in Ditto |  |
 | `textId` | string (optional) | ID of a single text item in Ditto |  |
 | `filters` | object (optional) | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
+| `projectId` | string (semi-optional) | ID of a project in Ditto; only optional if `projectId` has been passed to `DittoProvider`
 
 
 ### Example: Single Text
@@ -141,7 +148,7 @@ If you want to filter the text fetched by properties contained in the project it
 
 ## Source
 
-The React provider takes structured JSON outputs from Ditto projects as the source. These can be linked and automatically updated via our API/CLI (insert link here), or exported manually via our web-app.
+The React provider takes structured JSON outputs from Ditto projects as the source. These can be linked and automatically updated via [our API/CLI](https://github.com/dittowords/cli), or exported manually via our web-app.
 
 If you're using manual exports from our web-app, turn on Developer Mode in the toolbar of project you're working from to generate IDs. Then, export your file formatted with the IDs into your local directory .
 
@@ -152,3 +159,4 @@ If you're using manual exports from our web-app, turn on Developer Mode in the t
 Have feedback? We’d love to hear it! Ditto's developer integrations are constantly being improved by feedback from users like you. :)
 
 Message us at [support@dittowords.com](mailto:support@dittowords.com).
+
