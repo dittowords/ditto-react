@@ -9,12 +9,18 @@ interface useDittoSingleTextProps {
 
 export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   const { projectId, textId } = props;
-  const copy = useContext(DittoContext);
+  const { source } = useContext(DittoContext);
 
-  if (!projectId) 
-    return nullError('No Project ID provided.');
-  
-  const project = copy.projects[projectId];
+  if (!projectId) return nullError("No Project ID provided.");
+
+  const project = source.projects[projectId];
+  if (!project) {
+    return `[Project not found with id "${projectId}"]`;
+  }
+
+  // handles 'flat' format
+  if (textId in project && typeof project[textId] === "string")
+    return project[textId];
 
   for (const frameId in project.frames) {
     const frame = project.frames[frameId];
@@ -22,13 +28,12 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
     for (const blockId in frame.blocks) {
       const block = frame.blocks[blockId];
 
-      if (textId in block) 
-        return block[textId].text
+      if (textId in block) return block[textId].text;
     }
 
-    if (frame.otherText && textId in frame.otherText) 
-      return frame.otherText[textId].text
+    if (frame.otherText && textId in frame.otherText)
+      return frame.otherText[textId].text;
   }
 
-  return error(`[Text not found in Ditto project with ID: [${textId}]]`);
-}
+  return `[Text not found for id "${textId}"]`;
+};

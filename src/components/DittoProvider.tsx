@@ -1,27 +1,41 @@
-import React from 'react';
-import { DittoSource, DittoContext } from '../lib/context';
+import React, { useMemo } from "react";
+import { DittoContext, DittoSource } from "../lib/context";
 
 interface DittoProviderProps {
   projectId?: string;
+  variant?: string;
   source: DittoSource;
   children: React.ReactNode;
 }
 
+const useSource = (_source: DittoSource, variant?: string) => {
+  return useMemo(() => {
+    if ("projects" in _source) {
+      return _source;
+    } else {
+      const v = variant || "base";
+      const source = _source[v];
+      if (!source) {
+        throw new Error(`An export file for ${v} couldn't be found`);
+      }
+
+      return source;
+    }
+  }, [_source, variant]);
+};
+
 export const DittoProvider = (props: DittoProviderProps) => {
-  const { children, source, projectId } = props;
+  const { children, source: _source, variant, projectId } = props;
+  const source = useSource(_source, variant);
 
   return (
-    /* 
-     * projectId is only included as a property on the `source`
-     * in this way to maintain backwards compatibility. When it
-     * comes time to introduce breaking changes, it should be
-     * given its own property on the context value.
-     */
-    <DittoContext.Provider value={{
-      ...source,   
-      ...(projectId ?  { projectId } : {})
-    }}>
+    <DittoContext.Provider
+      value={{
+        source,
+        ...(projectId ? { projectId } : {}),
+      }}
+    >
       {children}
     </DittoContext.Provider>
-  )
-}
+  );
+};
