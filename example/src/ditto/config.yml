@@ -1,3 +1,7 @@
 projects:
-  - name: Dittobnb (Ditto Sample) (Community)
-    id: 606652b903907b0113e329a6
+  - name: Ditto Component Library
+    id: ditto_component_library
+  - name: NUX Onboarding
+    id: 606cb89ac55041013d662f8b
+variants: true
+format: flat
