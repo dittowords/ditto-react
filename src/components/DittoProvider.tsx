@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { DittoContext, DittoSource } from "../lib/context";
+import { DittoContext, DittoSource, Source } from "../lib/context";
 
 interface DittoProviderProps {
   projectId?: string;
@@ -8,30 +8,33 @@ interface DittoProviderProps {
   children: React.ReactNode;
 }
 
-const useSource = (_source: DittoSource, variant?: string) => {
+const useSources = (source: DittoSource, variant?: string) => {
   return useMemo(() => {
-    if ("projects" in _source) {
-      return _source;
-    } else {
-      const v = variant || "base";
-      const source = _source[v];
-      if (!source) {
-        throw new Error(`An export file for ${v} couldn't be found`);
-      }
-
-      return source;
+    if ("projects" in source) {
+      return { sourceBase: source as Source, sourceVariant: null };
     }
-  }, [_source, variant]);
+
+    const sourceBase = source.base;
+    const sourceVariant = variant ? source[variant] : null;
+
+    if (!sourceBase) throw new Error("Couldn't find base text");
+    if (!sourceVariant)
+      console.warn(`Couldn't find variant text for ${variant}`);
+
+    return { sourceBase, sourceVariant };
+  }, [source, variant]);
 };
 
 export const DittoProvider = (props: DittoProviderProps) => {
   const { children, source: _source, variant, projectId } = props;
-  const source = useSource(_source, variant);
+  const { sourceBase, sourceVariant } = useSources(_source, variant);
 
   return (
     <DittoContext.Provider
       value={{
-        source,
+        sourceBase,
+        sourceVariant,
+        variant,
         ...(projectId ? { projectId } : {}),
       }}
     >

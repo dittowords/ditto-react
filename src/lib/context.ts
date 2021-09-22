@@ -12,7 +12,7 @@ interface DittoText {
  * as a side effect of us moving away from the default
  * format completely in a future version)
  */
-interface FormatDefaultProject {
+export interface FormatDefaultProject {
   project_id: string;
   frames: {
     [frameId: string]: {
@@ -39,8 +39,6 @@ interface FormatDefaultComponentLibrary {
   };
 }
 
-type FormatDefault = FormatDefaultProject | FormatDefaultComponentLibrary;
-
 interface FormatStructured {
   [apiId: string]: {
     name: string;
@@ -54,22 +52,34 @@ interface FormatFlat {
   [apiId: string]: string;
 }
 
-interface SourceBase {
+export type ProjectFormat =
+  | FormatDefaultProject
+  | FormatFlat
+  | FormatStructured;
+export type ComponentLibraryFormat =
+  | FormatDefaultComponentLibrary
+  | FormatFlat
+  | FormatStructured;
+export type Project = ProjectFormat | ComponentLibraryFormat;
+
+export interface Source {
   projects: {
-    [projectId: string]: FormatDefault | FormatFlat | FormatStructured;
+    [projectId: string]: Project;
   };
   exported_at: string;
 }
 
-interface SourceVariants {
-  [variantApiId: string]: SourceBase;
+export interface SourceVariants {
+  [variantApiId: string]: Source;
 }
 
-export type DittoSource = SourceBase | SourceVariants;
+export type DittoSource = Source | SourceVariants;
 
 interface DittoContext {
   projectId?: string;
-  source: DittoSource;
+  variant?: string;
+  sourceBase: Source;
+  sourceVariant: Source | null;
 }
 
 export const DittoContext = createContext({} as DittoContext);

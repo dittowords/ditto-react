@@ -1,6 +1,11 @@
 import { useContext } from "react";
 import { DittoContext } from "../lib/context";
-import { filterFrame, filterBlock, nullError } from "../lib/utils";
+import {
+  filterFrame,
+  filterBlock,
+  nullError,
+  isDefaultFormatProject,
+} from "../lib/utils";
 
 interface useDittoProps {
   projectId: string;
@@ -13,16 +18,35 @@ interface useDittoProps {
 
 export const useDitto = (props: useDittoProps) => {
   const { projectId, frameId, blockId, filters } = props;
-  const { source } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant } = useContext(DittoContext);
 
-  if (!source.projects)
+  if (!sourceBase.projects)
     return nullError("Source JSON for DittoProvider does not have projects.");
 
   if (!projectId) return nullError("No Project ID provided.");
 
-  const project = source.projects[projectId];
+  if (variant) {
+    const project = sourceVariant?.projects[projectId];
+    if (isDefaultFormatProject(project) && frameId) {
+      const frame = project.frames[frameId];
+      if (!blockId) {
+        return filterFrame(frame, filters);
+      }
+      if (blockId in frame.blocks) {
+        const block = frame.blocks[blockId];
+        return filterBlock(block, filters);
+      }
+    }
+  }
+
+  const project = sourceBase.projects[projectId];
   if (!project) {
-    return `[Project not found with id "${projectId}"]`;
+    return nullError(`Project not found with id "${projectId}"`);
+  }
+  if (!isDefaultFormatProject(project)) {
+    return nullError(
+      `Default format must be used if passing "frameId" or "blockId"`
+    );
   }
 
   if (!frameId) {
@@ -30,7 +54,7 @@ export const useDitto = (props: useDittoProps) => {
   }
   if (!(frameId in project.frames))
     return nullError(
-      `Frame of ID [${frameId}] not found in this Ditto project.`
+      `Frame "${frameId}" not found this project "${projectId}"`
     );
 
   const frame = project.frames[frameId];
@@ -39,7 +63,7 @@ export const useDitto = (props: useDittoProps) => {
 
   if (!(blockId in frame.blocks))
     return nullError(
-      `Block of ID [${blockId}] not found in frame of ID [${frameId}] in this Ditto project.`
+      `Block "${blockId}" not found in frame "${frameId}" in project "${projectId}"`
     );
 
   const block = frame.blocks[blockId];

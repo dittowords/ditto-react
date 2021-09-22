@@ -46,7 +46,6 @@ const App = () => {
           </ul>
         </DittoProvider>
       </div>
-
       <br />
       <hr />
       <div>

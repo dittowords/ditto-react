@@ -16,17 +16,33 @@ export const useDittoComponent = (
       text: string;
     } => {
   const { componentId, alwaysReturnString } = props;
-  const { source } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant } = useContext(DittoContext);
 
-  if (!source) return nullError(`Source not found`);
-
-  if (!("ditto_component_library" in source.projects)) {
+  if (!("ditto_component_library" in sourceBase.projects)) {
     throw new Error(
-      "An export file for the Ditto Component Library couldn't be found."
+      "An export file for the Component Library couldn't be found."
     );
   }
 
-  const componentLibrary = source.projects.ditto_component_library;
+  if (variant) {
+    const componentLibrary = sourceVariant?.projects.ditto_component_library;
+    if (componentLibrary) {
+      const value: string | { name: string; text: string } =
+        "project_name" in componentLibrary && "components" in componentLibrary
+          ? componentLibrary.components[componentId]
+          : componentLibrary[componentId];
+
+      if (typeof value === "object" && "text" in value) {
+        return alwaysReturnString ? value.text : value;
+      }
+
+      if (value) {
+        return value;
+      }
+    }
+  }
+
+  const componentLibrary = sourceBase.projects.ditto_component_library;
 
   const value: string | { name: string; text: string } =
     "project_name" in componentLibrary && "components" in componentLibrary
@@ -34,7 +50,7 @@ export const useDittoComponent = (
       : componentLibrary[componentId];
 
   if (!value) {
-    return `[Text not found for component "${componentId}"]`;
+    return nullError(`Text not found for component "${componentId}"`);
   }
 
   if (typeof value === "object" && "text" in value) {
