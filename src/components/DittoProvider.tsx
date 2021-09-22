@@ -18,7 +18,7 @@ const useSources = (source: DittoSource, variant?: string) => {
     const sourceVariant = variant ? source[variant] : null;
 
     if (!sourceBase) throw new Error("Couldn't find base text");
-    if (!sourceVariant)
+    if (variant && !sourceVariant)
       console.warn(`Couldn't find variant text for ${variant}`);
 
     return { sourceBase, sourceVariant };

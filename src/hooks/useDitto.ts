@@ -5,6 +5,7 @@ import {
   filterBlock,
   nullError,
   isDefaultFormatProject,
+  isProductionDittoEnvironment,
 } from "../lib/utils";
 
 interface useDittoProps {
@@ -36,6 +37,12 @@ export const useDitto = (props: useDittoProps) => {
         const block = frame.blocks[blockId];
         return filterBlock(block, filters);
       }
+    }
+
+    if (!isProductionDittoEnvironment) {
+      const message = `Text not found for frameId: "${frameId}", blockId: "${blockId}"`;
+      console.error(message);
+      return message;
     }
   }
 

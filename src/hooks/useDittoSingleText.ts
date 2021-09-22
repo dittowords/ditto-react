@@ -1,6 +1,10 @@
 import { useContext } from "react";
 import { DittoContext } from "../lib/context";
-import { error, isDefaultFormatProject, nullError } from "../lib/utils";
+import {
+  isDefaultFormatProject,
+  isProductionDittoEnvironment,
+  nullError,
+} from "../lib/utils";
 
 interface useDittoSingleTextProps {
   projectId: string;
@@ -39,6 +43,12 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
         }
       }
     }
+
+    if (!isProductionDittoEnvironment) {
+      const message = `Text not found for textId: "${textId}"`;
+      console.error(message);
+      return message;
+    }
   }
 
   const project = sourceBase.projects[projectId];
@@ -71,5 +81,5 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
       return frame.otherText[textId].text;
   }
 
-  return `[Text not found for id "${textId}"]`;
+  return `Text not found for id "${textId}"`;
 };

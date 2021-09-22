@@ -61,3 +61,10 @@ export const isTextComponent = (props: DittoProps): props is DittoTextProps =>
 export const isFrameOrBlockComponent = (
   props: DittoProps
 ): props is DittoFrameOrBlockProps => "frameId" in props;
+
+const DITTO_ENV = process.env.REACT_APP_DITTO_ENV;
+
+// to protect our users, default to production behavior if DITTO_ENV
+// isn't specified
+export const isProductionDittoEnvironment =
+  !DITTO_ENV || DITTO_ENV === "production";

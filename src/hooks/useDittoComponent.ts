@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { DittoContext } from "../lib/context";
-import { nullError } from "../lib/utils";
+import { isProductionDittoEnvironment, nullError } from "../lib/utils";
 
 interface useDittoComponentProps {
   componentId: string;
@@ -39,6 +39,12 @@ export const useDittoComponent = (
       if (value) {
         return value;
       }
+    }
+
+    if (!isProductionDittoEnvironment) {
+      const message = `Text not found for componentId: "${componentId}"`;
+      console.error(message);
+      return message;
     }
   }
 
