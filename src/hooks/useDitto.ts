@@ -5,7 +5,6 @@ import {
   filterBlock,
   nullError,
   isDefaultFormatProject,
-  isProductionDittoEnvironment,
 } from "../lib/utils";
 
 interface useDittoProps {
@@ -19,7 +18,7 @@ interface useDittoProps {
 
 export const useDitto = (props: useDittoProps) => {
   const { projectId, frameId, blockId, filters } = props;
-  const { sourceBase, sourceVariant, variant } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant, options } = useContext(DittoContext);
 
   if (!sourceBase.projects)
     return nullError("Source JSON for DittoProvider does not have projects.");
@@ -39,7 +38,7 @@ export const useDitto = (props: useDittoProps) => {
       }
     }
 
-    if (!isProductionDittoEnvironment) {
+    if (options?.environment !== "production") {
       const message = `Text not found for frameId: "${frameId}", blockId: "${blockId}"`;
       console.error(message);
       return message;

@@ -1,11 +1,12 @@
 import React, { useMemo } from "react";
-import { DittoContext, DittoSource, Source } from "../lib/context";
+import { DittoContext, DittoOptions, DittoSource, Source } from "../lib/context";
 
 interface DittoProviderProps {
   projectId?: string;
   variant?: string;
   source: DittoSource;
   children: React.ReactNode;
+  options?: DittoOptions;
 }
 
 const useSources = (source: DittoSource, variant?: string) => {
@@ -26,12 +27,13 @@ const useSources = (source: DittoSource, variant?: string) => {
 };
 
 export const DittoProvider = (props: DittoProviderProps) => {
-  const { children, source: _source, variant, projectId } = props;
+  const { children, source: _source, variant, projectId, options } = props;
   const { sourceBase, sourceVariant } = useSources(_source, variant);
 
   return (
     <DittoContext.Provider
       value={{
+        options,
         sourceBase,
         sourceVariant,
         variant,

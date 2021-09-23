@@ -75,11 +75,17 @@ export interface SourceVariants {
 
 export type DittoSource = Source | SourceVariants;
 
+export interface DittoOptions {
+  environment?: "development" | "staging" | "production";
+}
+
 interface DittoContext {
   projectId?: string;
   variant?: string;
   sourceBase: Source;
   sourceVariant: Source | null;
+  options?: DittoOptions;
 }
+
 
 export const DittoContext = createContext({} as DittoContext);

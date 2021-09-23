@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { DittoContext } from "../lib/context";
 import {
   isDefaultFormatProject,
-  isProductionDittoEnvironment,
   nullError,
 } from "../lib/utils";
 
@@ -13,7 +12,7 @@ interface useDittoSingleTextProps {
 
 export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   const { projectId, textId } = props;
-  const { sourceBase, sourceVariant, variant } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant, options } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
 
@@ -44,7 +43,7 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
       }
     }
 
-    if (!isProductionDittoEnvironment) {
+    if (options?.environment !== "production") {
       const message = `Text not found for textId: "${textId}"`;
       console.error(message);
       return message;

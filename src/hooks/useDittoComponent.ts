@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { DittoContext } from "../lib/context";
-import { isProductionDittoEnvironment, nullError } from "../lib/utils";
+import { nullError } from "../lib/utils";
 
 interface useDittoComponentProps {
   componentId: string;
@@ -16,7 +16,7 @@ export const useDittoComponent = (
       text: string;
     } => {
   const { componentId, alwaysReturnString } = props;
-  const { sourceBase, sourceVariant, variant } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant, options } = useContext(DittoContext);
 
   if (!("ditto_component_library" in sourceBase.projects)) {
     throw new Error(
@@ -41,7 +41,7 @@ export const useDittoComponent = (
       }
     }
 
-    if (!isProductionDittoEnvironment) {
+    if (options?.environment !== "production") {
       const message = `Text not found for componentId: "${componentId}"`;
       console.error(message);
       return message;
