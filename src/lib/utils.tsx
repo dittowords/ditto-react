@@ -62,7 +62,7 @@ export const isFrameOrBlockComponent = (
   props: DittoProps
 ): props is DittoFrameOrBlockProps => "frameId" in props;
 
-const DITTO_ENV = process.env.REACT_APP_DITTO_ENV;
+const DITTO_ENV = process?.env?.REACT_APP_DITTO_ENV || undefined;
 
 // to protect our users, default to production behavior if DITTO_ENV
 // isn't specified
