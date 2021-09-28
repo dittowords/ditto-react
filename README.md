@@ -10,9 +10,11 @@
 You can install `ditto-react` from npm:
 
 ```bash
-# as a dev dependency (recommended)
+# as a dev dependency
 npm install --save-dev ditto-react
 ```
+
+`ditto-react` comes with TypeScript bindings out of the box.
 
 ## Getting Started
 
@@ -46,9 +48,7 @@ const HomePage = () => (
   <div>
     <h1><Ditto componentId="home.title" /></h1> 
     <h2><Ditto componentId="home.subtitle"></h2>
-    <p>
-      <Ditto componentId="home.body" />
-    </p>
+    <p><Ditto componentId="home.body" /></p>
     <footer>
       <ul>
         <li>
@@ -66,68 +66,120 @@ const HomePage = () => (
 )
 ```
 
-1. Setup the  (refer to that repository's README for detailed instructions)
-2. Pull data using the CLI in a central place in your repository that is accessible to your React code. 
-3. At the root of your React app, import your data from the CLI-created `ditto` folder and import `DittoProvider` from `ditto-react`:
-4. Wrap your application in `DittoProvider`, passing to its `source` prop the data imported from the `ditto` folder:
+### Localize with variants
+If the components in your Ditto workspace have variants, you can use them in `ditto-react` by passing a `variant` prop to `DittoProvider`. The value of the prop should be equal to the API ID of the variant:
 ```jsx
-const App = () => (
-  <DittoProvider source={dittoData}>
-    ...
-  </DittoProvider>
-)
+import DittoProvider from 'ditto-react';
+import dittoData from './ditto';
+
+const options = [
+  "base",
+  "spanish",
+  "korean"
+]
+
+const App = () => { 
+  const [variant, setVariant] = useState(options[0]);
+
+  return (
+    <DittoProvider source={dittoData} variant={variant}>
+      ...
+    </DittoProvider>
+  )
+}
 ```
 
+### Example
+
+To see a working React app utilizing the [Ditto CLI](https://github.com/dittowords/cli) and `ditto-react`, please refer to the Ditto Demo project: https://github.com/dittowords/ditto-demo.
 
 ---
 
-## Usage
+## Reference
 
 ### DittoProvider
 
-The `DittoProvider` component should wrap any parts of your app you'd like to use `Ditto` components in; it needs to specify where any descendent `Ditto` components should pull text from.
+The `DittoProvider` component should wrap all parts of your component tree that will display copy from Ditto.
 
-#### DittoProvider Props
+#### Props
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `source` | JSON (required) | product copy to be used by Ditto wherever DittoProvider wraps — see Source (link to bottom) for more info  |
-| `projectId` | String (optional) | ID of a project in Ditto; can alternatively be passed/overwritten with a prop passed directly to `Ditto` components
+| `source` | JSON (required) | Copy data imported from the CLI-generated `ditto` folder — see [Source](#Source) for more info  |
+| `variant` | String (optional) | The API ID of a variant; if specified, all descendant `Ditto` components will attempt to display the value of that variant (requires usage of the `variants` CLI option)
+| `projectId` | String (optional) | The ID of a project in Ditto; can also be ommitted from the provdier and passed as a direct prop to `Ditto` components
+| `options` | Object (optional) | See [DittoProvider options](#Options)
 
-
-#### DittoProvider Example
+#### Example
 
 ```jsx
-import DittoProvider from 'ditto-react';
-import source from "/.ditto/text.json";
+import DittoProvider, { Ditto } from 'ditto-react';
+import source from "./ditto";
 
-<DittoProvider projectId="my_project" source={source}>
-	{/* insert any app components here,
-	including Ditto components and regular
-	React components */}
+<DittoProvider source={source}>
+  {/* the rest of your app */}
 </DittoProvider>
 ```
 
+#### Options
+| Key | Type | Description
+| --- | --- | ---
+| `environment` | `development` or `production` | The environment the `DittoProvider` should operate in. If `production` or unspecified, missing text will be silently replaced with an empty string. If `development`, missing text will be replaced with clear error strings and errors will be emitted to the console.
+
 ### Ditto
 
+The `Ditto` component is used for rendering text. Text can be rendered from **components in your component library** (recommended) or from **projects in your workspace**.
 
-#### Ditto Props
+Which method you use depends on how you've configured your CLI options. Please refer to the [Ditto CLI](https://github.com/dittowords/cli) and [Ditto Demo](https://github.com/dittowords/ditto-demo) projects for more information.
 
-`Ditto` is used to fetch specific text, blocks, and frames from the source. You must specify at least a `textId` or a `frameId`.
+#### Component Library (recommended)
+| Prop | Type | Description 
+| --- | --- | --- 
+| `componentId` | string | The API ID of a component in your component library. If a `variant` prop is passed to an ancestor `DittoProvider`, will attempt to display the specified variant's value for the passed `componentId`; otherwise, will default to displaying base text.
 
+##### Example
+```jsx
+<Ditto componentId="footer.links.contact-us" />
+```
 
+#### Project
 | Prop | Type | Description | Example |
 | --- | --- | --- | --- |
+| `projectId` | string (semi-required) | ID of a project in Ditto; required if a `projectId` isn't found in an ancestor `DittoProvider`
+| `textId` | string (optional) | ID of a single text item in Ditto |  |
 | `frameId` | string (optional) | ID of a frame in Ditto |  |
 | `blockId` | string (optional) | ID of a block in Ditto |  |
-| `textId` | string (optional) | ID of a single text item in Ditto |  |
 | `filters` | object (optional) | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
-| `projectId` | string (semi-optional) | ID of a project in Ditto; only optional if `projectId` has been passed to `DittoProvider`
 
+##### Examples
+If you pass `textId`, the specified text string will be rendered:
+```jsx
+<Ditto 
+  textId="text_6151fa25151df3024333a8cb" 
+  projectId="613a9b8fd268f614cae17469"
+/>
+```
+
+If you pass `frameId` and/or `blockId`, the specified frame/block object will be passed to a child function:
+```jsx
+<Ditto 
+  frameId="frame_6151fa25151df3024333a8bd" 
+  blockId="my_block"
+  projectId="613a9b8fd268f614cae17469"
+>
+  {(block) => (
+    Object.keys(block).map((id) => (
+      <div key={block[id]}>{block[id]}</div>
+    ))
+  )}}
+</Ditto>
+```
+
+## Additional Examples
 
 ### Example: Single Text
 
-The `Ditto` component can be used to fetch a specific text item from the Ditto project using its unique ID. Note that you can edit IDs for text, blocks, and frames directly in our web-app.
+The `Ditto` component can be used to fetch a specific text item from the Ditto project using its API ID. Note that you can edit IDs for text, blocks, and frames directly the Ditto web app:
 
 ```jsx
 <Ditto textId="text_601cc35c5bsdfe42cc3f6f8ac59"/>
@@ -215,9 +267,9 @@ If you want to filter the text fetched by properties contained in the project it
 
 ## Source
 
-The React provider takes structured JSON outputs from Ditto projects as the source. These can be linked and automatically updated via [our API/CLI](https://github.com/dittowords/cli), or exported manually via our web-app.
+phe React provider takes structured JSON outputs from Ditto as the source. These can be linked and automatically updated via [our API/CLI](https://github.com/dittowords/cli), or exported manually via the Ditto web app.
 
-If you're using manual exports from our web-app, turn on Developer Mode in the toolbar of project you're working from to generate IDs. Then, export your file formatted with the IDs into your local directory .
+If you're using manual exports from the Ditto web app, turn on Developer Mode in the toolbar of project you're working from to generate API IDs. Then, export your file formatted with the IDs into your local directory .
 
 ---
 
