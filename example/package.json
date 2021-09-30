@@ -7,7 +7,8 @@
     "start": "DISABLE_ESLINT_PLUGIN=true node ../node_modules/react-scripts/bin/react-scripts.js start",
     "build": "DISABLE_ESLINT_PLUGIN=true node ../node_modules/react-scripts/bin/react-scripts.js build",
     "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
-    "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject"
+    "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject",
+    "sync": "cd src && ditto-cli pull"
   },
   "dependencies": {
     "@testing-library/jest-dom": "link:../node_modules/@testing-library/jest-dom",
@@ -21,7 +22,8 @@
     "react-dom": "link:../node_modules/react-dom",
     "react-scripts": "link:../node_modules/react-scripts",
     "typescript": "link:../node_modules/typescript",
-    "ditto-react": "link:.."
+    "ditto-react": "link:..",
+    "@dittowords/cli": "1.1.1-beta.2"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
