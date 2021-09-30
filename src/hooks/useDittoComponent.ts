@@ -2,21 +2,22 @@ import { useContext } from "react";
 import { DittoContext } from "../lib/context";
 import { nullError } from "../lib/utils";
 
-interface useDittoComponentProps {
+type DittoComponentString = string;
+type DittoComponentObject = {
+  name: string;
+  text: string;
+};
+type DittoComponent = DittoComponentString | DittoComponentObject;
+
+interface Args {
   componentId: string;
   alwaysReturnString: boolean;
 }
 
-export const useDittoComponent = (
-  props: useDittoComponentProps
-):
-  | string
-  | {
-      name: string;
-      text: string;
-    } => {
+export const useDittoComponent = (props: Args): DittoComponent => {
   const { componentId, alwaysReturnString } = props;
-  const { sourceBase, sourceVariant, variant, options } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant, options } =
+    useContext(DittoContext);
 
   if (!("ditto_component_library" in sourceBase.projects)) {
     throw new Error(
