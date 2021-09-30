@@ -26,7 +26,7 @@ export const useDittoComponent = (props: Args): DittoComponent => {
   }
 
   if (variant) {
-    const componentLibrary = sourceVariant?.projects.ditto_component_library;
+    const componentLibrary = sourceVariant?.projects?.ditto_component_library;
     if (componentLibrary) {
       const value: string | { name: string; text: string } =
         "project_name" in componentLibrary && "components" in componentLibrary
