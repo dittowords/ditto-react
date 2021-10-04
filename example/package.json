@@ -23,7 +23,7 @@
     "react-scripts": "link:../node_modules/react-scripts",
     "typescript": "link:../node_modules/typescript",
     "ditto-react": "link:..",
-    "@dittowords/cli": "1.1.1-beta.2"
+    "@dittowords/cli": "1.1.1"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
