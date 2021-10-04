@@ -1219,10 +1219,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@dittowords/cli@1.1.1-beta.2":
-  version "1.1.1-beta.2"
-  resolved "https://registry.yarnpkg.com/@dittowords/cli/-/cli-1.1.1-beta.2.tgz#6eff16d240942667a6a80b6a38ec130c60d33134"
-  integrity sha512-dISSmjYH0aS0/50Pmb+tVSU2FvWKl0edWKBHugFigGg3xfCee9pvfQAe3uhWw6HRCmKtK+JwYJg59cCJQAfufw==
+"@dittowords/cli@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@dittowords/cli/-/cli-1.1.1.tgz#6eea19523ae9f7813d11694eff85018bbff7bc2a"
+  integrity sha512-LzrXeDlm4o/lwpqfZ432HKyzdj0hvXL7bNvtnpJXTXpPXdpVICMDMRmjiVbomsbZhS1+hs5grAAGJYF4r1EhbQ==
   dependencies:
     axios "^0.19.2"
     boxen "^4.2.0"
