@@ -39,12 +39,18 @@ interface FormatDefaultComponentLibrary {
   };
 }
 
-interface FormatStructured {
+interface FormatStructuredProject {
   [apiId: string]: {
-    name: string;
     text: string;
     tags?: string[];
     notes?: string;
+  };
+}
+
+interface FormatStructuredCL {
+  [apiId: string]: {
+    name: string;
+    text: string;
   };
 }
 
@@ -55,11 +61,13 @@ interface FormatFlat {
 export type ProjectFormat =
   | FormatDefaultProject
   | FormatFlat
-  | FormatStructured;
+  | FormatStructuredProject;
+
 export type ComponentLibraryFormat =
   | FormatDefaultComponentLibrary
   | FormatFlat
-  | FormatStructured;
+  | FormatStructuredCL;
+
 export type Project = ProjectFormat | ComponentLibraryFormat;
 
 export interface Source {
@@ -86,6 +94,5 @@ interface DittoContext {
   sourceVariant: Source | null;
   options?: DittoOptions;
 }
-
 
 export const DittoContext = createContext({} as DittoContext);
