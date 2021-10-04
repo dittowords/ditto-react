@@ -1,5 +1,10 @@
 import React, { useMemo } from "react";
-import { DittoContext, DittoOptions, DittoSource, Source } from "../lib/context";
+import {
+  DittoContext,
+  DittoOptions,
+  DittoSource,
+  Source,
+} from "../lib/context";
 
 interface DittoProviderProps {
   projectId?: string;
@@ -18,7 +23,10 @@ const useSources = (source: DittoSource, variant?: string) => {
     const sourceBase = source.base;
     const sourceVariant = variant ? source[variant] : null;
 
-    if (!sourceBase) throw new Error("Couldn't find base text");
+    if (!sourceBase)
+      throw new Error(
+        "If passing `variant` to `DittoProvider`, `variants: true` must be set in `ditto/config.yml`"
+      );
     if (variant && !sourceVariant)
       console.warn(`Couldn't find variant text for ${variant}`);
 
