@@ -20,13 +20,14 @@ const useSources = (source: DittoSource, variant?: string) => {
       return { sourceBase: source as Source, sourceVariant: null };
     }
 
-    const sourceBase = source.base;
+    const sourceBase = source.base || source.text;
     const sourceVariant = variant ? source[variant] : null;
 
-    if (!sourceBase)
+    if (!sourceBase || (variant && !source.base))
       throw new Error(
-        "If passing `variant` to `DittoProvider`, `variants: true` must be set in `ditto/config.yml`"
+        "If passing `variant` prop to `DittoProvider`, `variants: true` must be set in `ditto/config.yml` (re-pull after editing)"
       );
+
     if (variant && !sourceVariant)
       console.warn(`Couldn't find variant text for ${variant}`);
 
