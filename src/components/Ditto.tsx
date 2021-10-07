@@ -1,42 +1,54 @@
 import { useContext } from "react";
-import { DittoText, DittoTextProps } from "./DittoText";
-import { DittoFrameOrBlock, DittoFrameOrBlockProps } from "./DittoFrameOrBlock";
+import { DittoText } from "./DittoText";
+import { DittoFrameOrBlock } from "./DittoFrameOrBlock";
+import { DittoComponent } from "./DittoComponent";
 import { DittoContext } from "../lib/context";
-import { fragmentError } from "../lib/utils";
+import {
+  isFrameOrBlockComponent,
+  isTextComponent,
+  fragmentError,
+  isComponentLibrary,
+  isProject,
+} from "../lib/utils";
 
-interface DittoProps {
+export interface DittoProjectProps {
   projectId?: string;
   textId?: string;
   frameId?: string;
   blockId?: string;
-  children?: React.ReactNode;
   filters?: {
     tags: string[];
   };
 }
 
-const isDittoTextProps = (props: DittoProps): props is DittoTextProps =>
-  'textId' in props;
+export interface DittoComponentLibraryProps {
+  componentId: string;
+}
 
-const isDittoFrameOrBlockProps = (props: DittoProps): props is DittoFrameOrBlockProps =>
-  'frameId' in props;
+export type DittoProps = DittoProjectProps | DittoComponentLibraryProps;
 
 export const Ditto = (_props: DittoProps) => {
   const { projectId: projectId_context } = useContext(DittoContext);
-  const { projectId: projectId_prop } = _props;
 
-  const projectId = projectId_prop || projectId_context;
+  if (isProject(_props, projectId_context)) {
+    const { projectId: projectId_prop } = _props;
+    const projectId = projectId_prop || projectId_context;
 
-  if (!projectId) 
-    return fragmentError('No Project ID was provided to the <DittoProvider /> or <Ditto /> components.');
+    if (!projectId)
+      return fragmentError(
+        "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
+      );
 
-  const props = { ..._props, projectId };
+    const props = { ..._props, projectId };
 
-  if (isDittoTextProps(props)) 
-    return <DittoText {...props} />;
+    if (isTextComponent(props)) return <DittoText {...props} />;
 
-  if (isDittoFrameOrBlockProps(props)) 
-    return <DittoFrameOrBlock {...props} />;
+    if (isFrameOrBlockComponent(props)) return <DittoFrameOrBlock {...props} />;
+  } else if (isComponentLibrary(_props)) {
+    return <DittoComponent {..._props} />;
+  }
 
-  return fragmentError('Invalid props provided to Ditto component; please provide "textId" or "frameId"');
-}
+  return fragmentError(
+    'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"'
+  );
+};

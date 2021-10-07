@@ -1,51 +1,102 @@
-import DittoProvider, { Ditto } from 'ditto-react'
-import source from './ditto/text.json';
+import DittoProvider, { Ditto } from "ditto-react";
+import { useState } from "react";
+import source from "./ditto";
 
-const renderFrame = (frame: any) =>  {
-  return Object.keys(frame.otherText)
-    .map(textId => 
-      <p key={textId}>{frame.otherText[textId]}</p>
-    )
-}
+const options = Object.keys(source);
 
 const App = () => {
+  const [variant, setVariant] = useState("base");
+
   return (
-    <>
-      {/* Usage Option #1: projectId passed as a prop to individual Ditto components */}
-      <DittoProvider source={source}>
-        <Ditto 
-          projectId="project_606652b903907b0113e329a6"
-          textId="text_606652bae02e5dfefcb4398a"
-        />
-        <Ditto 
-          projectId="project_606652b903907b0113e329a6"
-          frameId="frame_606652bae02e5dfefcb43987"
+    <div style={{ padding: 40 }}>
+      <div>
+        <DittoProvider source={source}>
+          <h4>Component Library</h4>
+          <ul>
+            <li>
+              <Ditto componentId="basic-plan-team-disclaimer" />
+            </li>
+            <li>
+              <Ditto componentId="best-practices.error.incorrect-date" />
+            </li>
+            <li>
+              <Ditto componentId="excellent.validation" />
+            </li>
+          </ul>
+          <h4>Project</h4>
+          <ul>
+            <li>
+              <Ditto
+                textId="text_606cb89a2e11c4009984ad74"
+                projectId="project_606cb89ac55041013d662f8b"
+              />
+            </li>
+            <li>
+              <Ditto
+                textId="text_606cb89a2e11c4009984ad75"
+                projectId="project_606cb89ac55041013d662f8b"
+              />
+            </li>
+            <li>
+              <Ditto
+                textId="text_606cb89a2e11c4009984ad76"
+                projectId="project_606cb89ac55041013d662f8b"
+              />
+            </li>
+          </ul>
+        </DittoProvider>
+      </div>
+      <br />
+      <hr />
+      <div>
+        <div style={{ padding: "20px 0" }}>
+          <label htmlFor="">Variant</label> <br />
+          <select
+            onChange={(e) => {
+              setVariant(e.target.value);
+            }}
+            value={variant}
+          >
+            {options.map((option) => (
+              <option value={option} key={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+        <DittoProvider
+          source={source}
+          variant={variant}
+          projectId="project_606cb89ac55041013d662f8b"
         >
-          {renderFrame}
-        </Ditto>
-      </DittoProvider>
-      {/* Usage Option #2: projectId passed to DittoProvider and inherited by Ditto components */}
-      <DittoProvider projectId="project_606652b903907b0113e329a6" source={source}>
-        <Ditto textId="text_606652bae02e5dfefcb4398a" />
-        <Ditto frameId="frame_606652bae02e5dfefcb43987">
-          {renderFrame}
-        </Ditto>
-      </DittoProvider>
-      {/* Usage Option #3: projectId passed to DittoProvider but overwritten by prop passed to Ditto components */}
-      <DittoProvider projectId="some_other_project" source={source}>
-        <Ditto 
-          projectId="project_606652b903907b0113e329a6"
-          textId="text_606652bae02e5dfefcb4398a"
-        />
-        <Ditto 
-          projectId="project_606652b903907b0113e329a6"
-          frameId="frame_606652bae02e5dfefcb43987"
-        >
-          {renderFrame}
-        </Ditto>
-      </DittoProvider>
-    </>
-  )
-}
+          <h4>Component Library w/ Variants</h4>
+          <ul>
+            <li>
+              <Ditto componentId="basic-plan-team-disclaimer" />
+            </li>
+            <li>
+              <Ditto componentId="best-practices.error.incorrect-date" />
+            </li>
+            <li>
+              <Ditto componentId="excellent.validation" />
+            </li>
+          </ul>
+          <h4>Project w/ Variants</h4>
+          <ul>
+            <li>
+              <Ditto textId="text_606cb89a2e11c4009984ad74" />
+            </li>
+            <li>
+              <Ditto textId="text_606cb89a2e11c4009984ad75" />
+            </li>
+            <li>
+              <Ditto textId="text_606cb89a2e11c4009984ad76" />
+            </li>
+          </ul>
+        </DittoProvider>
+      </div>
+    </div>
+  );
+};
 
 export default App;

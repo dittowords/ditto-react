@@ -1,27 +1,55 @@
-import React from 'react';
-import { DittoSource, DittoContext } from '../lib/context';
+import React, { useMemo } from "react";
+import {
+  DittoContext,
+  DittoOptions,
+  DittoSource,
+  Source,
+} from "../lib/context";
 
 interface DittoProviderProps {
   projectId?: string;
+  variant?: string;
   source: DittoSource;
   children: React.ReactNode;
+  options?: DittoOptions;
 }
+
+const useSources = (source: DittoSource, variant?: string) => {
+  return useMemo(() => {
+    if ("projects" in source) {
+      return { sourceBase: source as Source, sourceVariant: null };
+    }
+
+    const sourceBase = source.base || source.text;
+    const sourceVariant = variant ? source[variant] : null;
+
+    if (!sourceBase || (variant && !source.base))
+      throw new Error(
+        "If passing `variant` prop to `DittoProvider`, `variants: true` must be set in `ditto/config.yml` (re-pull after editing)"
+      );
+
+    if (variant && !sourceVariant)
+      console.warn(`Couldn't find variant text for ${variant}`);
+
+    return { sourceBase, sourceVariant };
+  }, [source, variant]);
+};
 
 export const DittoProvider = (props: DittoProviderProps) => {
-  const { children, source, projectId } = props;
+  const { children, source: _source, variant, projectId, options } = props;
+  const { sourceBase, sourceVariant } = useSources(_source, variant);
 
   return (
-    /* 
-     * projectId is only included as a property on the `source`
-     * in this way to maintain backwards compatibility. When it
-     * comes time to introduce breaking changes, it should be
-     * given its own property on the context value.
-     */
-    <DittoContext.Provider value={{
-      ...source,   
-      ...(projectId ?  { projectId } : {})
-    }}>
+    <DittoContext.Provider
+      value={{
+        options,
+        sourceBase,
+        sourceVariant,
+        variant,
+        ...(projectId ? { projectId } : {}),
+      }}
+    >
       {children}
     </DittoContext.Provider>
-  )
-}
+  );
+};
