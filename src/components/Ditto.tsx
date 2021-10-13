@@ -79,14 +79,3 @@ export function Ditto(props: DittoProps) {
     'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"'
   );
 }
-
-type InferSecondArg<T extends string | number> = T extends string
-  ? string
-  : boolean;
-
-function sum<T extends string | number>(x: T, y: InferSecondArg<T>) {
-  return {} as any;
-}
-
-sum("", "");
-sum(1, true);
