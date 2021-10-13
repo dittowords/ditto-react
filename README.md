@@ -149,6 +149,7 @@ Which method you use depends on how you've configured your CLI options. Please r
 | `blockId` | string (optional) | ID of a block in Ditto |  |
 | `filters` | object (optional) | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
 
+
 ##### Examples
 If you pass `textId`, the specified text string will be rendered:
 ```jsx
@@ -171,6 +172,18 @@ If you pass `frameId` and/or `blockId`, the specified frame/block object will be
     ))
   )}}
 </Ditto>
+```
+
+### Note
+
+In addition to the `<Ditto />` component, individual exports of each specific component type are also available. These behave identically to passing the respective prop configurations to the `<Ditto />` component, but may provide a better experience for TypeScript users due to their improved out-of-the-box type safety and inference:
+```js
+import {
+  DittoFrame, 
+  DittoBlock,
+  DittoText,
+  DittoComponent // rendering components from your Ditto component library
+} from "ditto-react";
 ```
 
 ## Additional Examples
