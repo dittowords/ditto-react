@@ -8,7 +8,7 @@ import {
 } from "../lib/utils";
 
 interface useDittoProps {
-  projectId: string;
+  projectId?: string;
   frameId: string;
   blockId?: string;
   filters?: {
@@ -18,7 +18,8 @@ interface useDittoProps {
 
 export const useDitto = (props: useDittoProps) => {
   const { projectId, frameId, blockId, filters } = props;
-  const { sourceBase, sourceVariant, variant, options } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant, options } =
+    useContext(DittoContext);
 
   if (!sourceBase.projects)
     return nullError("Source JSON for DittoProvider does not have projects.");

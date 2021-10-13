@@ -5,27 +5,22 @@ interface DittoText {
   tags?: string[];
 }
 
-/**
- * TODO:
- * Standardize differenes between default project format
- * and default component library format (hopefully solved
- * as a side effect of us moving away from the default
- * format completely in a future version)
- */
+export interface Block {
+  [textId: string]: DittoText;
+}
+
+export interface Frame {
+  frameName: string;
+  blocks: {
+    [blockId: string]: Block;
+  };
+  otherText?: Block;
+}
+
 export interface FormatDefaultProject {
   project_id: string;
   frames: {
-    [frameId: string]: {
-      frameName: string;
-      blocks: {
-        [blockId: string]: {
-          [textId: string]: DittoText;
-        };
-      };
-      otherText?: {
-        [textId: string]: DittoText;
-      };
-    };
+    [frameId: string]: Frame;
   };
 }
 

@@ -2,53 +2,91 @@ import { useContext } from "react";
 import { DittoText } from "./DittoText";
 import { DittoFrameOrBlock } from "./DittoFrameOrBlock";
 import { DittoComponent } from "./DittoComponent";
-import { DittoContext } from "../lib/context";
+import { Block, DittoContext, Frame } from "../lib/context";
 import {
   isFrameOrBlockComponent,
-  isTextComponent,
+  isText,
   fragmentError,
   isComponentLibrary,
   isProject,
 } from "../lib/utils";
 
-export interface DittoProjectProps {
+export interface DittoFrameProps {
   projectId?: string;
-  textId?: string;
-  frameId?: string;
-  blockId?: string;
+  frameId: string;
+  children: (frame: Frame) => React.ReactNode;
+}
+
+export interface DittoBlockProps {
+  projectId?: string;
+  frameId: string;
+  blockId: string;
+  children: (block: Block) => React.ReactNode;
+}
+
+export interface DittoTextProps {
+  projectId?: string;
+  textId: string;
+  children?: (text: string) => React.ReactNode;
+}
+
+export interface DittoComponentLibraryProps {
+  componentId: string;
+  children?: (text: string) => React.ReactNode;
+}
+
+export interface DittoFilters {
   filters?: {
     tags: string[];
   };
 }
 
-export interface DittoComponentLibraryProps {
-  componentId: string;
-}
+export type DittoFrameOrBlockProps = DittoFilters &
+  (DittoFrameProps | DittoBlockProps);
+
+export type DittoProjectProps = DittoFilters &
+  (DittoFrameProps | DittoBlockProps | DittoTextProps);
 
 export type DittoProps = DittoProjectProps | DittoComponentLibraryProps;
 
-export const Ditto = (_props: DittoProps) => {
-  const { projectId: projectId_context } = useContext(DittoContext);
+export function Ditto(props: DittoProps) {
+  const dittoContext = useContext(DittoContext);
 
-  if (isProject(_props, projectId_context)) {
-    const { projectId: projectId_prop } = _props;
-    const projectId = projectId_prop || projectId_context;
+  if (isComponentLibrary(props)) {
+    return <DittoComponent {...props} />;
+  }
 
-    if (!projectId)
+  if (isProject(props, dittoContext.projectId)) {
+    const projectId = props.projectId || dittoContext.projectId;
+    if (!projectId) {
       return fragmentError(
         "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
       );
+    }
 
-    const props = { ..._props, projectId };
+    const propsWithProject = { ...props, projectId };
 
-    if (isTextComponent(props)) return <DittoText {...props} />;
+    if (isText(propsWithProject)) {
+      return <DittoText {...propsWithProject} />;
+    }
 
-    if (isFrameOrBlockComponent(props)) return <DittoFrameOrBlock {...props} />;
-  } else if (isComponentLibrary(_props)) {
-    return <DittoComponent {..._props} />;
+    if (isFrameOrBlockComponent(propsWithProject)) {
+      return <DittoFrameOrBlock {...propsWithProject} />;
+    }
   }
 
   return fragmentError(
     'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"'
   );
-};
+}
+
+type InferSecondArg<T extends string | number> = T extends string
+  ? string
+  : boolean;
+
+function sum<T extends string | number>(x: T, y: InferSecondArg<T>) {
+  return {} as any;
+}
+
+sum("", "");
+sum(1, true);

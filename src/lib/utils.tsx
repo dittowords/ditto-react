@@ -3,9 +3,9 @@ import {
   DittoComponentLibraryProps,
   DittoProjectProps,
   DittoProps,
+  DittoFrameOrBlockProps,
+  DittoTextProps,
 } from "../components/Ditto";
-import { DittoFrameOrBlockProps } from "../components/DittoFrameOrBlock";
-import { DittoTextProps } from "../components/DittoText";
 import { FormatDefaultProject, Project } from "./context";
 
 export const filterBlock = (blockObj, filters) => {
@@ -55,7 +55,7 @@ export const isComponentLibrary = (
   props: DittoProps
 ): props is DittoComponentLibraryProps => "componentId" in props;
 
-export const isTextComponent = (props: DittoProps): props is DittoTextProps =>
+export const isText = (props: DittoProps): props is DittoTextProps =>
   "textId" in props;
 
 export const isFrameOrBlockComponent = (
