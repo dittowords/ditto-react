@@ -20,18 +20,6 @@ const App = () => {
           <h4>Component Library</h4>
           <ul>
             <li>
-              <Ditto componentId="basic-plan-team-disclaimer" />
-            </li>
-            <li>
-              <Ditto componentId="best-practices.error.incorrect-date" />
-            </li>
-            <li>
-              <Ditto componentId="excellent.validation" />
-            </li>
-            <li>
-              <Ditto componentId="excellent.validation" />
-            </li>
-            <li>
               <Ditto componentId="excellent.validation">
                 {(text: string) => <>{text}</>}
               </Ditto>
@@ -98,27 +86,6 @@ const App = () => {
                   return markup;
                 }}
               </DittoFrame>
-            </li>
-            <li>
-              <Ditto frameId="frame_606cb89a2e11c4009984ad72" blockId="heading">
-                {(block: Block) => {
-                  return Object.keys(block).map((key) => (
-                    <span key={key}>{block[key]}</span>
-                  ));
-                }}
-              </Ditto>
-            </li>
-            <li>
-              <DittoBlock
-                frameId="frame_606cb89a2e11c4009984ad72"
-                blockId="heading"
-              >
-                {(block) => {
-                  return Object.keys(block).map((key) => (
-                    <span key={key}>{block[key]}</span>
-                  ));
-                }}
-              </DittoBlock>
             </li>
           </ul>
         </DittoProvider>
