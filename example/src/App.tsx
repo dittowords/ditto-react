@@ -20,6 +20,12 @@ const App = () => {
           <h4>Component Library</h4>
           <ul>
             <li>
+              <Ditto componentId="excellent.validation" />
+            </li>
+            <li>
+              <DittoComponent componentId="excellent.validation" />
+            </li>
+            <li>
               <Ditto componentId="excellent.validation">
                 {(text: string) => <>{text}</>}
               </Ditto>
@@ -34,6 +40,9 @@ const App = () => {
           <ul>
             <li>
               <Ditto textId="text_606cb89a2e11c4009984ad75" />
+            </li>
+            <li>
+              <DittoText textId="text_606cb89a2e11c4009984ad75" />
             </li>
             <li>
               <Ditto textId="text_606cb89a2e11c4009984ad75">
@@ -86,6 +95,27 @@ const App = () => {
                   return markup;
                 }}
               </DittoFrame>
+            </li>
+            <li>
+              <Ditto frameId="frame_606cb89a2e11c4009984ad72" blockId="heading">
+                {(block: Block) => {
+                  return Object.keys(block).map((key) => (
+                    <span key={key}>{block[key]}</span>
+                  ));
+                }}
+              </Ditto>
+            </li>
+            <li>
+              <DittoBlock
+                frameId="frame_606cb89a2e11c4009984ad72"
+                blockId="heading"
+              >
+                {(block) => {
+                  return Object.keys(block).map((key) => (
+                    <span key={key}>{block[key]}</span>
+                  ));
+                }}
+              </DittoBlock>
             </li>
           </ul>
         </DittoProvider>

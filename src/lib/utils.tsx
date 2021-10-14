@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import {
   DittoComponentLibraryProps,
   DittoProjectProps,
@@ -6,7 +6,7 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { FormatDefaultProject, Project } from "./context";
+import { DittoContext, FormatDefaultProject, Project } from "./context";
 
 export const filterBlock = (blockObj, filters) => {
   return Object.keys(blockObj)
@@ -61,3 +61,15 @@ export const isText = (props: DittoProps): props is DittoTextProps =>
 export const isFrameOrBlockComponent = (
   props: DittoProps
 ): props is DittoFrameOrBlockProps => "frameId" in props;
+
+export const useProjectId = (props: { projectId?: string }) => {
+  const dittoContext = useContext(DittoContext);
+  const projectId = dittoContext.projectId || props.projectId;
+  if (!projectId) {
+    return fragmentError(
+      "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
+    );
+  }
+
+  return projectId;
+};
