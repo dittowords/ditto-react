@@ -1,18 +1,16 @@
 import { useContext } from "react";
 import { DittoContext } from "../lib/context";
-import {
-  isDefaultFormatProject,
-  nullError,
-} from "../lib/utils";
+import { isDefaultFormatProject, nullError } from "../lib/utils";
 
 interface useDittoSingleTextProps {
-  projectId: string;
+  projectId?: string;
   textId: string;
 }
 
 export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   const { projectId, textId } = props;
-  const { sourceBase, sourceVariant, variant, options } = useContext(DittoContext);
+  const { sourceBase, sourceVariant, variant, options } =
+    useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
 

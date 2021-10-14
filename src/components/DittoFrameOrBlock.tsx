@@ -1,29 +1,51 @@
-import React from 'react';
-import { useDitto } from '../hooks/useDitto';
-import { fragmentError } from '../lib/utils';
+import React, { useContext } from "react";
+import { useDitto } from "../hooks/useDitto";
+import { DittoContext } from "../lib/context";
+import { fragmentError } from "../lib/utils";
+import {
+  DittoBlockProps,
+  DittoFilters,
+  DittoFrameOrBlockProps,
+  DittoFrameProps,
+} from "./Ditto";
 
-export interface DittoFrameOrBlockProps {
-  projectId: string;
-  frameId: string;
-  blockId?: string;
-  filters?: {
-    tags: string[];
-  }
-  // TODO: type data 
-  children: (data: any) => React.ReactNode;
-}
+type Props = DittoFrameOrBlockProps;
 
-export const DittoFrameOrBlock = (props: DittoFrameOrBlockProps) => {
+export const DittoFrameOrBlock = (props: Props) => {
   const { children, ...otherProps } = props;
   const data = useDitto(otherProps);
 
-  const childIsFunction = typeof children === 'function';
+  if (typeof children !== "function") {
+    return fragmentError(
+      `Please provide either a textId or function child to your Ditto component.`
+    );
+  }
 
-  if (!data)
+  if (!data) {
     return <React.Fragment />;
+  }
 
-  if (!childIsFunction) 
-    return fragmentError(`Please provide either a textId or function child to your Ditto component.`);
+  return <>{children(data)}</>;
+};
 
-  return props.children(data);
+const useProjectId = (props: { projectId?: string }) => {
+  const dittoContext = useContext(DittoContext);
+  const projectId = dittoContext.projectId || props.projectId;
+  if (!projectId) {
+    return fragmentError(
+      "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
+    );
+  }
+
+  return projectId;
+};
+
+export const DittoFrame = (props: DittoFrameProps & DittoFilters) => {
+  const projectId = useProjectId(props);
+  return <DittoFrameOrBlock {...props} projectId={projectId} />;
+};
+
+export const DittoBlock = (props: DittoBlockProps & DittoFilters) => {
+  const projectId = useProjectId(props);
+  return <DittoFrameOrBlock {...props} projectId={projectId} />;
 };

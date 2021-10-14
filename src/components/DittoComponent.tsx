@@ -1,21 +1,22 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useDittoComponent } from "../hooks/useDittoComponent";
+import { DittoComponentLibraryProps } from "./Ditto";
 
-export interface DittoComponentProps {
-  componentId: string;
-  children?: (value: string | { name: string; text: string }) => JSX.Element;
-}
-
-export const DittoComponent = (props: DittoComponentProps) => {
+export const DittoComponent = (props: DittoComponentLibraryProps) => {
   const { children, componentId } = props;
   const value = useDittoComponent({
     componentId,
     alwaysReturnString: typeof children !== "function",
   });
 
+  const text = useMemo(
+    () => (typeof value === "object" ? value.text : value),
+    [value]
+  );
+
   return (
     <React.Fragment>
-      {typeof children === "function" ? children(value) : value}
+      {typeof children === "function" ? children(text) : text}
     </React.Fragment>
   );
 };

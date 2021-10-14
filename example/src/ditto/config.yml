@@ -3,5 +3,3 @@ projects:
     id: ditto_component_library
   - name: NUX Onboarding
     id: 606cb89ac55041013d662f8b
-variants: true
-format: flat

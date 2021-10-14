@@ -1,96 +1,91 @@
-import DittoProvider, { Ditto } from "ditto-react";
-import { useState } from "react";
+import DittoProvider, {
+  Ditto,
+  Frame,
+  Block,
+  DittoText,
+  DittoFrame,
+  DittoBlock,
+  DittoComponent,
+} from "ditto-react";
 import source from "./ditto";
 
-const options = Object.keys(source);
-
 const App = () => {
-  const [variant, setVariant] = useState("base");
-
   return (
     <div style={{ padding: 40 }}>
       <div>
-        <DittoProvider source={source}>
+        <DittoProvider
+          source={source}
+          projectId="project_606cb89ac55041013d662f8b"
+        >
           <h4>Component Library</h4>
           <ul>
             <li>
-              <Ditto componentId="basic-plan-team-disclaimer" />
+              <Ditto componentId="excellent.validation">
+                {(text: string) => <>{text}</>}
+              </Ditto>
             </li>
             <li>
-              <Ditto componentId="best-practices.error.incorrect-date" />
-            </li>
-            <li>
-              <Ditto componentId="excellent.validation" />
+              <DittoComponent componentId="excellent.validation">
+                {(text) => <>{text}</>}
+              </DittoComponent>
             </li>
           </ul>
           <h4>Project</h4>
           <ul>
             <li>
-              <Ditto
-                textId="text_606cb89a2e11c4009984ad74"
-                projectId="project_606cb89ac55041013d662f8b"
-              />
-            </li>
-            <li>
-              <Ditto
-                textId="text_606cb89a2e11c4009984ad75"
-                projectId="project_606cb89ac55041013d662f8b"
-              />
-            </li>
-            <li>
-              <Ditto
-                textId="text_606cb89a2e11c4009984ad76"
-                projectId="project_606cb89ac55041013d662f8b"
-              />
-            </li>
-          </ul>
-        </DittoProvider>
-      </div>
-      <br />
-      <hr />
-      <div>
-        <div style={{ padding: "20px 0" }}>
-          <label htmlFor="">Variant</label> <br />
-          <select
-            onChange={(e) => {
-              setVariant(e.target.value);
-            }}
-            value={variant}
-          >
-            {options.map((option) => (
-              <option value={option} key={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-        <DittoProvider
-          source={source}
-          variant={variant}
-          projectId="project_606cb89ac55041013d662f8b"
-        >
-          <h4>Component Library w/ Variants</h4>
-          <ul>
-            <li>
-              <Ditto componentId="basic-plan-team-disclaimer" />
-            </li>
-            <li>
-              <Ditto componentId="best-practices.error.incorrect-date" />
-            </li>
-            <li>
-              <Ditto componentId="excellent.validation" />
-            </li>
-          </ul>
-          <h4>Project w/ Variants</h4>
-          <ul>
-            <li>
-              <Ditto textId="text_606cb89a2e11c4009984ad74" />
-            </li>
-            <li>
               <Ditto textId="text_606cb89a2e11c4009984ad75" />
             </li>
             <li>
-              <Ditto textId="text_606cb89a2e11c4009984ad76" />
+              <Ditto textId="text_606cb89a2e11c4009984ad75">
+                {(text: string) => <>{text}</>}
+              </Ditto>
+            </li>
+            <li>
+              <DittoText textId="text_606cb89a2e11c4009984ad75">
+                {(text) => <>{text}</>}
+              </DittoText>
+            </li>
+            <li>
+              <Ditto frameId="frame_606cb89a2e11c4009984ad72">
+                {(frame: Frame) => {
+                  const markup: React.ReactNode[] = [];
+
+                  Object.keys(frame.blocks).forEach((blockId) => {
+                    const block: Block = frame.blocks[blockId];
+
+                    Object.keys(block).forEach((textId) => {
+                      markup.push(
+                        <span key={`${blockId}-${textId}`}>
+                          {block[textId]}
+                        </span>
+                      );
+                    });
+                  });
+
+                  return markup;
+                }}
+              </Ditto>
+            </li>
+            <li>
+              <DittoFrame frameId="frame_606cb89a2e11c4009984ad72">
+                {(frame) => {
+                  const markup: React.ReactNode[] = [];
+
+                  Object.keys(frame.blocks).forEach((blockId) => {
+                    const block: Block = frame.blocks[blockId];
+
+                    Object.keys(block).forEach((textId) => {
+                      markup.push(
+                        <span key={`${blockId}-${textId}`}>
+                          {block[textId]}
+                        </span>
+                      );
+                    });
+                  });
+
+                  return markup;
+                }}
+              </DittoFrame>
             </li>
           </ul>
         </DittoProvider>
