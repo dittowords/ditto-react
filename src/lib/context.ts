@@ -1,36 +1,25 @@
 import { createContext } from "react";
 
-interface DittoText {
-  text: string;
-  tags?: string[];
-}
-
-export interface Block {
-  [textId: string]: DittoText;
-}
-
 export interface Frame {
   frameName: string;
-  blocks: {
-    [blockId: string]: Block;
-  };
-  otherText?: Block;
+  blocks: FormatStructured;
+  otherText?: FormatStructured;
 }
 
 export interface FormatDefaultProject {
-  project_id: string;
-  frames: {
-    [frameId: string]: Frame;
+  [frameId: string]: Frame;
+}
+
+interface FormatStructured {
+  [id: string]: {
+    text: string;
   };
 }
 
 interface FormatDefaultComponentLibrary {
-  project_name: string;
-  components: {
-    [componentApiId: string]: {
-      name: string;
-      text: string;
-    };
+  [componentApiId: string]: {
+    name: string;
+    text: string;
   };
 }
 
@@ -76,7 +65,36 @@ export interface SourceVariants {
   [variantApiId: string]: Source;
 }
 
-export type DittoSource = Source | SourceVariants;
+type SourceType =
+  | FormatDefaultProject
+  // This type matches for:
+  // - `default` and `structured` formats for the component library
+  // - `structured` format for projects
+  | FormatStructured
+  // This type matches for both projects and the component library
+  | FormatFlat
+  | { [key: string]: any };
+
+export type DittoSource = {
+  [projectId: string]: {
+    [variantApiId: string]: SourceType;
+  };
+};
+
+export const SourceDetector = {
+  isFrame: function (source: SourceType): source is FormatDefaultProject {
+    const value = source[Object.keys(source)[0]];
+    return typeof value === "object" && "frameName" in value;
+  },
+  isFlat: function (source: SourceType): source is FormatFlat {
+    const value = source[Object.keys(source)[0]];
+    return typeof value === "string";
+  },
+  isStructured: function (source: SourceType): source is FormatStructured {
+    const value = source[Object.keys(source)[0]];
+    return typeof value === "object" && !this.isFrame(source);
+  },
+};
 
 export interface DittoOptions {
   environment?: "development" | "staging" | "production";
@@ -85,8 +103,7 @@ export interface DittoOptions {
 interface DittoContext {
   projectId?: string;
   variant?: string;
-  sourceBase: Source;
-  sourceVariant: Source | null;
+  source: DittoSource;
   options?: DittoOptions;
 }
 
