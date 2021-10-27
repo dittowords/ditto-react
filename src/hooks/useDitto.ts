@@ -1,11 +1,6 @@
 import { useContext } from "react";
-import { DittoContext } from "../lib/context";
-import {
-  filterFrame,
-  filterBlock,
-  nullError,
-  isDefaultFormatProject,
-} from "../lib/utils";
+import { DittoContext, SourceDetector } from "../lib/context";
+import { filterFrame, filterBlock, nullError } from "../lib/utils";
 
 interface useDittoProps {
   projectId?: string;
@@ -18,18 +13,14 @@ interface useDittoProps {
 
 export const useDitto = (props: useDittoProps) => {
   const { projectId, frameId, blockId, filters } = props;
-  const { sourceBase, sourceVariant, variant, options } =
-    useContext(DittoContext);
-
-  if (!sourceBase.projects)
-    return nullError("Source JSON for DittoProvider does not have projects.");
+  const { source, variant, options } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
 
   if (variant) {
-    const project = sourceVariant?.projects[projectId];
-    if (isDefaultFormatProject(project) && frameId) {
-      const frame = project.frames[frameId];
+    const data = source[projectId][variant];
+    if (SourceDetector.isFrame(data) && frameId) {
+      const frame = data[frameId];
       if (!blockId) {
         return filterFrame(frame, filters);
       }
@@ -46,11 +37,12 @@ export const useDitto = (props: useDittoProps) => {
     }
   }
 
-  const project = sourceBase.projects[projectId];
-  if (!project) {
+  const data = source[projectId]?.base;
+  if (!data) {
     return nullError(`Project not found with id "${projectId}"`);
   }
-  if (!isDefaultFormatProject(project)) {
+
+  if (!SourceDetector.isFrame(data)) {
     return nullError(
       `Default format must be used if passing "frameId" or "blockId"`
     );
@@ -59,21 +51,20 @@ export const useDitto = (props: useDittoProps) => {
   if (!frameId) {
     return nullError("No Frame ID provided.");
   }
-  if (!(frameId in project.frames))
+
+  const frame = data[frameId];
+  if (!frame)
     return nullError(
       `Frame "${frameId}" not found this project "${projectId}"`
     );
 
-  const frame = project.frames[frameId];
-
   if (!blockId) return filterFrame(frame, filters);
 
-  if (!(blockId in frame.blocks))
+  const block = frame.blocks[blockId];
+  if (!block)
     return nullError(
       `Block "${blockId}" not found in frame "${frameId}" in project "${projectId}"`
     );
-
-  const block = frame.blocks[blockId];
 
   return filterBlock(block, filters);
 };

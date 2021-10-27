@@ -40,10 +40,6 @@ export const error = (message: string, returnValue: any = message) => {
 export const nullError = (message: string) => error(message, null);
 export const fragmentError = (message: string) => error(message, <Fragment />);
 
-export const isDefaultFormatProject = (
-  project: Project | undefined
-): project is FormatDefaultProject => !!project && "frames" in project;
-
 export const isProject = (
   props: DittoProps,
   projectIdFromContext?: string

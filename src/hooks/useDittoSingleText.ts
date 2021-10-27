@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { DittoContext } from "../lib/context";
-import { isDefaultFormatProject, nullError } from "../lib/utils";
+import { DittoContext, SourceDetector } from "../lib/context";
+import { nullError } from "../lib/utils";
 
 interface useDittoSingleTextProps {
   projectId?: string;
@@ -9,25 +9,24 @@ interface useDittoSingleTextProps {
 
 export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   const { projectId, textId } = props;
-  const { sourceBase, sourceVariant, variant, options } =
-    useContext(DittoContext);
+  const { source, variant, options } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
 
   if (variant) {
-    const project = sourceVariant?.projects[projectId];
-    if (project) {
-      // structured or flat format
-      if (textId in project) {
-        return typeof project[textId] === "object" && "text" in project[textId]
-          ? project[textId].text
-          : project[textId];
+    const data = source[projectId][variant];
+    if (data) {
+      if (SourceDetector.isStructured(data)) {
+        return data[textId].text;
       }
 
-      // default format
-      if (isDefaultFormatProject(project)) {
-        for (const frameId in project.frames) {
-          const frame = project.frames[frameId];
+      if (SourceDetector.isFlat(data)) {
+        return data[textId];
+      }
+
+      if (SourceDetector.isFrame(data)) {
+        for (const frameId in data) {
+          const frame = data[frameId];
 
           for (const blockId in frame.blocks) {
             const block = frame.blocks[blockId];
@@ -48,34 +47,32 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
     }
   }
 
-  const project = sourceBase.projects[projectId];
-  if (!project) {
+  const data = source[projectId].base;
+  if (!data) {
     return nullError(`Project not found with id "${projectId}"`);
   }
 
-  // structured or flat format
-  if (textId in project)
-    return typeof project[textId] === "object" && "text" in project[textId]
-      ? project[textId].text
-      : project[textId];
-
-  if (!isDefaultFormatProject(project)) {
-    return nullError(
-      `Default format must be used if passing "frameId" or "blockId"`
-    );
+  if (SourceDetector.isStructured(data)) {
+    return data[textId].text;
   }
 
-  for (const frameId in project.frames) {
-    const frame = project.frames[frameId];
+  if (SourceDetector.isFlat(data)) {
+    return data[textId];
+  }
 
-    for (const blockId in frame.blocks) {
-      const block = frame.blocks[blockId];
+  if (SourceDetector.isFrame(data)) {
+    for (const frameId in data) {
+      const frame = data[frameId];
 
-      if (textId in block) return block[textId].text;
+      for (const blockId in frame.blocks) {
+        const block = frame.blocks[blockId];
+
+        if (textId in block) return block[textId].text;
+      }
+
+      if (frame.otherText && textId in frame.otherText)
+        return frame.otherText[textId].text;
     }
-
-    if (frame.otherText && textId in frame.otherText)
-      return frame.otherText[textId].text;
   }
 
   return `Text not found for id "${textId}"`;
