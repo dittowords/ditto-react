@@ -84,7 +84,7 @@ export type DittoSource = {
 export const SourceDetector = {
   isFrame: function (source: SourceType): source is FormatDefaultProject {
     const value = source[Object.keys(source)[0]];
-    return typeof value === "object" && "frameName" in value;
+    return value !== null && typeof value === "object" && "frameName" in value;
   },
   isFlat: function (source: SourceType): source is FormatFlat {
     const value = source[Object.keys(source)[0]];
@@ -92,7 +92,7 @@ export const SourceDetector = {
   },
   isStructured: function (source: SourceType): source is FormatStructured {
     const value = source[Object.keys(source)[0]];
-    return typeof value === "object" && !this.isFrame(source);
+    return value !== null && typeof value === "object" && !this.isFrame(source);
   },
 };
 
