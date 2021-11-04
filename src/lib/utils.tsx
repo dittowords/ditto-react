@@ -6,9 +6,9 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { DittoContext, FormatDefaultProject, Project } from "./context";
+import { DittoContext, Frame, Block } from "./context";
 
-export const filterBlock = (blockObj, filters) => {
+export const filterBlock = (blockObj: Block, filters) => {
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
@@ -17,10 +17,10 @@ export const filterBlock = (blockObj, filters) => {
         (tag) => blockObj[textId].tags && blockObj[textId].tags.includes(tag)
       );
     })
-    .reduce((obj, id) => ({ ...obj, [id]: blockObj[id].text }), {});
+    .reduce((obj, id) => ({ ...obj, [id]: blockObj[id].text }), {} as Block);
 };
 
-export const filterFrame = (_frameObj, filters) => {
+export const filterFrame = (_frameObj: Frame, filters) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
   if (frameObj.blocks) {

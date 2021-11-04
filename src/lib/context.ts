@@ -1,9 +1,12 @@
 import { createContext } from "react";
 
+export interface Block {
+  text: string;
+}
 export interface Frame {
   frameName: string;
-  blocks: FormatStructured;
-  otherText?: FormatStructured;
+  blocks: Block[];
+  otherText?: Block[];
 }
 
 export interface FormatDefaultProject {
@@ -83,14 +86,26 @@ export type DittoSource = {
 
 export const SourceDetector = {
   isFrame: function (source: SourceType): source is FormatDefaultProject {
+    if (!source) {
+      return false;
+    }
+
     const value = source[Object.keys(source)[0]];
     return value !== null && typeof value === "object" && "frameName" in value;
   },
   isFlat: function (source: SourceType): source is FormatFlat {
+    if (!source) {
+      return false;
+    }
+
     const value = source[Object.keys(source)[0]];
     return typeof value === "string";
   },
   isStructured: function (source: SourceType): source is FormatStructured {
+    if (!source) {
+      return false;
+    }
+
     const value = source[Object.keys(source)[0]];
     return value !== null && typeof value === "object" && !this.isFrame(source);
   },

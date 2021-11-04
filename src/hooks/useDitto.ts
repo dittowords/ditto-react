@@ -18,7 +18,7 @@ export const useDitto = (props: useDittoProps) => {
   if (!projectId) return nullError("No Project ID provided.");
 
   if (variant) {
-    const data = source[projectId][variant];
+    const data = source?.[projectId]?.[variant];
     if (SourceDetector.isFrame(data) && frameId) {
       const frame = data[frameId];
       if (!blockId) {

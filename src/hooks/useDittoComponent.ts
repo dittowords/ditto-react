@@ -24,7 +24,7 @@ export const useDittoComponent = (props: Args): DittoComponent => {
   }
 
   if (variant) {
-    const data = source.ditto_component_library[variant];
+    const data = source?.ditto_component_library?.[variant];
 
     if (data && data[componentId]) {
       if (SourceDetector.isStructured(data)) {
@@ -41,7 +41,7 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     }
   }
 
-  const data = source.ditto_component_library.base;
+  const data = source?.ditto_component_library?.base;
   if (!data) {
     return nullError("Base text not found in component library");
   }

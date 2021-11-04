@@ -14,7 +14,7 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   if (!projectId) return nullError("No Project ID provided.");
 
   if (variant) {
-    const data = source[projectId][variant];
+    const data = source?.[projectId]?.[variant];
     if (data) {
       if (SourceDetector.isStructured(data)) {
         return data[textId].text;
@@ -47,7 +47,7 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
     }
   }
 
-  const data = source[projectId].base;
+  const data = source?.[projectId]?.base;
   if (!data) {
     return nullError(`Project not found with id "${projectId}"`);
   }

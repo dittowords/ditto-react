@@ -20,8 +20,8 @@ export const DittoFrameOrBlock = (props: Props) => {
     );
   }
 
-  if (!data) {
-    return <React.Fragment />;
+  if (!data || typeof data !== "object") {
+    return <>{data}</>;
   }
 
   return <>{children(data)}</>;
