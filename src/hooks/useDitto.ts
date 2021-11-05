@@ -21,12 +21,16 @@ export const useDitto = (props: useDittoProps) => {
     const data = source?.[projectId]?.[variant];
     if (SourceDetector.isFrame(data) && frameId) {
       const frame = data[frameId];
-      if (!blockId) {
-        return filterFrame(frame, filters);
-      }
-      if (blockId in frame.blocks) {
-        const block = frame.blocks[blockId];
-        return filterBlock(block, filters);
+      if (frame) {
+        if (!blockId) {
+          return filterFrame(frame, filters);
+        }
+        if (blockId in frame.blocks) {
+          const block = frame.blocks[blockId];
+          if (block) {
+            return filterBlock(block, filters);
+          }
+        }
       }
     }
 
