@@ -1,10 +1,9 @@
 import { useContext } from "react";
-import { DittoContext } from "../lib/context";
+import { DittoContext, SourceDetector } from "../lib/context";
 import { nullError } from "../lib/utils";
 
 type DittoComponentString = string;
 type DittoComponentObject = {
-  name: string;
   text: string;
 };
 type DittoComponent = DittoComponentString | DittoComponentObject;
@@ -16,29 +15,22 @@ interface Args {
 
 export const useDittoComponent = (props: Args): DittoComponent => {
   const { componentId, alwaysReturnString } = props;
-  const { sourceBase, sourceVariant, variant, options } =
-    useContext(DittoContext);
+  const { source, variant, options } = useContext(DittoContext);
 
-  if (!("ditto_component_library" in sourceBase.projects)) {
+  if (!("ditto_component_library" in source)) {
     throw new Error(
       "An export file for the Component Library couldn't be found."
     );
   }
 
   if (variant) {
-    const componentLibrary = sourceVariant?.projects?.ditto_component_library;
-    if (componentLibrary) {
-      const value: string | { name: string; text: string } =
-        "project_name" in componentLibrary && "components" in componentLibrary
-          ? componentLibrary.components[componentId]
-          : componentLibrary[componentId];
+    const data = source?.ditto_component_library?.[variant];
 
-      if (typeof value === "object" && "text" in value) {
-        return alwaysReturnString ? value.text : value;
-      }
-
-      if (value) {
-        return value;
+    if (data && data[componentId]) {
+      if (SourceDetector.isStructured(data)) {
+        return alwaysReturnString ? data[componentId].text : data[componentId];
+      } else if (SourceDetector.isFlat(data)) {
+        return data[componentId];
       }
     }
 
@@ -49,20 +41,21 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     }
   }
 
-  const componentLibrary = sourceBase.projects.ditto_component_library;
+  const data = source?.ditto_component_library?.base;
+  if (!data) {
+    return nullError("Base text not found in component library");
+  }
 
-  const value: string | { name: string; text: string } =
-    "project_name" in componentLibrary && "components" in componentLibrary
-      ? componentLibrary.components[componentId]
-      : componentLibrary[componentId];
-
+  const value = data[componentId];
   if (!value) {
     return nullError(`Text not found for component "${componentId}"`);
   }
 
-  if (typeof value === "object" && "text" in value) {
-    return alwaysReturnString ? value.text : value;
+  if (SourceDetector.isStructured(data)) {
+    return alwaysReturnString ? data[componentId].text : data[componentId];
+  } else if (SourceDetector.isFlat(data)) {
+    return data[componentId];
+  } else {
+    return nullError(`Invalid format for component ${componentId}`);
   }
-
-  return value;
 };
