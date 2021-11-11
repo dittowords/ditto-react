@@ -9,6 +9,8 @@ version, please [click here](https://github.com/dittowords/ditto-react/tree/e683
 - Offers support for localizing using Ditto variants
 - Works hand-in-hand with the [Ditto CLI](https://github.com/dittowords/cli)
 
+Ditto also works with many popular 3rd party i18n libraries. Check out [our demo repository](https://github.com/dittowords/ditto-demo) for an example of how Ditto can be integrated into development using [react-i18next](https://react.i18next.com/).
+
 ## Installation
 
 You can install `ditto-react` from npm:
