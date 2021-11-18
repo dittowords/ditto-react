@@ -162,7 +162,7 @@ If you pass `textId`, the specified text string will be rendered:
 ```jsx
 <Ditto
   textId="text_6151fa25151df3024333a8cb"
-  projectId="613a9b8fd268f614cae17469"
+  projectId="project_613a9b8fd268f614cae17469"
 />
 ```
 
@@ -172,11 +172,10 @@ If you pass `frameId` and/or `blockId`, the specified frame/block object will be
 <Ditto
   frameId="frame_6151fa25151df3024333a8bd"
   blockId="my_block"
-  projectId="613a9b8fd268f614cae17469"
+  projectId="project_613a9b8fd268f614cae17469"
 >
   {(block) =>
     Object.keys(block).map((id) => <div key={block[id]}>{block[id]}</div>)
-  }
   }
 </Ditto>
 ```
