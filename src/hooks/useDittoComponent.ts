@@ -1,5 +1,6 @@
+import Mustache from 'mustache'
 import { useContext } from "react";
-import { DittoContext, SourceDetector } from "../lib/context";
+import { DittoContext, SourceDetector, DittoSource } from "../lib/context";
 import { nullError } from "../lib/utils";
 
 type DittoComponentString = string;
@@ -8,13 +9,32 @@ type DittoComponentObject = {
 };
 type DittoComponent = DittoComponentString | DittoComponentObject;
 
+type DittoVariables = {
+  [variableId: string]: any
+}
 interface Args {
   componentId: string;
   alwaysReturnString: boolean;
+  variables: DittoVariables;
 }
 
+const interpolateVariableText = (data: any, variables: DittoVariables) => {
+  const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
+    if (variables[curr]) {
+      acc[curr] = variables[curr]
+    } else {
+      const { example, fallback } = data.variables[curr]
+      acc[curr] = fallback || example
+    }
+    return acc;
+  }, {})
+  return {
+    ...data,
+    text: Mustache.render(data.text, variablesWithFallbacks)
+  }
+}
 export const useDittoComponent = (props: Args): DittoComponent => {
-  const { componentId, alwaysReturnString } = props;
+  const { componentId, alwaysReturnString, variables } = props;
   const { source, variant, options } = useContext(DittoContext);
 
   if (!("ditto_component_library" in source)) {
@@ -27,10 +47,11 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     const data = source?.ditto_component_library?.[variant];
 
     if (data && data[componentId]) {
+      const value = interpolateVariableText(data[componentId], variables)
       if (SourceDetector.isStructured(data)) {
-        return alwaysReturnString ? data[componentId].text : data[componentId];
+        return alwaysReturnString ? value.text : value;
       } else if (SourceDetector.isFlat(data)) {
-        return data[componentId];
+        return value;
       }
     }
 
@@ -46,15 +67,15 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     return nullError("Base text not found in component library");
   }
 
-  const value = data[componentId];
+  const value = interpolateVariableText(data[componentId], variables);
   if (!value) {
     return nullError(`Text not found for component "${componentId}"`);
   }
 
   if (SourceDetector.isStructured(data)) {
-    return alwaysReturnString ? data[componentId].text : data[componentId];
+    return alwaysReturnString ? value.text :value;
   } else if (SourceDetector.isFlat(data)) {
-    return data[componentId];
+    return value;
   } else {
     return nullError(`Invalid format for component ${componentId}`);
   }

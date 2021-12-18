@@ -20,10 +20,10 @@ const App = () => {
           <h4>Component Library</h4>
           <ul>
             <li>
-              <Ditto componentId="excellent.validation" />
+              <Ditto componentId="excellent.validation" variables={{ name: "John Doe"}} />
             </li>
             <li>
-              <DittoComponent componentId="excellent.validation" />
+              <DittoComponent componentId="excellent.validation" variables={{ name: "Sam Doe"}}/>
             </li>
             <li>
               <Ditto componentId="excellent.validation">
