@@ -1,7 +1,6 @@
-import Mustache from 'mustache'
 import { useContext } from "react";
-import { DittoContext, SourceDetector, DittoSource } from "../lib/context";
-import { nullError } from "../lib/utils";
+import { DittoContext, SourceDetector, Variables } from "../lib/context";
+import { nullError, interpolateVariableText} from "../lib/utils";
 
 type DittoComponentString = string;
 type DittoComponentObject = {
@@ -9,30 +8,12 @@ type DittoComponentObject = {
 };
 type DittoComponent = DittoComponentString | DittoComponentObject;
 
-type DittoVariables = {
-  [variableId: string]: any
-}
 interface Args {
   componentId: string;
   alwaysReturnString: boolean;
-  variables: DittoVariables;
+  variables: Variables;
 }
 
-const interpolateVariableText = (data: any, variables: DittoVariables) => {
-  const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
-    if (variables[curr]) {
-      acc[curr] = variables[curr]
-    } else {
-      const { example, fallback } = data.variables[curr]
-      acc[curr] = fallback || example
-    }
-    return acc;
-  }, {})
-  return {
-    ...data,
-    text: Mustache.render(data.text, variablesWithFallbacks)
-  }
-}
 export const useDittoComponent = (props: Args): DittoComponent => {
   const { componentId, alwaysReturnString, variables } = props;
   const { source, variant, options } = useContext(DittoContext);

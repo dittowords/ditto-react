@@ -1,14 +1,15 @@
 import { useContext } from "react";
-import { DittoContext, SourceDetector } from "../lib/context";
-import { nullError } from "../lib/utils";
+import { DittoContext, SourceDetector, Variables} from "../lib/context";
+import { nullError, interpolateVariableText } from "../lib/utils";
 
 interface useDittoSingleTextProps {
   projectId?: string;
   textId: string;
+  variables: Variables;
 }
 
 export const useDittoSingleText = (props: useDittoSingleTextProps) => {
-  const { projectId, textId } = props;
+  const { projectId, textId, variables = {} } = props;
   const { source, variant, options } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
@@ -16,12 +17,13 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   if (variant) {
     const data = source?.[projectId]?.[variant];
     if (data) {
+
       if (SourceDetector.isStructured(data)) {
-        return data[textId].text;
+        return interpolateVariableText(data[textId], variables).text;
       }
 
       if (SourceDetector.isFlat(data)) {
-        return data[textId];
+        return interpolateVariableText(data[textId], variables);
       }
 
       if (SourceDetector.isFrame(data)) {
@@ -31,11 +33,11 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
           for (const blockId in frame.blocks) {
             const block = frame.blocks[blockId];
 
-            if (textId in block) return block[textId].text;
+            if (textId in block) return interpolateVariableText(block[textId], variables).text;
           }
 
           if (frame.otherText && textId in frame.otherText)
-            return frame.otherText[textId].text;
+            return interpolateVariableText(frame.otherText[textId], variables).text;
         }
       }
     }
@@ -53,11 +55,11 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   }
 
   if (SourceDetector.isStructured(data)) {
-    return data[textId].text;
+    return interpolateVariableText(data[textId], variables).text;
   }
 
   if (SourceDetector.isFlat(data)) {
-    return data[textId];
+    return interpolateVariableText(data[textId], variables);
   }
 
   if (SourceDetector.isFrame(data)) {
@@ -67,11 +69,11 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
       for (const blockId in frame.blocks) {
         const block = frame.blocks[blockId];
 
-        if (textId in block) return block[textId].text;
+        if (textId in block) return interpolateVariableText(block[textId], variables).text;
       }
 
       if (frame.otherText && textId in frame.otherText)
-        return frame.otherText[textId].text;
+        return interpolateVariableText(frame.otherText[textId], variables).text;
     }
   }
 

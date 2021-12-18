@@ -1,5 +1,9 @@
 import { createContext } from "react";
 
+export interface Variables {
+  [variableId: string]: any
+}
+
 export interface Block {
   text: string;
 }

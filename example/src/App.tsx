@@ -39,7 +39,7 @@ const App = () => {
           <h4>Project</h4>
           <ul>
             <li>
-              <Ditto textId="text_606cb89a2e11c4009984ad75" />
+              <Ditto textId="text_606cb89a2e11c4009984ad74" />
             </li>
             <li>
               <DittoText textId="text_606cb89a2e11c4009984ad75" />
@@ -54,27 +54,30 @@ const App = () => {
                 {(text) => <>{text}</>}
               </DittoText>
             </li>
-            <li>
-              <Ditto frameId="frame_606cb89a2e11c4009984ad72">
-                {(frame: Frame) => {
-                  const markup: React.ReactNode[] = [];
+          </ul>
+          <h3>Frame Example</h3>
+          <ul>
+            <Ditto frameId="frame_606cb89a2e11c4009984ad72" variables={{ username: "Sam Doe"}}>
+              {(frame: Frame) => {
+                const markup: React.ReactNode[] = [];
 
-                  Object.keys(frame.blocks).forEach((blockId) => {
-                    const block: Block = frame.blocks[blockId];
+                Object.keys(frame.blocks).forEach((blockId) => {
+                  const block: Block = frame.blocks[blockId];
 
-                    Object.keys(block).forEach((textId) => {
-                      markup.push(
-                        <span key={`${blockId}-${textId}`}>
-                          {block[textId]}
-                        </span>
-                      );
-                    });
+                  Object.keys(block).forEach((textId) => {
+                    markup.push(
+                      <li key={`${blockId}-${textId}`}>
+                        {block[textId]}
+                      </li>
+                    );
                   });
+                });
 
-                  return markup;
-                }}
-              </Ditto>
-            </li>
+                return markup;
+              }}
+            </Ditto>
+          </ul>
+          <ul>
             <li>
               <DittoFrame frameId="frame_606cb89a2e11c4009984ad72">
                 {(frame) => {

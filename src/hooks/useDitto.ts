@@ -1,18 +1,19 @@
 import { useContext } from "react";
-import { DittoContext, SourceDetector } from "../lib/context";
+import { DittoContext, SourceDetector, Variables } from "../lib/context";
 import { filterFrame, filterBlock, nullError } from "../lib/utils";
 
 interface useDittoProps {
   projectId?: string;
   frameId: string;
   blockId?: string;
+  variables: Variables;
   filters?: {
     tags: string[];
   };
 }
 
 export const useDitto = (props: useDittoProps) => {
-  const { projectId, frameId, blockId, filters } = props;
+  const { projectId, frameId, blockId, filters, variables = {} } = props;
   const { source, variant, options } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
@@ -23,12 +24,12 @@ export const useDitto = (props: useDittoProps) => {
       const frame = data[frameId];
       if (frame) {
         if (!blockId) {
-          return filterFrame(frame, filters);
+          return filterFrame(frame, variables, filters);
         }
         if (blockId in frame.blocks) {
           const block = frame.blocks[blockId];
           if (block) {
-            return filterBlock(block, filters);
+            return filterBlock(block, variables, filters);
           }
         }
       }
@@ -62,7 +63,7 @@ export const useDitto = (props: useDittoProps) => {
       `Frame "${frameId}" not found this project "${projectId}"`
     );
 
-  if (!blockId) return filterFrame(frame, filters);
+  if (!blockId) return filterFrame(frame, variables, filters);
 
   const block = frame.blocks[blockId];
   if (!block)
@@ -70,5 +71,5 @@ export const useDitto = (props: useDittoProps) => {
       `Block "${blockId}" not found in frame "${frameId}" in project "${projectId}"`
     );
 
-  return filterBlock(block, filters);
+  return filterBlock(block, variables, filters);
 };

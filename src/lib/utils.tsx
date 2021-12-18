@@ -1,3 +1,4 @@
+import Mustache from 'mustache'
 import { Fragment, useContext } from "react";
 import {
   DittoComponentLibraryProps,
@@ -6,9 +7,9 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { DittoContext, Frame, Block } from "./context";
+import { DittoContext, Frame, Block, Variables } from "./context";
 
-export const filterBlock = (blockObj: Block, filters) => {
+export const filterBlock = (blockObj: Block, variables: Variables, filters) => {
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
@@ -17,19 +18,22 @@ export const filterBlock = (blockObj: Block, filters) => {
         (tag) => blockObj[textId].tags && blockObj[textId].tags.includes(tag)
       );
     })
-    .reduce((obj, id) => ({ ...obj, [id]: blockObj[id].text }), {} as Block);
+    .reduce((obj, id) => {
+      const interpolatedText = interpolateVariableText(blockObj[id], variables).text
+      return { ...obj, [id]: interpolatedText }
+    }, {} as Block);
 };
 
-export const filterFrame = (_frameObj: Frame, filters) => {
+export const filterFrame = (_frameObj: Frame, variables: Variables, filters) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
   if (frameObj.blocks) {
     for (var blockId in frameObj.blocks) {
-      frameObj.blocks[blockId] = filterBlock(frameObj.blocks[blockId], filters);
+      frameObj.blocks[blockId] = filterBlock(frameObj.blocks[blockId], variables, filters);
     }
   }
 
-  return { ...frameObj, otherText: filterBlock(frameObj.otherText, filters) };
+  return { ...frameObj, otherText: filterBlock(frameObj.otherText, variables, filters) };
 };
 
 export const error = (message: string, returnValue: any = message) => {
@@ -69,3 +73,19 @@ export const useProjectId = (props: { projectId?: string }) => {
 
   return projectId;
 };
+
+export const interpolateVariableText = (data: any, variables: Variables) => {
+  const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
+    if (variables[curr]) {
+      acc[curr] = variables[curr]
+    } else {
+      const { example, fallback } = data.variables[curr]
+      acc[curr] = fallback || example
+    }
+    return acc;
+  }, {})
+  return {
+    ...data,
+    text: Mustache.render(data.text, variablesWithFallbacks)
+  }
+}
