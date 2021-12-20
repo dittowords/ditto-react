@@ -1,4 +1,3 @@
-import Mustache from 'mustache'
 import { Fragment, useContext } from "react";
 import {
   DittoComponentLibraryProps,
@@ -114,6 +113,84 @@ export const interpolateVariableText = (data: any, variables: Variables, count: 
   const pluralText = getPluralText(data, count)
   return {
     ...data,
-    text: Mustache.render(pluralText, variablesWithFallbacks)
+    text: generateVariableText(pluralText, variablesWithFallbacks)
   }
 }
+
+const HANDLEBAR_REGEX = /\{\{([a-z0-9_]+)\}\}/gi;
+
+/**
+ * Execute a callback for each valid variable found in
+ * `text`. The callback is passed an object that includes:
+ * - `name`: the name of the variable
+ * - `start`: the index of opening curly brace of the variable in `text`
+ * - `end`: the index of the closing curly brace of the variable in `text`
+ */
+const forEachVariable = (text, callback) => {
+  let matches: RegExpExecArray | null = null;
+
+  while ((matches = HANDLEBAR_REGEX.exec(text)) !== null) {
+    const [match] = matches;
+    if (!match) {
+      break;
+    }
+
+    const variableName = match.replace(/(\{\{|\}\})/g, "");
+
+    callback({
+      name: variableName,
+      start: matches.index,
+      end: matches.index + match.length - 1,
+    });
+  }
+};
+
+const getVariable = (variableName, variables) => {
+  const variable = (variables || []).find((v) => v && v.name === variableName);
+  if (!variable) {
+    return null;
+  }
+
+  return variable;
+};
+
+const getVariablePlaceholder = (variable) => {
+  if (!(variable && variable.data)) {
+    return null;
+  }
+
+  if (variable.data.example) {
+    return String(variable.data.example);
+  }
+
+  if (variable.data.fallback) {
+    return String(variable.data.fallback);
+  }
+
+  if (variable.data.text) {
+    return String(variable.data.text);
+  }
+
+  return null;
+};
+
+const generateVariableText = (text, variables) => {
+  let lastIndex = 0;
+  let updatedText = "";
+  forEachVariable(text, ({ name, start, end }) => {
+    const variable = getVariable(name, variables);
+    const variableValue = getVariablePlaceholder(variable);
+    if (variableValue) {
+      updatedText += text.substring(lastIndex, start) + variableValue;
+    } else {
+      updatedText += text.substr(lastIndex, end);
+    }
+    lastIndex = end + 1;
+  });
+
+  const remainder = text.substr(lastIndex);
+  if (remainder) {
+    updatedText += remainder;
+  }
+  return updatedText;
+};

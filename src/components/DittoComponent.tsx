@@ -12,12 +12,12 @@ export const DittoComponent = (props: DittoComponentLibraryProps) => {
     count
   });
 
-  // const text = useMemo(
-  //   () => (value !== null && typeof value === "object" ? value.text : value),
-  //   [value, variables]
-  // );
+  const text = useMemo(
+    () => (value !== null && typeof value === "object" ? value.text : value),
+    [value, variables]
+  );
 
-  const text = value !== null && typeof value === "object" ? value.text : value
+  // const text = value !== null && typeof value === "object" ? value.text : value
   return (
     <React.Fragment>
       {typeof children === "function" ? children(text) : text}

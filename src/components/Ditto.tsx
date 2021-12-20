@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { DittoText } from "./DittoText";
 import { DittoFrameOrBlock } from "./DittoFrameOrBlock";
 import { DittoComponent } from "./DittoComponent";
-import { Block, DittoContext, Frame } from "../lib/context";
+import { Block, DittoContext, Frame, Variables } from "../lib/context";
 import {
   isFrameOrBlockComponent,
   isText,
@@ -11,11 +11,9 @@ import {
   isProject,
 } from "../lib/utils";
 
-export interface Variables {
-  [variableId: string]: string
-}
-export interface Plurals {
-  [pluralId: string]: string
+type PluralId = "zero" | "one" | "two" | "few" | "many" | "other";
+export type Plurals = {
+  [pluralId in PluralId]?: string;
 }
 
 export interface DittoFrameProps {
