@@ -1,5 +1,7 @@
 import { createContext } from "react";
 
+export type Count = number | undefined
+
 export interface Variables {
   [variableId: string]: any
 }

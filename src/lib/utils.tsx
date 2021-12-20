@@ -7,7 +7,7 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { DittoContext, Frame, Block, Variables } from "./context";
+import { DittoContext, Frame, Block, Variables, Count } from "./context";
 
 export const filterBlock = (blockObj: Block, variables: Variables, filters) => {
   return Object.keys(blockObj)
@@ -74,7 +74,34 @@ export const useProjectId = (props: { projectId?: string }) => {
   return projectId;
 };
 
-export const interpolateVariableText = (data: any, variables: Variables) => {
+/**
+ * 
+ * @param data
+ * text data
+ * @param count 
+ * the variable number used to determine which plural case to use
+ * Simple plural: 1 === 'one', 0,2,3,4,...n = 'other
+ * also support: 0 == 'zero' if provided
+ * in future we should also user's to define their own middleware for picking plurals
+ */
+const getPluralText = (data: any, count: Count) => {
+
+  if (count === null|| Object.keys(data?.plurals || {})?.length === 0) return data.text
+
+  if (count === 0) {
+    if (data.plurals.zero) return data.plurals.zero
+    else if (data.plurals.other) return data.plurals.other
+  }
+  else if (count === 1 && data.plurals.one) { 
+    return data.plurals.one
+  }
+  else {
+    if (data.plurals.other) return data.plurals.other
+  }
+  return data.text
+}
+
+export const interpolateVariableText = (data: any, variables: Variables, count: number = 0) => {
   const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
     if (variables[curr]) {
       acc[curr] = variables[curr]
@@ -84,8 +111,9 @@ export const interpolateVariableText = (data: any, variables: Variables) => {
     }
     return acc;
   }, {})
+  const pluralText = getPluralText(data, count)
   return {
     ...data,
-    text: Mustache.render(data.text, variablesWithFallbacks)
+    text: Mustache.render(pluralText, variablesWithFallbacks)
   }
 }

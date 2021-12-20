@@ -1,15 +1,17 @@
 import { useContext } from "react";
-import { DittoContext, SourceDetector, Variables} from "../lib/context";
+import { Plurals } from "../components/Ditto";
+import { DittoContext, SourceDetector, Variables, Count } from "../lib/context";
 import { nullError, interpolateVariableText } from "../lib/utils";
 
 interface useDittoSingleTextProps {
   projectId?: string;
   textId: string;
   variables: Variables;
+  count?: Count;
 }
 
 export const useDittoSingleText = (props: useDittoSingleTextProps) => {
-  const { projectId, textId, variables = {} } = props;
+  const { projectId, textId, variables = {}, count } = props;
   const { source, variant, options } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
@@ -55,11 +57,11 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
   }
 
   if (SourceDetector.isStructured(data)) {
-    return interpolateVariableText(data[textId], variables).text;
+    return interpolateVariableText(data[textId], variables, count).text;
   }
 
   if (SourceDetector.isFlat(data)) {
-    return interpolateVariableText(data[textId], variables);
+    return interpolateVariableText(data[textId], variables, count);
   }
 
   if (SourceDetector.isFrame(data)) {
@@ -69,11 +71,11 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
       for (const blockId in frame.blocks) {
         const block = frame.blocks[blockId];
 
-        if (textId in block) return interpolateVariableText(block[textId], variables).text;
+        if (textId in block) return interpolateVariableText(block[textId], variables, count).text;
       }
 
       if (frame.otherText && textId in frame.otherText)
-        return interpolateVariableText(frame.otherText[textId], variables).text;
+        return interpolateVariableText(frame.otherText[textId], variables, count).text;
     }
   }
 

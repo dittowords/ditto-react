@@ -12,10 +12,11 @@ interface Args {
   componentId: string;
   alwaysReturnString: boolean;
   variables: Variables;
+  count?: number;
 }
 
 export const useDittoComponent = (props: Args): DittoComponent => {
-  const { componentId, alwaysReturnString, variables } = props;
+  const { componentId, alwaysReturnString, variables, count } = props;
   const { source, variant, options } = useContext(DittoContext);
 
   if (!("ditto_component_library" in source)) {
@@ -48,7 +49,7 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     return nullError("Base text not found in component library");
   }
 
-  const value = interpolateVariableText(data[componentId], variables);
+  const value = interpolateVariableText(data[componentId], variables, count);
   if (!value) {
     return nullError(`Text not found for component "${componentId}"`);
   }

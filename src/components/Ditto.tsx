@@ -14,11 +14,15 @@ import {
 export interface Variables {
   [variableId: string]: string
 }
+export interface Plurals {
+  [pluralId: string]: string
+}
 
 export interface DittoFrameProps {
   projectId?: string;
   frameId: string;
   variables?: Variables;
+  count?: number;
   children: (frame: Frame) => React.ReactNode;
 }
 
@@ -27,6 +31,7 @@ export interface DittoBlockProps {
   frameId: string;
   blockId: string;
   variables?: Variables;
+  count?: number;
   children: (block: Block) => React.ReactNode;
 }
 
@@ -34,12 +39,14 @@ export interface DittoTextProps {
   projectId?: string;
   textId: string;
   variables?: Variables;
+  count?: number;
   children?: (text: string) => React.ReactNode;
 }
 
 export interface DittoComponentLibraryProps {
   componentId: string;
   variables?: Variables;
+  count?: number;
   children?: (text: string) => React.ReactNode;
 }
 

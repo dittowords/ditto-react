@@ -36,6 +36,21 @@ const App = () => {
               </DittoComponent>
             </li>
           </ul>
+          <h4>Plurals</h4>
+          <div>
+            <div>
+              <DittoComponent componentId="comp_ee67ecf7-613f-40db-9d4b-7a29f3db0a3e"/>
+            </div>
+            <div>
+              <DittoComponent componentId="comp_ee67ecf7-613f-40db-9d4b-7a29f3db0a3e" count={0}/>
+            </div>
+            <div>
+              <DittoComponent componentId="comp_ee67ecf7-613f-40db-9d4b-7a29f3db0a3e" count={1}/>
+            </div>
+            <div>
+              <DittoComponent componentId="comp_ee67ecf7-613f-40db-9d4b-7a29f3db0a3e" count={2}/>
+            </div>
+          </div>
           <h4>Project</h4>
           <ul>
             <li>
