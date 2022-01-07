@@ -6,7 +6,8 @@ interface useDittoProps {
   projectId?: string;
   frameId: string;
   blockId?: string;
-  variables: Variables;
+  variables?: Variables;
+  count?: number;
   filters?: {
     tags: string[];
   };
