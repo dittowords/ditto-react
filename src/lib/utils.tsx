@@ -165,7 +165,7 @@ const forEachVariable = (text, callback) => {
 };
 
 const getVariable = (variableName, variables) => {
-  const variable = (variables || []).find((v) => v && v.name === variableName);
+  const variable = variables[variableName]
   if (!variable) {
     return null;
   }
