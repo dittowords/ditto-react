@@ -79,25 +79,44 @@ export const useProjectId = (props: { projectId?: string }) => {
  * text data
  * @param count 
  * the variable number used to determine which plural case to use
- * Simple plural: 1 === 'one', 0,2,3,4,...n = 'other
- * also support: 0 == 'zero' if provided
+ * zero = 0
+ * one = 1
+ * two = 2
+ * few = 3,4,5
+ * many = 6,7,...,99
+ * other = 100, 101, ...
+ * if count is provided but not matching plural key, fallback to base plural value
  * in future we should also user's to define their own middleware for picking plurals
  */
 const getPluralText = (data: any, count: Count) => {
-
-  if (count === null|| Object.keys(data?.plurals || {})?.length === 0) return data.text
-
-  if (count === 0) {
+  if (count === undefined|| Object.keys(data?.plurals || {})?.length === 0) {
+    return data.text
+  }
+  else if (count === 0) {
+    //zero
     if (data.plurals.zero) return data.plurals.zero
-    else if (data.plurals.other) return data.plurals.other
-  }
-  else if (count === 1 && data.plurals.one) { 
-    return data.plurals.one
-  }
-  else {
+    return data.text
+  } else if (count === 1) {
+    // one
+    if (data.plurals.one) return data.plurals.one
+    return data.text
+  } else if (count === 2) {
+    // two
+    if (data.plurals.two) return data.plurals.two
+    return data.text
+  } else if (count >= 3 && count <= 5) {
+    // few
+    if (data.plurals.few) return data.plurals.few
+    return data.text
+  } else if (count >= 6 && count <= 99) {
+    // many
+    if (data.plurals.many) return data.plurals.many
+    return data.text
+  } else {
+    // other
     if (data.plurals.other) return data.plurals.other
+    return data.text
   }
-  return data.text
 }
 
 export const interpolateVariableText = (data: any, variables: Variables, count: number = 0) => {
