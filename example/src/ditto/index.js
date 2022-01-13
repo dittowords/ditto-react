@@ -9,7 +9,7 @@ module.exports = {
             "text": "You ordered {{count}} apples",
             "variables": {
               "count": {
-                "example": 1
+                "example": 4
               }
             },
             "plurals": {
@@ -23,7 +23,7 @@ module.exports = {
             "component_api_id": "shoppingcart",
             "variables": {
               "count": {
-                "example": 1
+                "example": 4
               }
             },
             "plurals": {
@@ -36,7 +36,7 @@ module.exports = {
             "text": "There are {{count}} puppies",
             "variables": {
               "count": {
-                "example": 1
+                "example": 4
               }
             },
             "plurals": {
@@ -60,7 +60,7 @@ module.exports = {
               "text": "Setting up your account should take less than {{Minutes}} minutes.",
               "variables": {
                 "Minutes": {
-                  "example": 12
+                  "example": 42
                 }
               },
               "plurals": {
@@ -284,7 +284,7 @@ module.exports = {
         "text": "There are  {{count}} items in the cart",
         "variables": {
           "count": {
-            "example": 1
+            "example": 4
           }
         },
         "plurals": {

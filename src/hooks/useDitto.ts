@@ -14,7 +14,7 @@ interface useDittoProps {
 }
 
 export const useDitto = (props: useDittoProps) => {
-  const { projectId, frameId, blockId, filters, variables = {} } = props;
+  const { projectId, frameId, blockId, filters, variables = {}, count } = props;
   const { source, variant, options } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
@@ -25,12 +25,12 @@ export const useDitto = (props: useDittoProps) => {
       const frame = data[frameId];
       if (frame) {
         if (!blockId) {
-          return filterFrame(frame, variables, filters);
+          return filterFrame(frame, variables, count, filters);
         }
         if (blockId in frame.blocks) {
           const block = frame.blocks[blockId];
           if (block) {
-            return filterBlock(block, variables, filters);
+            return filterBlock(block, variables, count, filters);
           }
         }
       }
@@ -64,7 +64,7 @@ export const useDitto = (props: useDittoProps) => {
       `Frame "${frameId}" not found this project "${projectId}"`
     );
 
-  if (!blockId) return filterFrame(frame, variables, filters);
+  if (!blockId) return filterFrame(frame, variables, count, filters);
 
   const block = frame.blocks[blockId];
   if (!block)
@@ -72,5 +72,5 @@ export const useDitto = (props: useDittoProps) => {
       `Block "${blockId}" not found in frame "${frameId}" in project "${projectId}"`
     );
 
-  return filterBlock(block, variables, filters);
+  return filterBlock(block, variables, count, filters);
 };

@@ -9,6 +9,7 @@ import {
 import { DittoContext, Frame, Block, Variables, Count } from "./context";
 
 export const filterBlock = (blockObj: Block, variables: Variables, count: Count, filters) => {
+
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
@@ -89,7 +90,6 @@ export const useProjectId = (props: { projectId?: string }) => {
  * in future we should also user's to define their own middleware for picking plurals
  */
 const getPluralText = (data: any, count: Count) => {
-  console.log('here2',typeof count, count)
   if (count === undefined|| Object.keys(data?.plurals || {})?.length === 0) {
     return data.text
   }
@@ -125,8 +125,8 @@ export const interpolateVariableText = (data: any, variables: Variables, count: 
     if (variables[curr]) {
       acc[curr] = variables[curr]
     } else {
-      const { example, fallback } = data.variables[curr]
-      acc[curr] = fallback || example
+      const { fallback, text } = data.variables[curr]
+      acc[curr] = fallback || text
     }
     return acc;
   }, {})
@@ -179,10 +179,6 @@ const getVariablePlaceholder = (variable) => {
     return null;
   }
 
-  if (variable.data.example) {
-    return String(variable.data.example);
-  }
-
   if (variable.data.fallback) {
     return String(variable.data.fallback);
   }
@@ -198,8 +194,8 @@ const generateVariableText = (text, variables) => {
   let lastIndex = 0;
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {
-    const variable = getVariable(name, variables);
-    const variableValue = getVariablePlaceholder(variable);
+    const variableValue = getVariable(name, variables) || getVariablePlaceholder(name);
+
     if (variableValue) {
       updatedText += text.substring(lastIndex, start) + variableValue;
     } else {

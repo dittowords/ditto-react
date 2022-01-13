@@ -12,3 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.dittoItem {
+  margin-bottom: 20px;
+  border-left: 1px solid black;
+  padding-left: 12px;
+}
