@@ -165,6 +165,7 @@ const forEachVariable = (text, callback) => {
 };
 
 const getVariable = (variableName, variables) => {
+  console.log('get',variableName, variables)
   const variable = variables[variableName]
   if (!variable) {
     return null;
