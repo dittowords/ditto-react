@@ -8,7 +8,7 @@ import {
 } from "../components/Ditto";
 import { DittoContext, Frame, Block, Variables, Count } from "./context";
 
-export const filterBlock = (blockObj: Block, variables: Variables, filters) => {
+export const filterBlock = (blockObj: Block, variables: Variables, count: Count, filters) => {
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
@@ -18,21 +18,21 @@ export const filterBlock = (blockObj: Block, variables: Variables, filters) => {
       );
     })
     .reduce((obj, id) => {
-      const interpolatedText = interpolateVariableText(blockObj[id], variables).text
+      const interpolatedText = interpolateVariableText(blockObj[id], variables, count).text
       return { ...obj, [id]: interpolatedText }
     }, {} as Block);
 };
 
-export const filterFrame = (_frameObj: Frame, variables: Variables, filters) => {
+export const filterFrame = (_frameObj: Frame, variables: Variables, count: Count, filters) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
   if (frameObj.blocks) {
     for (var blockId in frameObj.blocks) {
-      frameObj.blocks[blockId] = filterBlock(frameObj.blocks[blockId], variables, filters);
+      frameObj.blocks[blockId] = filterBlock(frameObj.blocks[blockId], variables, count, filters);
     }
   }
 
-  return { ...frameObj, otherText: filterBlock(frameObj.otherText, variables, filters) };
+  return { ...frameObj, otherText: filterBlock(frameObj.otherText, variables, count, filters) };
 };
 
 export const error = (message: string, returnValue: any = message) => {
@@ -89,6 +89,7 @@ export const useProjectId = (props: { projectId?: string }) => {
  * in future we should also user's to define their own middleware for picking plurals
  */
 const getPluralText = (data: any, count: Count) => {
+  console.log('here2',typeof count, count)
   if (count === undefined|| Object.keys(data?.plurals || {})?.length === 0) {
     return data.text
   }
@@ -119,7 +120,7 @@ const getPluralText = (data: any, count: Count) => {
   }
 }
 
-export const interpolateVariableText = (data: any, variables: Variables, count: number = 0) => {
+export const interpolateVariableText = (data: any, variables: Variables, count: Count) => {
   const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
     if (variables[curr]) {
       acc[curr] = variables[curr]
@@ -165,7 +166,6 @@ const forEachVariable = (text, callback) => {
 };
 
 const getVariable = (variableName, variables) => {
-  console.log('get',variableName, variables)
   const variable = variables[variableName]
   if (!variable) {
     return null;

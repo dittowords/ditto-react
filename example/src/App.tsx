@@ -15,47 +15,21 @@ const App = () => {
       <div>
         <DittoProvider
           source={source}
-          projectId="project_606cb89ac55041013d662f8b"
+          projectId="project_61df719ebc783c37d722f2c1"
         >
           <h4>Component Library</h4>
           <ul>
             <li>
-              <Ditto componentId="excellent.validation" />
+              <Ditto componentId="shoppingcart" />
             </li>
             <li>
-              <DittoComponent componentId="excellent.validation" />
-            </li>
-            <li>
-              <Ditto componentId="excellent.validation">
-                {(text: string) => <>{text}</>}
-              </Ditto>
-            </li>
-            <li>
-              <DittoComponent componentId="excellent.validation">
-                {(text) => <>{text}</>}
-              </DittoComponent>
-            </li>
+              <DittoComponent componentId="teamplan" />
+            </li> 
           </ul>
           <h4>Project</h4>
-          <ul>
+          <ul>    
             <li>
-              <Ditto textId="text_606cb89a2e11c4009984ad75" />
-            </li>
-            <li>
-              <DittoText textId="text_606cb89a2e11c4009984ad75" />
-            </li>
-            <li>
-              <Ditto textId="text_606cb89a2e11c4009984ad75">
-                {(text: string) => <>{text}</>}
-              </Ditto>
-            </li>
-            <li>
-              <DittoText textId="text_606cb89a2e11c4009984ad75">
-                {(text) => <>{text}</>}
-              </DittoText>
-            </li>
-            <li>
-              <Ditto frameId="frame_606cb89a2e11c4009984ad72">
+              <Ditto frameId="frame_61df720abc783c37d722f3a0">
                 {(frame: Frame) => {
                   const markup: React.ReactNode[] = [];
 
@@ -76,7 +50,7 @@ const App = () => {
               </Ditto>
             </li>
             <li>
-              <DittoFrame frameId="frame_606cb89a2e11c4009984ad72">
+              <DittoFrame frameId="frame_61df720abc783c37d722f3a2">
                 {(frame) => {
                   const markup: React.ReactNode[] = [];
 
@@ -97,7 +71,19 @@ const App = () => {
               </DittoFrame>
             </li>
             <li>
-              <Ditto frameId="frame_606cb89a2e11c4009984ad72" blockId="heading">
+              <DittoBlock
+                frameId="frame_61df720abc783c37d722f3a4"
+                blockId="header"
+              >
+                {(block) => {
+                  return Object.keys(block).map((key) => (
+                    <span key={key}>{block[key]}</span>
+                  ));
+                }}
+              </DittoBlock>
+            </li>
+            <li>
+              <Ditto frameId="frame_61df7203bc783c37d722f348" blockId="heading">
                 {(block: Block) => {
                   return Object.keys(block).map((key) => (
                     <span key={key}>{block[key]}</span>
@@ -106,16 +92,20 @@ const App = () => {
               </Ditto>
             </li>
             <li>
-              <DittoBlock
-                frameId="frame_606cb89a2e11c4009984ad72"
-                blockId="heading"
-              >
-                {(block) => {
-                  return Object.keys(block).map((key) => (
-                    <span key={key}>{block[key]}</span>
-                  ));
-                }}
-              </DittoBlock>
+              <Ditto textId="text_606cb89a2e11c4009984ad75" />
+            </li>
+            <li>
+              <DittoText textId="text_606cb89a2e11c4009984ad75" />
+            </li>
+            <li>
+              <Ditto textId="text_606cb89a2e11c4009984ad75">
+                {(text: string) => <>{text}</>}
+              </Ditto>
+            </li>
+            <li>
+              <DittoText textId="text_606cb89a2e11c4009984ad75">
+                {(text) => <>{text}</>}
+              </DittoText>
             </li>
           </ul>
         </DittoProvider>
