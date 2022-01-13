@@ -195,11 +195,10 @@ const generateVariableText = (text, variables) => {
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {
     const variableValue = getVariable(name, variables) || getVariablePlaceholder(name);
-
     if (variableValue) {
       updatedText += text.substring(lastIndex, start) + variableValue;
     } else {
-      updatedText += text.substr(lastIndex, end);
+      updatedText += text.substr(lastIndex, end + 1);
     }
     lastIndex = end + 1;
   });
