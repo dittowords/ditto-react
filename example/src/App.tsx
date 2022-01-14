@@ -30,7 +30,7 @@ const App = () => {
                 <Ditto componentId="shoppingcart" variables={{ count: 2 }}/>
               </div>
               <div className="dittoItem">
-                <pre>{`<Ditto componentId="shoppingcart" count=2/>`}</pre>
+                <pre>{`<Ditto componentId="shoppingcart" count={2}/>`}</pre>
                 <Ditto componentId="shoppingcart" count={2}/>
               </div>
               <div className="dittoItem">

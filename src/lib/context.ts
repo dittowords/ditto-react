@@ -1,9 +1,34 @@
 import { createContext } from "react";
+import { Plurals } from "../components/Ditto";
+
+interface StructuredTextData {
+  plurals: Plurals;
+  text: string;
+  variables: Variables;
+}
+type FlatTextData  = string
+
+export interface TextData  {
+  plurals: Plurals;
+  text: string;
+  variables: VariableData;
+}
 
 export type Count = number | undefined
 
+export interface VariableData {
+  // name: string;
+  // type: VariableType;
+  // data: {
+    text?: string;
+    url?: string
+    example?: string;
+    fallback?: string;
+  // }
+}
+type VariableType = string | number
 export interface Variables {
-  [variableId: string]: any
+  [variableId: string]: VariableType
 }
 
 export interface Block {
@@ -22,6 +47,8 @@ export interface FormatDefaultProject {
 interface FormatStructured {
   [id: string]: {
     text: string;
+    plurals: Plurals;
+    variables: Variables;
   };
 }
 

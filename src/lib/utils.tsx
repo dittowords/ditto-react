@@ -6,7 +6,7 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { DittoContext, Frame, Block, Variables, Count } from "./context";
+import { DittoContext, Frame, Block, Variables, VariableData, Count, TextData } from "./context";
 
 export const filterBlock = (blockObj: Block, variables: Variables, count: Count, filters) => {
 
@@ -89,7 +89,7 @@ export const useProjectId = (props: { projectId?: string }) => {
  * if count is provided but not matching plural key, fallback to base plural value
  * in future we should also user's to define their own middleware for picking plurals
  */
-const getPluralText = (data: any, count: Count) => {
+const getPluralText = (data: TextData, count: Count) => {
   if (count === undefined|| Object.keys(data?.plurals || {})?.length === 0) {
     return data.text
   }
@@ -120,7 +120,7 @@ const getPluralText = (data: any, count: Count) => {
   }
 }
 
-export const interpolateVariableText = (data: any, variables: Variables, count: Count) => {
+export const interpolateVariableText = (data: TextData, variables: Variables, count: Count) => {
   const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
     if (variables[curr]) {
       acc[curr] = variables[curr]

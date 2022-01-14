@@ -4,9 +4,9 @@ import { useProjectId } from "../lib/utils";
 import { DittoTextProps } from "./Ditto";
 
 export const DittoText = (props: DittoTextProps) => {
-  const { textId, children, variables = {}, count } = props;
+  const { textId, children, variables, count } = props;
   const projectId = useProjectId(props);
-  const text = useDittoSingleText({ projectId, textId, variables, count });
+  const text = useDittoSingleText({ projectId, textId, variables: variables || {}, count });
 
   return (
     <React.Fragment>
