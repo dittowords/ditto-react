@@ -21,11 +21,11 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
     if (data) {
 
       if (SourceDetector.isStructured(data)) {
-        return interpolateVariableText(data[textId], variables).text;
+        return interpolateVariableText(data[textId], variables, count).text;
       }
 
       if (SourceDetector.isFlat(data)) {
-        return interpolateVariableText(data[textId], variables);
+        return interpolateVariableText(data[textId], variables, count);
       }
 
       if (SourceDetector.isFrame(data)) {
@@ -35,11 +35,11 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
           for (const blockId in frame.blocks) {
             const block = frame.blocks[blockId];
 
-            if (textId in block) return interpolateVariableText(block[textId], variables).text;
+            if (textId in block) return interpolateVariableText(block[textId], variables, count).text;
           }
 
           if (frame.otherText && textId in frame.otherText)
-            return interpolateVariableText(frame.otherText[textId], variables).text;
+            return interpolateVariableText(frame.otherText[textId], variables, count).text;
         }
       }
     }
