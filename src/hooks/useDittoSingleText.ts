@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { Plurals } from "../components/Ditto";
 import { DittoContext, SourceDetector, Variables, Count } from "../lib/context";
 import { nullError, interpolateVariableText } from "../lib/utils";
 
