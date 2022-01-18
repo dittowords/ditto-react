@@ -1,5 +1,5 @@
 projects:
-  - name: '[Demo] Onboarding Flow'
+  - name: 'Onboarding Flow'
     id: 61e72388365c930170607378
   - name: Ditto Component Library
     id: ditto_component_library

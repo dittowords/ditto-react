@@ -27,11 +27,11 @@ export const useDittoComponent = (props: Args): DittoComponent => {
   if (variant) {
     const data = source?.ditto_component_library?.[variant];
     if (data && data[componentId]) {
-      const value = interpolateVariableText(data[componentId], variables, count)
       if (SourceDetector.isStructured(data)) {
+        const value = interpolateVariableText(data[componentId], variables, count)
         return alwaysReturnString ? value.text : value;
       } else if (SourceDetector.isFlat(data)) {
-        return value;
+        return data[componentId];
       }
     }
 
@@ -51,12 +51,12 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     return nullError(`Text not found for component "${componentId}"`);
   }
 
-  const value = interpolateVariableText(data[componentId], variables, count);
 
   if (SourceDetector.isStructured(data)) {
+    const value = interpolateVariableText(data[componentId], variables, count);
     return alwaysReturnString ? value.text :value;
   } else if (SourceDetector.isFlat(data)) {
-    return value;
+    return data[componentId];
   } else {
     return nullError(`Invalid format for component ${componentId}`);
   }
