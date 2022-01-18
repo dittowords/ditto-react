@@ -6,9 +6,9 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { DittoContext, Frame, Block, Variables, Count, TextData } from "./context";
+import { DittoContext, Frame, Block, VariablesInput, Count, TextData } from "./context";
 
-export const filterBlock = (blockObj: Block, variables: Variables, count: Count, filters) => {
+export const filterBlock = (blockObj: Block, variables: VariablesInput, count: Count, filters) => {
 
   return Object.keys(blockObj)
     .filter((textId) => {
@@ -24,7 +24,7 @@ export const filterBlock = (blockObj: Block, variables: Variables, count: Count,
     }, {} as Block);
 };
 
-export const filterFrame = (_frameObj: Frame, variables: Variables, count: Count, filters) => {
+export const filterFrame = (_frameObj: Frame, variables: VariablesInput, count: Count, filters) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
   if (frameObj.blocks) {
@@ -121,7 +121,7 @@ const getPluralText = (data: TextData, count: Count) => {
   }
 }
 
-export const interpolateVariableText = (data: TextData, variables: Variables, count: Count) => {
+export const interpolateVariableText = (data: TextData, variables: VariablesInput, count: Count) => {
   const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
     if (variables[curr]) {
       acc[curr] = variables[curr]

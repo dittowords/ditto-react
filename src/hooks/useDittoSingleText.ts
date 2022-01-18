@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { DittoContext, SourceDetector, Variables, Count } from "../lib/context";
+import { DittoContext, SourceDetector, VariablesInput, Count } from "../lib/context";
 import { nullError, interpolateVariableText } from "../lib/utils";
 
 interface useDittoSingleTextProps {
   projectId?: string;
   textId: string;
-  variables: Variables;
+  variables: VariablesInput;
   count?: Count;
 }
 

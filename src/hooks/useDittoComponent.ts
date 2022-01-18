@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { DittoContext, SourceDetector, Variables } from "../lib/context";
+import { DittoContext, SourceDetector, VariablesInput } from "../lib/context";
 import { nullError, interpolateVariableText} from "../lib/utils";
 
 type DittoComponentString = string;
@@ -11,7 +11,7 @@ type DittoComponent = DittoComponentString | DittoComponentObject;
 interface Args {
   componentId: string;
   alwaysReturnString: boolean;
-  variables: Variables;
+  variables: VariablesInput;
   count?: number;
 }
 

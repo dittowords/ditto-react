@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { DittoContext, SourceDetector, Variables } from "../lib/context";
+import { DittoContext, SourceDetector, VariablesInput } from "../lib/context";
 import { filterFrame, filterBlock, nullError } from "../lib/utils";
 
 interface useDittoProps {
   projectId?: string;
   frameId: string;
   blockId?: string;
-  variables?: Variables;
+  variables?: VariablesInput;
   count?: number;
   filters?: {
     tags: string[];
