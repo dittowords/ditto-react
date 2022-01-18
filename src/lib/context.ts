@@ -1,13 +1,6 @@
 import { createContext } from "react";
 import { Plurals } from "../components/Ditto";
 
-interface StructuredTextData {
-  plurals: Plurals;
-  text: string;
-  variables: Variables;
-}
-type FlatTextData  = string
-
 export interface TextData  {
   plurals: Plurals;
   text: string;

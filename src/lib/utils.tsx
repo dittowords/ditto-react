@@ -6,7 +6,7 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { DittoContext, Frame, Block, Variables, VariableData, Count, TextData } from "./context";
+import { DittoContext, Frame, Block, Variables, Count, TextData } from "./context";
 
 export const filterBlock = (blockObj: Block, variables: Variables, count: Count, filters) => {
 
