@@ -88,6 +88,7 @@ export const useProjectId = (props: { projectId?: string }) => {
  * other = 100, 101, ...
  * if count is provided but not matching plural key, fallback to base plural value
  * in future we should also user's to define their own middleware for picking plurals
+ * based off i8next: https://www.i18next.com/translation-function/plurals
  */
 const getPluralText = (data: TextData, count: Count) => {
   if (count === undefined|| Object.keys(data?.plurals || {})?.length === 0) {

@@ -17,14 +17,10 @@ export interface TextData  {
 export type Count = number | undefined
 
 export interface VariableData {
-  // name: string;
-  // type: VariableType;
-  // data: {
-    text?: string;
-    url?: string
-    example?: string;
-    fallback?: string;
-  // }
+  text?: string;
+  url?: string
+  example?: string;
+  fallback?: string;
 }
 type VariableType = string | number
 export interface Variables {
