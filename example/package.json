@@ -8,7 +8,7 @@
     "build": "DISABLE_ESLINT_PLUGIN=true node ../node_modules/react-scripts/bin/react-scripts.js build",
     "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
     "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject",
-    "sync": "cd src && node ../node_modules/@dittowords/cli/bin/ditto.js pull"
+    "sync": "cd src && ditto-cli pull"
   },
   "dependencies": {
     "@testing-library/jest-dom": "link:../node_modules/@testing-library/jest-dom",
@@ -24,7 +24,9 @@
     "react-scripts": "link:../node_modules/react-scripts",
     "typescript": "link:../node_modules/typescript"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@dittowords/cli": "^2.1.2"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
