@@ -122,7 +122,7 @@ const getPluralText = (data: TextData, count: Count) => {
 }
 
 export const interpolateVariableText = (data: TextData, variables: VariablesInput, count: Count) => {
-  const variablesWithFallbacks = Object.keys(data.variables || {}).reduce((acc, curr) => {
+  const variablesWithFallbacks = Object.keys(data?.variables || {}).reduce((acc, curr) => {
     if (variables[curr]) {
       acc[curr] = variables[curr]
     } else {

@@ -18,7 +18,6 @@ interface Args {
 export const useDittoComponent = (props: Args): DittoComponent => {
   const { componentId, alwaysReturnString, variables, count } = props;
   const { source, variant, options } = useContext(DittoContext);
-
   if (!("ditto_component_library" in source)) {
     throw new Error(
       "An export file for the Component Library couldn't be found."
@@ -27,7 +26,6 @@ export const useDittoComponent = (props: Args): DittoComponent => {
 
   if (variant) {
     const data = source?.ditto_component_library?.[variant];
-
     if (data && data[componentId]) {
       const value = interpolateVariableText(data[componentId], variables, count)
       if (SourceDetector.isStructured(data)) {
@@ -49,11 +47,11 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     return nullError("Base text not found in component library");
   }
 
-  const value = interpolateVariableText(data[componentId], variables, count);
-
-  if (!value) {
+  if (data && !data[componentId]) {
     return nullError(`Text not found for component "${componentId}"`);
   }
+
+  const value = interpolateVariableText(data[componentId], variables, count);
 
   if (SourceDetector.isStructured(data)) {
     return alwaysReturnString ? value.text :value;
