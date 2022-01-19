@@ -7,6 +7,7 @@ module.exports = {
         "otherText": {
           "text_61e7238bbae5dc00fb66de01": {
             "text": "You ordered {{itemCount}} apples",
+            "status": "REVIEW",
             "variables": {
               "itemCount": {
                 "example": 10

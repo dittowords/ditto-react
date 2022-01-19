@@ -9,6 +9,7 @@
           "otherText": {
             "text_61e7238bbae5dc00fb66de01": {
               "text": "You ordered {{itemCount}} apples",
+              "status": "REVIEW",
               "variables": {
                 "itemCount": {
                   "example": 10
@@ -255,5 +256,5 @@
       }
     }
   },
-  "exported_at": "2022-01-18T22:58:54.516Z"
+  "exported_at": "2022-01-19T16:29:04.032Z"
 }

@@ -14,7 +14,7 @@ export const DittoComponent = (props: DittoComponentLibraryProps) => {
 
   const text = useMemo(
     () => (value !== null && typeof value === "object" ? value.text : value),
-    [value, variables]
+    [value]
   );
 
   return (
