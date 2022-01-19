@@ -135,26 +135,28 @@ Which method you use depends on how you've configured your CLI options. Please r
 
 #### Component Library (recommended)
 
-| Prop          | Type   | Description                                                                                                                                                                                                                                             |
+| Prop          | Type   Description                                                                                                                                                                                                                                             |
 | ------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `componentId` | string | The API ID of a component in your component library. If a `variant` prop is passed to an ancestor `DittoProvider`, will attempt to display the specified variant's value for the passed `componentId`; otherwise, will default to displaying base text. |
-
+| `variables` | object (optional) | This prop contains a map of all the variable key-value pairs you wish to pass into your text  |
+| `count` | number (optional) | This value is used to specify which plural case you wish to use|
 ##### Example
 
 ```jsx
-<Ditto componentId="footer.links.contact-us" />
+<Ditto componentId="footer.links.contact-us" variables={{ email: "support@dittowords.com" }} count={1}/>
 ```
 
 #### Project
 
-| Prop        | Type                   | Description                                                                                                     | Example              |
+| Prop        | Type                   | Required | Description                                                                                                     | Example              |
 | ----------- | ---------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `projectId` | string (semi-required) | ID of a project in Ditto; required if a `projectId` isn't found in an ancestor `DittoProvider`                  |
 | `textId`    | string (optional)      | ID of a single text item in Ditto                                                                               |                      |
 | `frameId`   | string (optional)      | ID of a frame in Ditto                                                                                          |                      |
 | `blockId`   | string (optional)      | ID of a block in Ditto                                                                                          |                      |
 | `filters`   | object (optional)      | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
-
+| `variables` | object (optional) | This prop contains a map of all the variable key-value pairs you wish to pass into your text  |
+| `count` | number (optional) | This value is used to specify which plural case you wish to use|
 ##### Examples
 
 If you pass `textId`, the specified text string will be rendered:
@@ -163,6 +165,8 @@ If you pass `textId`, the specified text string will be rendered:
 <Ditto
   textId="text_6151fa25151df3024333a8cb"
   projectId="project_613a9b8fd268f614cae17469"
+  variables={{ email: "support@dittowords.com" }}
+  count={1}
 />
 ```
 
@@ -173,6 +177,8 @@ If you pass `frameId` and/or `blockId`, the specified frame/block object will be
   frameId="frame_6151fa25151df3024333a8bd"
   blockId="my_block"
   projectId="project_613a9b8fd268f614cae17469"
+  variables={{ email: "support@dittowords.com" }}
+  count={1}
 >
   {(block) =>
     Object.keys(block).map((id) => <div key={block[id]}>{block[id]}</div>)
