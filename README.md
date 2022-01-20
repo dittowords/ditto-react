@@ -131,7 +131,7 @@ If the provided `count` value does not fall in the range associated with a defin
 
 To configure text plural forms in Ditto, please refer to: https://www.dittowords.com/docs/pluralization
 
-To read more about pluralization and see other examples of how it is used in i18n at large, please refer to the pluraliation page in the i18next docs: https://www.i18next.com/translation-function/plurals
+To read more about pluralization and see other examples of how it is used in i18n at large, please refer to the pluralization page in the i18next docs: https://www.i18next.com/translation-function/plurals
 
 ### Example
 
