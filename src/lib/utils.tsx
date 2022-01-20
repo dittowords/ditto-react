@@ -94,28 +94,18 @@ const getPluralText = (data: TextData, count: Count) => {
   if (count === undefined|| Object.keys(data?.plurals || {})?.length === 0) {
     return data.text
   }
-  else if (count === 0) {
-    //zero
-    if (data.plurals.zero) return data.plurals.zero
-    return data.text
-  } else if (count === 1) {
-    // one
-    if (data.plurals.one) return data.plurals.one
-    return data.text
-  } else if (count === 2) {
-    // two
-    if (data.plurals.two) return data.plurals.two
-    return data.text
-  } else if (count >= 3 && count <= 5) {
-    // few
-    if (data.plurals.few) return data.plurals.few
-    return data.text
-  } else if (count >= 6 && count <= 99) {
-    // many
-    if (data.plurals.many) return data.plurals.many
-    return data.text
+  else if (count === 0 && data.plurals.zero) {
+    return data.plurals.zero
+  } else if (count === 1 && data.plurals.one) {
+    return data.plurals.one
+  } else if (count === 2 && data.plurals.two) {
+    return data.plurals.two
+  } else if (count >= 3 && count <= 5 && data.plurals.few) {
+    return data.plurals.few
+  } else if (count >= 6 && count <= 99 && data.plurals.many) {
+    return data.plurals.many
   } else {
-    // other
+    // default to 'other', fallback to base text
     if (data.plurals.other) return data.plurals.other
     return data.text
   }

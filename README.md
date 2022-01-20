@@ -96,7 +96,7 @@ const App = () => {
 Support dynamic text by passing in variables into your text:
 ```jsx
 <Ditto textId={textId} />
-// The cart contains {itemCount} {itemName}
+// The cart contains {{itemCount}} {{itemName}}
 <Ditto textId={textId} variables={{ itemName: "apples", itemCount: 10 }}/>
 // The cart contains 10 apples
 <Ditto textId={textId} variables={{ itemName: "pears", itemCount: 6 }}/>
@@ -107,7 +107,7 @@ Learn how to configure Ditto variables: https://www.dittowords.com/docs/variable
 ## Plurals
 Ditto pluralization can be utilized by passing in the `count` prop:
 ```jsx
-<Ditto textId={textId}/> // The cart contains {numItems} items
+<Ditto textId={textId}/> // The cart contains {{numItems}} items
 <Ditto textId={textId} count={3}/> // The cart contains 3 items
 <Ditto textId={textId} count={1}/> // The cart contains 1 item
 <Ditto textId={textId} count={0}/> // The cart contains no items
@@ -123,7 +123,7 @@ The `count` prop is indexed to the following plural keys
 | many | 6, 7, ..., 99 |
 | other | 100, 101, ... |
 
-If `count` doesn't match to any of the text plurals, we default to the base plural form defined
+If `count` doesn't match to any of the text plurals, we default to the 'other' plural form if is defined. If 'other' is not defined fallback to the base text value
 
 To configure text plural forms please refer to: https://www.dittowords.com/docs/pluralization
 Reference: https://www.i18next.com/translation-function/plurals
