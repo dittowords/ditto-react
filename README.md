@@ -108,9 +108,9 @@ Learn how to configure Ditto variables: https://www.dittowords.com/docs/variable
 Ditto pluralization can be utilized by passing in the `count` prop:
 ```jsx
 <Ditto textId={textId}/> // The cart contains {{numItems}} items
-<Ditto textId={textId} count={3}/> // The cart contains 3 items
-<Ditto textId={textId} count={1}/> // The cart contains 1 item
-<Ditto textId={textId} count={0}/> // The cart contains no items
+<Ditto textId={textId} variables={{ numItems: 3 }} count={3}/> // The cart contains 3 items
+<Ditto textId={textId} variables={{ numItems: 1 }}count={1}/> // The cart contains 1 item
+<Ditto textId={textId} variables={{ numItems: 0 }} count={0}/> // The cart contains no items
 ```
 
 The `count` prop is indexed to the following plural keys
