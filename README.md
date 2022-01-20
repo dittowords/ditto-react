@@ -123,7 +123,7 @@ The `count` prop is indexed to the following plural keys
 | many | 6, 7, ..., 99 |
 | other | 100, 101, ... |
 
-If `count` doesn't match to any of the text plurals, we default to the 'other' plural form if is defined. If 'other' is not defined fallback to the base text value
+If `count` does not match to any of the text plurals, we default to the 'other' plural form if is defined. If 'other' is not defined, we fallback to the base text value.
 
 To configure text plural forms please refer to: https://www.dittowords.com/docs/pluralization
 Reference: https://www.i18next.com/translation-function/plurals
