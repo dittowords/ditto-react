@@ -1,5 +1,4 @@
 projects:
-  - name: Ditto Component Library
-    id: ditto_component_library
-  - name: NUX Onboarding
-    id: 606cb89ac55041013d662f8b
+  - name: 'Onboarding Flow'
+    id: 61e72388365c930170607378
+components: true

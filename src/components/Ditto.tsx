@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { DittoText } from "./DittoText";
 import { DittoFrameOrBlock } from "./DittoFrameOrBlock";
 import { DittoComponent } from "./DittoComponent";
-import { Block, DittoContext, Frame } from "../lib/context";
+import { Block, DittoContext, Frame, VariablesInput } from "../lib/context";
 import {
   isFrameOrBlockComponent,
   isText,
@@ -11,9 +11,16 @@ import {
   isProject,
 } from "../lib/utils";
 
+type PluralId = "zero" | "one" | "two" | "few" | "many" | "other";
+export type Plurals = {
+  [pluralId in PluralId]?: string;
+}
+
 export interface DittoFrameProps {
   projectId?: string;
   frameId: string;
+  variables?: VariablesInput;
+  count?: number;
   children: (frame: Frame) => React.ReactNode;
 }
 
@@ -21,17 +28,23 @@ export interface DittoBlockProps {
   projectId?: string;
   frameId: string;
   blockId: string;
+  variables?: VariablesInput;
+  count?: number;
   children: (block: Block) => React.ReactNode;
 }
 
 export interface DittoTextProps {
   projectId?: string;
   textId: string;
+  variables?: VariablesInput;
+  count?: number;
   children?: (text: string) => React.ReactNode;
 }
 
 export interface DittoComponentLibraryProps {
   componentId: string;
+  variables?: VariablesInput;
+  count?: number;
   children?: (text: string) => React.ReactNode;
 }
 

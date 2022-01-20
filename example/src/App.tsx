@@ -15,47 +15,53 @@ const App = () => {
       <div>
         <DittoProvider
           source={source}
-          projectId="project_606cb89ac55041013d662f8b"
+          projectId="project_61e72388365c930170607378"
         >
-          <h4>Component Library</h4>
-          <ul>
-            <li>
-              <Ditto componentId="excellent.validation" />
-            </li>
-            <li>
-              <DittoComponent componentId="excellent.validation" />
-            </li>
-            <li>
-              <Ditto componentId="excellent.validation">
-                {(text: string) => <>{text}</>}
-              </Ditto>
-            </li>
-            <li>
-              <DittoComponent componentId="excellent.validation">
-                {(text) => <>{text}</>}
-              </DittoComponent>
-            </li>
-          </ul>
+          <h4>Component Libary</h4>
+          <div>
+            <h5>ShoppingCart</h5>
+            <div>
+              <div className="dittoItem">
+                <pre>{`<Ditto componentId="shopping-cart" />`}</pre>
+                <Ditto componentId="shopping-cart" />
+              </div>
+              <div className="dittoItem">
+                <pre>{`<Ditto componentId="shopping-cart" variables={{ itemCount: 2 }}/>`}</pre>
+                <Ditto componentId="shopping-cart" variables={{ itemCount: 2 }}/>
+              </div>
+              <div className="dittoItem">
+                <pre>{`<Ditto componentId="shopping-cart" count={2}/>`}</pre>
+                <Ditto componentId="shopping-cart" count={2}/>
+              </div>
+              <div className="dittoItem">
+                <pre>{`<Ditto componentId="shopping-cart" count={0} variables={{ itemCount: 0 }}/>`}</pre>
+                <Ditto componentId="shopping-cart" count={0} variables={{ itemCount: 0 }}/>
+              </div>
+              <div className="dittoItem">
+                <pre>{`<Ditto componentId="shopping-cart" count={1} variables={{ itemCount: 1 }}/>`}</pre>
+                <Ditto componentId="shopping-cart" count={1} variables={{ itemCount: 1 }}/>
+              </div>
+              <div className="dittoItem">
+                <pre>{`<Ditto componentId="shopping-cart" count={5} variables={{ itemCount: 5 }}/>`}</pre>
+                <Ditto componentId="shopping-cart" count={5} variables={{ itemCount: 5 }}/>
+              </div>
+            </div>
+          </div>
+          <div>
+           
+          <h5>teamplan</h5>
+          <div>
+            <div className="dittoItem">
+              <pre>{`<DittoComponent componentId="team-plan" />`}</pre>
+              <DittoComponent componentId="team-plan" />
+            </div> 
+          </div>
+          </div>
           <h4>Project</h4>
-          <ul>
-            <li>
-              <Ditto textId="text_606cb89a2e11c4009984ad75" />
-            </li>
-            <li>
-              <DittoText textId="text_606cb89a2e11c4009984ad75" />
-            </li>
-            <li>
-              <Ditto textId="text_606cb89a2e11c4009984ad75">
-                {(text: string) => <>{text}</>}
-              </Ditto>
-            </li>
-            <li>
-              <DittoText textId="text_606cb89a2e11c4009984ad75">
-                {(text) => <>{text}</>}
-              </DittoText>
-            </li>
-            <li>
-              <Ditto frameId="frame_606cb89a2e11c4009984ad72">
+          <div>    
+            <div className="dittoItem">
+              <pre>{`<Ditto frameId="frame_61e7238bbae5dc00fb66ddf5">`}</pre>
+              <Ditto frameId="frame_61e7238bbae5dc00fb66ddf5">
                 {(frame: Frame) => {
                   const markup: React.ReactNode[] = [];
 
@@ -64,9 +70,9 @@ const App = () => {
 
                     Object.keys(block).forEach((textId) => {
                       markup.push(
-                        <span key={`${blockId}-${textId}`}>
+                        <div key={`${blockId}-${textId}`} >
                           {block[textId]}
-                        </span>
+                        </div>
                       );
                     });
                   });
@@ -74,9 +80,54 @@ const App = () => {
                   return markup;
                 }}
               </Ditto>
-            </li>
-            <li>
-              <DittoFrame frameId="frame_606cb89a2e11c4009984ad72">
+            </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto frameId="frame_61e7238bbae5dc00fb66ddf1" variables={{ email: "support@example.com", minutes: 10 }}>`}</pre>
+              <Ditto frameId="frame_61e7238bbae5dc00fb66ddf1" variables={{ email: "support@example.com", minutes: 10 }}>
+                {(frame: Frame) => {
+                  const markup: React.ReactNode[] = [];
+
+                  Object.keys(frame.blocks).forEach((blockId) => {
+                    const block: Block = frame.blocks[blockId];
+
+                    Object.keys(block).forEach((textId) => {
+                      markup.push(
+                        <div key={`${blockId}-${textId}`} >
+                          {block[textId]}
+                        </div>
+                      );
+                    });
+                  });
+
+                  return markup;
+                }}
+              </Ditto>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto frameId="frame_61e7238bbae5dc00fb66ddf1" variables={{ email: "support@example.com", minutes: 1 }} count={1}>`}</pre>
+              <Ditto frameId="frame_61e7238bbae5dc00fb66ddf1" variables={{ email: "support@example.com", minutes: 1 }} count={1}>
+                {(frame: Frame) => {
+                  const markup: React.ReactNode[] = [];
+
+                  Object.keys(frame.blocks).forEach((blockId) => {
+                    const block: Block = frame.blocks[blockId];
+
+                    Object.keys(block).forEach((textId) => {
+                      markup.push(
+                        <div key={`${blockId}-${textId}`} >
+                          {block[textId]}
+                        </div>
+                      );
+                    });
+                  });
+
+                  return markup;
+                }}
+              </Ditto>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<DittoFrame frameId="frame_61e7238bbae5dc00fb66ddf2">`}</pre>
+              <DittoFrame frameId="frame_61e7238bbae5dc00fb66ddf2">
                 {(frame) => {
                   const markup: React.ReactNode[] = [];
 
@@ -85,39 +136,113 @@ const App = () => {
 
                     Object.keys(block).forEach((textId) => {
                       markup.push(
-                        <span key={`${blockId}-${textId}`}>
+                        <div key={`${blockId}-${textId}`}>
                           {block[textId]}
-                        </span>
+                        </div>
                       );
                     });
                   });
-
                   return markup;
                 }}
               </DittoFrame>
-            </li>
-            <li>
-              <Ditto frameId="frame_606cb89a2e11c4009984ad72" blockId="heading">
-                {(block: Block) => {
-                  return Object.keys(block).map((key) => (
-                    <span key={key}>{block[key]}</span>
-                  ));
+            </div>
+            <div className="dittoItem">
+              <pre>{`<DittoFrame frameId="frame_61e7238bbae5dc00fb66ddf2" variables={{ planName: "Team", stepNumber: 3, totalSteps: 5 }}>`}</pre>
+              <DittoFrame frameId="frame_61e7238bbae5dc00fb66ddf2" variables={{ planName: "Team", stepNumber: 3, totalSteps: 5 }}>
+                {(frame) => {
+                  const markup: React.ReactNode[] = [];
+
+                  Object.keys(frame.blocks).forEach((blockId) => {
+                    const block: Block = frame.blocks[blockId];
+
+                    Object.keys(block).forEach((textId) => {
+                      markup.push(
+                        <div key={`${blockId}-${textId}`}>
+                          {block[textId]}
+                        </div>
+                      );
+                    });
+                  });
+                  return markup;
                 }}
-              </Ditto>
-            </li>
-            <li>
+              </DittoFrame>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<DittoBlock frameId="frame_61e7238bbae5dc00fb66ddf2" blockId="header"> `}</pre>
               <DittoBlock
-                frameId="frame_606cb89a2e11c4009984ad72"
-                blockId="heading"
+                frameId="frame_61e7238bbae5dc00fb66ddf2"
+                blockId="header"
               >
                 {(block) => {
                   return Object.keys(block).map((key) => (
-                    <span key={key}>{block[key]}</span>
+                    <div key={key}>{block[key]}</div>
                   ));
                 }}
               </DittoBlock>
-            </li>
-          </ul>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<DittoBlock frameId="frame_61e7238bbae5dc00fb66ddf2" blockId="header" variables={{ stepNumber: 1, totalSteps: 9 }}> `}</pre>
+              <DittoBlock
+                frameId="frame_61e7238bbae5dc00fb66ddf2"
+                blockId="header"
+                variables={{ stepNumber: 1, totalSteps: 9 }}
+              >
+                {(block) => {
+                  return Object.keys(block).map((key) => (
+                    <div key={key}>{block[key]}</div>
+                  ));
+                }}
+              </DittoBlock>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<DittoBlock frameId="frame_61e7238bbae5dc00fb66ddf2" blockId="header" variables={{ stepNumber: 1, totalSteps: 9 }} count={1}>`}</pre>
+              <DittoBlock
+                frameId="frame_61e7238bbae5dc00fb66ddf2"
+                blockId="header"
+                variables={{ stepNumber: 1, totalSteps: 9 }}
+                count={1}
+              >
+                {(block) => {
+                  return Object.keys(block).map((key) => (
+                    <div key={key}>{block[key]}</div>
+                  ));
+                }}
+              </DittoBlock>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto textId="text_61e7238bbae5dc00fb66de0b" />`}</pre>
+              <Ditto textId="text_61e7238bbae5dc00fb66de0b" />
+            </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto textId="text_61e7238bbae5dc00fb66de0b" variables={{ itemCount: 3 }}/>`}</pre>
+              <Ditto textId="text_61e7238bbae5dc00fb66de0b" variables={{ itemCount: 3 }}/>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto textId="text_61e7238bbae5dc00fb66de0b" variables={{ itemCount: 1 }} count={1}/>`}</pre>
+              <Ditto textId="text_61e7238bbae5dc00fb66de0b" variables={{ itemCount: 1 }} count={1}/>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto textId="text_61e7238bbae5dc00fb66de0b" variables={{ itemCount: 0 }} count={0}/>`}</pre>
+              <Ditto textId="text_61e7238bbae5dc00fb66de0b" variables={{ itemCount: 0 }} count={0}/>
+            </div>
+
+            <div className="dittoItem">
+              <pre>{`<DittoText textId="text_61e7238bbae5dc00fb66de15" />`}</pre>
+              <DittoText textId="text_61e7238bbae5dc00fb66de15" />
+            </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto textId="text_61e7238bbae5dc00fb66de15" variables={{ itemCount: 10 }} count={0}/>`}</pre>
+              <Ditto textId="text_61e7238bbae5dc00fb66de15" variables={{ itemCount: 10 }} count={0}/>
+            </div>
+            <div className="dittoItem">
+              <pre>{`<DittoText textId="text_61e7238bbae5dc00fb66de15" variables={{ itemCount: 5 }}/>`}</pre>
+              <DittoText textId="text_61e7238bbae5dc00fb66de15" variables={{ itemCount: 5 }} />
+            </div>
+            <div className="dittoItem">
+              <pre>{`<DittoText textId="text_61e7238bbae5dc00fb66ddff"/>`}</pre>
+              <DittoText textId="text_61e7238bbae5dc00fb66ddff" />
+            </div>
+          </div>
         </DittoProvider>
       </div>
     </div>

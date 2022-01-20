@@ -91,6 +91,42 @@ const App = () => {
 };
 ```
 
+## Interpolation
+
+Support dynamic text by passing in variables into your text:
+```jsx
+<Ditto textId={textId} />
+// The cart contains {{itemCount}} {{itemName}}
+<Ditto textId={textId} variables={{ itemName: "apples", itemCount: 10 }}/>
+// The cart contains 10 apples
+<Ditto textId={textId} variables={{ itemName: "pears", itemCount: 6 }}/>
+// The cart contains 6 pears
+```
+
+Learn how to configure Ditto variables: https://www.dittowords.com/docs/variables
+## Plurals
+Ditto pluralization can be utilized by passing in the `count` prop:
+```jsx
+<Ditto textId={textId}/> // The cart contains {{numItems}} items
+<Ditto textId={textId} count={3}/> // The cart contains 3 items
+<Ditto textId={textId} count={1}/> // The cart contains 1 item
+<Ditto textId={textId} count={0}/> // The cart contains no items
+```
+
+The `count` prop is indexed to the following plural keys
+| Plural Form | count |
+| ---- | ---- |
+| zero | 0 |
+| one | 1 |
+| two | 2 |
+| few | 3, 4, 5 |
+| many | 6, 7, ..., 99 |
+| other | 100, 101, ... |
+
+If `count` does not match to any of the text plurals, we default to the 'other' plural form if is defined. If 'other' is not defined, we fallback to the base text value.
+
+To configure text plural forms please refer to: https://www.dittowords.com/docs/pluralization
+Reference: https://www.i18next.com/translation-function/plurals
 ### Example
 
 To see a working React app utilizing the [Ditto CLI](https://github.com/dittowords/cli) and `ditto-react`, please refer to the Ditto Demo project: https://github.com/dittowords/ditto-demo.
@@ -135,26 +171,32 @@ Which method you use depends on how you've configured your CLI options. Please r
 
 #### Component Library (recommended)
 
-| Prop          | Type   | Description                                                                                                                                                                                                                                             |
+| Prop          | Type   | Description |
 | ------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `componentId` | string | The API ID of a component in your component library. If a `variant` prop is passed to an ancestor `DittoProvider`, will attempt to display the specified variant's value for the passed `componentId`; otherwise, will default to displaying base text. |
-
+| `variables` | object (optional) | This prop contains a map of all the variable key-value pairs you wish to pass into your text  |
+| `count` | number (optional) | This value is used to specify which plural case you wish to use|
 ##### Example
 
 ```jsx
-<Ditto componentId="footer.links.contact-us" />
+<Ditto
+    componentId="footer.links.contact-us"
+    variables={{ email: "support@dittowords.com" }}
+    count={1}
+/>
 ```
 
 #### Project
 
-| Prop        | Type                   | Description                                                                                                     | Example              |
+| Prop        | Type                | Description                                                                                                     | Example              |
 | ----------- | ---------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `projectId` | string (semi-required) | ID of a project in Ditto; required if a `projectId` isn't found in an ancestor `DittoProvider`                  |
 | `textId`    | string (optional)      | ID of a single text item in Ditto                                                                               |                      |
 | `frameId`   | string (optional)      | ID of a frame in Ditto                                                                                          |                      |
 | `blockId`   | string (optional)      | ID of a block in Ditto                                                                                          |                      |
 | `filters`   | object (optional)      | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]} |
-
+| `variables` | object (optional) | This prop contains a map of all the variable key-value pairs you wish to pass into your text  | { email: "support@dittowords.com" } |
+| `count` | number (optional) | This value is used to specify which plural case you wish to use| 1 |
 ##### Examples
 
 If you pass `textId`, the specified text string will be rendered:
@@ -278,7 +320,7 @@ If you want to filter the text fetched by properties contained in the project it
 
 ## Source
 
-phe React provider takes structured JSON outputs from Ditto as the source. These can be linked and automatically updated via [our API/CLI](https://github.com/dittowords/cli), or exported manually via the Ditto web app.
+The React provider takes structured JSON outputs from Ditto as the source. These can be linked and automatically updated via [our API/CLI](https://github.com/dittowords/cli), or exported manually via the Ditto web app.
 
 If you're using manual exports from the Ditto web app, turn on Developer Mode in the toolbar of project you're working from to generate API IDs. Then, export your file formatted with the IDs into your local directory .
 

@@ -3,10 +3,13 @@ import { useDittoComponent } from "../hooks/useDittoComponent";
 import { DittoComponentLibraryProps } from "./Ditto";
 
 export const DittoComponent = (props: DittoComponentLibraryProps) => {
-  const { children, componentId } = props;
+  const { children, componentId, variables, count } = props;
+
   const value = useDittoComponent({
     componentId,
     alwaysReturnString: typeof children !== "function",
+    variables: variables || {},
+    count
   });
 
   const text = useMemo(

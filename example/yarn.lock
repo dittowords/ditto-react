@@ -1219,10 +1219,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@dittowords/cli@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@dittowords/cli/-/cli-2.0.0.tgz#9fbb292b300e85597b88d684f9635f5671a186d3"
-  integrity sha512-YYWnBOb+Jql73cgi2xpO5Fyxs9U+jEH/loHFg9wSzFA3IGeSVu1m3LL8s0KhFxlidLzbu3R9KLXgVo/UFZ8N0w==
+"@dittowords/cli@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@dittowords/cli/-/cli-2.1.2.tgz#c865bc6c3421954905ca7f3960bcc45d2215a0af"
+  integrity sha512-+t7/1f5Hy8oKJn2ITSZBwZ25bPeJJEKklnpGw1abicwVXjA2NZKeaz0PL7PNm1n16MvfKXIq3RflfMlXTK4J/Q==
   dependencies:
     axios "^0.19.2"
     boxen "^4.2.0"
@@ -3447,9 +3447,9 @@ cli-cursor@^3.1.0:
     restore-cursor "^3.1.0"
 
 cli-spinners@^2.5.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.6.0.tgz#36c7dc98fb6a9a76bd6238ec3f77e2425627e939"
-  integrity sha512-t+4/y50K/+4xcCRosKkA7W4gTr1MySvLV0q+PxmG7FJ5g+66ChKurYjxBCjHggHH3HA5Hh9cy+lcUGWDqVH+4Q==
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.6.1.tgz#adc954ebe281c37a6319bfa401e6dd2488ffb70d"
+  integrity sha512-x/5fWmGMnbKQAaNwN+UZlV79qBLM9JFnJuJ03gIi5whrob0xV0ofNVHy9DhwGdsMJQc2OKv0oGmLzvaqvAVv+g==
 
 cliui@^5.0.0:
   version "5.0.0"
