@@ -127,7 +127,7 @@ The `count` prop is indexed to the following plural keys:
 | many | 6, 7, ..., 99 |
 | other | 100, 101, ... |
 
-If `count` does fall in the range associated with a defined plural, the 'other' plural form will be used as a default if it is defined. If 'other' is not defined, we fallback to the base text value.
+If the provided `count` value does not fall in the range associated with a defined plural, the 'other' plural form will be used as a default if it is defined. If 'other' is not defined, the base text value will be used as a final fallback.
 
 To configure text plural forms in Ditto, please refer to: https://www.dittowords.com/docs/pluralization
 
