@@ -42,12 +42,6 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
         }
       }
     }
-
-    if (options?.environment !== "production") {
-      const message = `Text not found for textId: "${textId}"`;
-      console.error(message);
-      return message;
-    }
   }
 
   const data = source?.[projectId]?.base;

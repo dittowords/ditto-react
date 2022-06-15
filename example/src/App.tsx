@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import DittoProvider, {
   Ditto,
   Frame,
@@ -10,12 +11,23 @@ import DittoProvider, {
 import source from "./ditto";
 
 const App = () => {
+  const options = ['base', 'french']
+  const [variant, setVariant] = useState<string>('base')
+  const onVariantChange = (e: any) => {
+    setVariant(e.target.value)
+  }
   return (
     <div style={{ padding: 40 }}>
+      <select onChange={onVariantChange}>
+        {options.map(option => (
+          <option key={option} value={option}>{option}</option>
+        ))}
+      </select>
       <div>
         <DittoProvider
           source={source}
           projectId="project_61e72388365c930170607378"
+          variant={variant}
         >
           <h4>Component Libary</h4>
           <div>

@@ -34,12 +34,6 @@ export const useDittoComponent = (props: Args): DittoComponent => {
         return data[componentId];
       }
     }
-
-    if (options?.environment !== "production") {
-      const message = `Text not found for componentId: "${componentId}"`;
-      console.error(message);
-      return message;
-    }
   }
 
   const data = source?.ditto_component_library?.base;

@@ -35,12 +35,6 @@ export const useDitto = (props: useDittoProps) => {
         }
       }
     }
-
-    if (options?.environment !== "production") {
-      const message = `Text not found for frameId: "${frameId}", blockId: "${blockId}"`;
-      console.error(message);
-      return message;
-    }
   }
 
   const data = source[projectId]?.base;
