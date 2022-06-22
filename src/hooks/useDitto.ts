@@ -15,7 +15,7 @@ interface useDittoProps {
 
 export const useDitto = (props: useDittoProps) => {
   const { projectId, frameId, blockId, filters, variables, count } = props;
-  const { source, variant, options } = useContext(DittoContext);
+  const { source, variant } = useContext(DittoContext);
 
   if (!projectId) return nullError("No Project ID provided.");
 

@@ -1,28 +1,26 @@
 import { createContext } from "react";
 import { Plurals } from "../components/Ditto";
 
-
-
-export type Count = number | undefined
+export type Count = number | undefined;
 
 export interface VariableData {
   text?: string;
-  url?: string
+  url?: string;
   example?: string;
   fallback?: string;
 }
 
-type VariableType = string | number
+type VariableType = string | number;
 export interface VariablesInput {
-  [variableId: string]: VariableType
+  [variableId: string]: VariableType;
 }
 
-export interface TextData  {
+export interface TextData {
   plurals: Plurals;
   text: string;
   variables: {
     [variableName: string]: VariableData;
-  }
+  };
 }
 
 export interface Block {
@@ -140,15 +138,10 @@ export const SourceDetector = {
   },
 };
 
-export interface DittoOptions {
-  environment?: "development" | "staging" | "production";
-}
-
 interface DittoContext {
   projectId?: string;
   variant?: string;
   source: DittoSource;
-  options?: DittoOptions;
 }
 
 export const DittoContext = createContext({} as DittoContext);
