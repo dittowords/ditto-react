@@ -7,6 +7,20 @@ module.exports = {
         "otherText": {
           "text_61e7238bbae5dc00fb66de01": {
             "text": "You ordered {{itemCount}} apples",
+            "variants": {
+              "french": {
+                "text": "Vous avez commandé {{itemCount}} pommes",
+                "variables": {
+                  "itemCount": {
+                    "example": 10
+                  }
+                },
+                "plurals": {
+                  "other": "Vous avez commandé {{itemCount}} pommes",
+                  "one": "Vous avez commandé {{itemCount}} pomme"
+                }
+              }
+            },
             "status": "REVIEW",
             "variables": {
               "itemCount": {
@@ -20,6 +34,21 @@ module.exports = {
           },
           "text_61e7238bbae5dc00fb66de0b": {
             "text": "There are  {{itemCount}} items in the cart",
+            "variants": {
+              "french": {
+                "text": "Il y a {{itemCount}} pommes dans le panier",
+                "variables": {
+                  "itemCount": {
+                    "example": 10
+                  }
+                },
+                "plurals": {
+                  "other": "Il y a {{itemCount}} pommes dans le panier",
+                  "one": "il y a {{itemCount}} pomme dans le panier",
+                  "zero": "le panier est vide"
+                }
+              }
+            },
             "is_comp": true,
             "component_api_id": "shopping-cart",
             "variables": {
@@ -35,6 +64,20 @@ module.exports = {
           },
           "text_61e7238bbae5dc00fb66de15": {
             "text": "There are {{itemCount}} puppies",
+            "variants": {
+              "french": {
+                "text": "Il y a {{itemCount}} chiots",
+                "variables": {
+                  "itemCount": {
+                    "example": 10
+                  }
+                },
+                "plurals": {
+                  "other": "Il y a {{itemCount}} chiots",
+                  "one": "Il y a {{itemCount}} chiot"
+                }
+              }
+            },
             "variables": {
               "itemCount": {
                 "example": 10
@@ -52,9 +95,11 @@ module.exports = {
         "blocks": {
           "header": {
             "text_61e7238bbae5dc00fb66ddff": {
-              "text": "Welcome!",
+              "text": "Welcome!1",
               "variants": {
-                "french": "Bonjour!"
+                "french": {
+                  "text": "Bonjour!"
+                }
               }
             },
             "text_61e7238bbae5dc00fb66de09": {
@@ -92,7 +137,9 @@ module.exports = {
           "text_61e7238bbae5dc00fb66de2c": {
             "text": "Next",
             "variants": {
-              "french": "Prochaine"
+              "french": {
+                "text": "Prochaine"
+              }
             }
           }
         }
@@ -227,6 +274,79 @@ module.exports = {
             "text": "<- Back"
           }
         }
+      },
+      "frame_61f02da85e52b60129977c37": {
+        "frameName": "Frame 2",
+        "blocks": {},
+        "otherText": {
+          "text_61f02da85e52b60129977c3b": {
+            "text": "xzcv"
+          }
+        }
+      }
+    },
+    "french": {
+      "frame_61e7238bbae5dc00fb66ddf5": {
+        "frameName": "Plurals",
+        "blocks": {},
+        "otherText": {
+          "text_61e7238bbae5dc00fb66de01": {
+            "text": "Vous avez commandé {{itemCount}} pommes",
+            "status": "REVIEW",
+            "variables": {
+              "itemCount": {
+                "example": 10
+              }
+            },
+            "plurals": {
+              "other": "Vous avez commandé {{itemCount}} pommes",
+              "one": "Vous avez commandé {{itemCount}} pomme"
+            }
+          },
+          "text_61e7238bbae5dc00fb66de0b": {
+            "text": "Il y a {{itemCount}} pommes dans le panier",
+            "is_comp": true,
+            "component_api_id": "shopping-cart",
+            "variables": {
+              "itemCount": {
+                "example": 10
+              }
+            },
+            "plurals": {
+              "other": "Il y a {{itemCount}} pommes dans le panier",
+              "one": "il y a {{itemCount}} pomme dans le panier",
+              "zero": "le panier est vide"
+            }
+          },
+          "text_61e7238bbae5dc00fb66de15": {
+            "text": "Il y a {{itemCount}} chiots",
+            "variables": {
+              "itemCount": {
+                "example": 10
+              }
+            },
+            "plurals": {
+              "other": "Il y a {{itemCount}} chiots",
+              "one": "Il y a {{itemCount}} chiot"
+            }
+          }
+        }
+      },
+      "frame_61e7238bbae5dc00fb66ddf1": {
+        "frameName": "Welcome",
+        "blocks": {
+          "header": {
+            "text_61e7238bbae5dc00fb66ddff": {
+              "text": "Bonjour!"
+            }
+          },
+          "cta": {}
+        },
+        "otherText": {
+          "text_61e7238bbae5dc00fb66de2c": {
+            "text": "Prochaine"
+          }
+        }
       }
     }
   },
@@ -244,11 +364,42 @@ module.exports = {
           "other": "There are  {{itemCount}} items in the cart",
           "one": "There is  {{itemCount}} item in the cart",
           "zero": "The cart is empty"
+        },
+        "variants": {
+          "french": {
+            "text": "Il y a {{itemCount}} pommes dans le panier",
+            "variables": {
+              "itemCount": {
+                "example": 10
+              }
+            },
+            "plurals": {
+              "other": "Il y a {{itemCount}} pommes dans le panier",
+              "one": "il y a {{itemCount}} pomme dans le panier",
+              "zero": "le panier est vide"
+            }
+          }
         }
       },
       "team-plan": {
         "name": "Team Plan",
         "text": "Our Team Plan includes everything in the Basic Plan, in addition to unlimited messages between members of your workspace."
+      }
+    },
+    "french": {
+      "shopping-cart": {
+        "name": "Shopping Cart",
+        "text": "Il y a {{itemCount}} pommes dans le panier",
+        "variables": {
+          "itemCount": {
+            "example": 10
+          }
+        },
+        "plurals": {
+          "other": "Il y a {{itemCount}} pommes dans le panier",
+          "one": "il y a {{itemCount}} pomme dans le panier",
+          "zero": "le panier est vide"
+        }
       }
     }
   }

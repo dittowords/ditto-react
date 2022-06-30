@@ -145,6 +145,8 @@ To see a working React app utilizing the [Ditto CLI](https://github.com/dittowor
 
 The `DittoProvider` component should wrap all parts of your component tree that will display copy from Ditto.
 
+If `variant` is supplied, base text values will be used as a fallback for any pieces of text where corresponding variant values can't be found.
+
 #### Props
 
 | Prop        | Type              | Description                                                                                                                                                              |
@@ -152,7 +154,6 @@ The `DittoProvider` component should wrap all parts of your component tree that 
 | `source`    | JSON (required)   | Copy data imported from the CLI-generated `ditto` folder — see [Source](#Source) for more info                                                                           |
 | `variant`   | String (optional) | The API ID of a variant; if specified, all descendant `Ditto` components will attempt to display the value of that variant (requires usage of the `variants` CLI option) |
 | `projectId` | String (optional) | The ID of a project in Ditto; can also be ommitted from the provdier and passed as a direct prop to `Ditto` components                                                   |
-| `options`   | Object (optional) | See [DittoProvider options](#Options)                                                                                                                                    |
 
 #### Example
 
@@ -162,12 +163,6 @@ import source from "./ditto";
 
 <DittoProvider source={source}>{/* the rest of your app */}</DittoProvider>;
 ```
-
-#### Options
-
-| Key           | Type                          | Description                                                                                                                                                                                                                                                             |
-| ------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `environment` | `development` or `production` | The environment the `DittoProvider` should operate in. If `production` or unspecified, missing text will be silently replaced with an empty string. If `development`, missing text will be replaced with clear error strings and errors will be emitted to the console. |
 
 ### Ditto
 

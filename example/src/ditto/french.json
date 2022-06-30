@@ -1,0 +1,91 @@
+{
+  "projects": {
+    "project_61e72388365c930170607378": {
+      "project_id": "61e72388365c930170607378",
+      "frames": {
+        "frame_61e7238bbae5dc00fb66ddf5": {
+          "frameName": "Plurals",
+          "blocks": {},
+          "otherText": {
+            "text_61e7238bbae5dc00fb66de01": {
+              "text": "Vous avez commandé {{itemCount}} pommes",
+              "status": "REVIEW",
+              "variables": {
+                "itemCount": {
+                  "example": 10
+                }
+              },
+              "plurals": {
+                "other": "Vous avez commandé {{itemCount}} pommes",
+                "one": "Vous avez commandé {{itemCount}} pomme"
+              }
+            },
+            "text_61e7238bbae5dc00fb66de0b": {
+              "text": "Il y a {{itemCount}} pommes dans le panier",
+              "is_comp": true,
+              "component_api_id": "shopping-cart",
+              "variables": {
+                "itemCount": {
+                  "example": 10
+                }
+              },
+              "plurals": {
+                "other": "Il y a {{itemCount}} pommes dans le panier",
+                "one": "il y a {{itemCount}} pomme dans le panier",
+                "zero": "le panier est vide"
+              }
+            },
+            "text_61e7238bbae5dc00fb66de15": {
+              "text": "Il y a {{itemCount}} chiots",
+              "variables": {
+                "itemCount": {
+                  "example": 10
+                }
+              },
+              "plurals": {
+                "other": "Il y a {{itemCount}} chiots",
+                "one": "Il y a {{itemCount}} chiot"
+              }
+            }
+          }
+        },
+        "frame_61e7238bbae5dc00fb66ddf1": {
+          "frameName": "Welcome",
+          "blocks": {
+            "header": {
+              "text_61e7238bbae5dc00fb66ddff": {
+                "text": "Bonjour!"
+              }
+            },
+            "cta": {}
+          },
+          "otherText": {
+            "text_61e7238bbae5dc00fb66de2c": {
+              "text": "Prochaine"
+            }
+          }
+        }
+      }
+    },
+    "ditto_component_library": {
+      "project_name": "Ditto Component Library",
+      "components": {
+        "shopping-cart": {
+          "name": "Shopping Cart",
+          "text": "Il y a {{itemCount}} pommes dans le panier",
+          "variables": {
+            "itemCount": {
+              "example": 10
+            }
+          },
+          "plurals": {
+            "other": "Il y a {{itemCount}} pommes dans le panier",
+            "one": "il y a {{itemCount}} pomme dans le panier",
+            "zero": "le panier est vide"
+          }
+        }
+      }
+    }
+  },
+  "exported_at": "2022-06-15T14:03:42.562Z"
+}

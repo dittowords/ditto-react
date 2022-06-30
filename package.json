@@ -1,6 +1,6 @@
 {
   "name": "ditto-react",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React SDK for using product copy from Ditto in development.",
   "author": "Ditto Tech Inc.",
   "license": "MIT",
