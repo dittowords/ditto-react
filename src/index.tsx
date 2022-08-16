@@ -6,7 +6,7 @@ export { DittoComponent } from "./components/DittoComponent";
 export { DittoFrame, DittoBlock } from "./components/DittoFrameOrBlock";
 export { DittoText } from "./components/DittoText";
 
-export { useDittoSingleText } from "./hooks/useDittoSingleText.ts";
+export { useDittoSingleText } from "./hooks/useDittoSingleText";
 
 
 export { DittoProvider };
