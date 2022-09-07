@@ -16,8 +16,7 @@ Ditto also works with many popular 3rd party i18n libraries. Check out [our demo
 You can install `ditto-react` from npm:
 
 ```bash
-# as a dev dependency
-npm install --save-dev ditto-react
+npm install --save ditto-react
 ```
 
 `ditto-react` comes with TypeScript bindings out of the box.
