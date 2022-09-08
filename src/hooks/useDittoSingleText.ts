@@ -14,7 +14,9 @@ interface useDittoSingleTextProps {
   count?: Count;
 }
 
-export const useDittoSingleText = (props: useDittoSingleTextProps) => {
+export const useDittoSingleText = (
+  props: useDittoSingleTextProps
+): string | null => {
   const { projectId, textId, variables, count } = props;
   const { source, variant } = useContext(DittoContext);
 
@@ -87,5 +89,5 @@ export const useDittoSingleText = (props: useDittoSingleTextProps) => {
     }
   }
 
-  return `Text not found for id "${textId}"`;
+  return nullError(`Text not found for id "${textId}"`);
 };

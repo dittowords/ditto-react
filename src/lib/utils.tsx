@@ -36,13 +36,13 @@ export const filterFrame = (_frameObj: Frame, variables: VariablesInput, count: 
   return { ...frameObj, otherText: filterBlock(frameObj.otherText, variables, count, filters) };
 };
 
-export const error = (message: string, returnValue: any = message) => {
+export function error(message: string, returnValue: any = message) {
   console.error(message);
   return returnValue;
 };
 
-export const nullError = (message: string) => error(message, null);
-export const fragmentError = (message: string) => error(message, <Fragment />);
+export const nullError = (message: string): null => error(message, null);
+export const fragmentError = (message: string): React.ReactFragment => error(message, <Fragment />);
 
 export const isProject = (
   props: DittoProps,
