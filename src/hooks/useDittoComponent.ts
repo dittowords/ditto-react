@@ -2,21 +2,14 @@ import { useContext } from "react";
 import { DittoContext, SourceDetector, VariablesInput } from "../lib/context";
 import { nullError, interpolateVariableText } from "../lib/utils";
 
-type DittoComponentString = string;
-type DittoComponentObject = {
-  text: string;
-};
-type DittoComponent = DittoComponentString | DittoComponentObject;
-
 interface Args {
   componentId: string;
-  alwaysReturnString: boolean;
-  variables: VariablesInput;
+  variables?: VariablesInput;
   count?: number;
 }
 
-export const useDittoComponent = (props: Args): DittoComponent => {
-  const { componentId, alwaysReturnString, variables, count } = props;
+export const useDittoComponent = (props: Args): string | null => {
+  const { componentId, variables, count } = props;
   const { source, variant } = useContext(DittoContext);
   if (!("ditto_component_library" in source)) {
     throw new Error(
@@ -28,12 +21,8 @@ export const useDittoComponent = (props: Args): DittoComponent => {
     const data = source?.ditto_component_library?.[variant];
     if (data && data[componentId]) {
       if (SourceDetector.isStructured(data)) {
-        const value = interpolateVariableText(
-          data[componentId],
-          variables,
-          count
-        );
-        return alwaysReturnString ? value.text : value;
+        return interpolateVariableText(data[componentId], variables || {}, count)
+          .text;
       } else if (SourceDetector.isFlat(data)) {
         return data[componentId];
       }
@@ -50,11 +39,12 @@ export const useDittoComponent = (props: Args): DittoComponent => {
   }
 
   if (SourceDetector.isStructured(data)) {
-    const value = interpolateVariableText(data[componentId], variables, count);
-    return alwaysReturnString ? value.text : value;
-  } else if (SourceDetector.isFlat(data)) {
-    return data[componentId];
-  } else {
-    return nullError(`Invalid format for component ${componentId}`);
+    return interpolateVariableText(data[componentId], variables || {}, count).text;
   }
+
+  if (SourceDetector.isFlat(data)) {
+    return data[componentId];
+  }
+
+  return nullError(`Invalid format for component ${componentId}`);
 };

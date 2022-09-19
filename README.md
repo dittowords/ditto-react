@@ -92,15 +92,15 @@ const App = () => {
 
 ## Interpolation
 
-Support dynamic text by passing in variables into your text:
+Support dynamic text by specifying variables:
 
 ```jsx
 <Ditto textId={textId} />
-// The cart contains {{itemCount}} {{itemName}}
-<Ditto textId={textId} variables={{ itemName: "apples", itemCount: 10 }}/>
-// The cart contains 10 apples
-<Ditto textId={textId} variables={{ itemName: "pears", itemCount: 6 }}/>
-// The cart contains 6 pears
+// The cart contains {{itemName}}
+<Ditto textId={textId} variables={{ itemName: "apples" }}/>
+// The cart contains apples
+<Ditto textId={textId} variables={{ itemName: "pears" }}/>
+// The cart contains pears
 ```
 
 Learn how to configure Ditto variables: https://www.dittowords.com/docs/variables
@@ -112,7 +112,7 @@ Ditto pluralization can be utilized by passing in the `count` prop:
 ```jsx
 <Ditto textId={textId}/> // The cart contains {{numItems}} items
 <Ditto textId={textId} variables={{ numItems: 3 }} count={3}/> // The cart contains 3 items
-<Ditto textId={textId} variables={{ numItems: 1 }}count={1}/> // The cart contains 1 item
+<Ditto textId={textId} variables={{ numItems: 1 }} count={1}/> // The cart contains 1 item
 <Ditto textId={textId} variables={{ numItems: 0 }} count={0}/> // The cart contains no items
 ```
 
@@ -224,7 +224,7 @@ If you pass `frameId` and/or `blockId`, the specified frame/block object will be
 </Ditto>
 ```
 
-### Note
+### Type-specific component exports
 
 In addition to the `<Ditto />` component, individual exports of each specific component type are also available. These behave identically to passing the respective prop configurations to the `<Ditto />` component, but may provide a better experience for TypeScript users due to their improved out-of-the-box type safety and inference:
 
@@ -235,6 +235,19 @@ import {
   DittoText,
   DittoComponent, // rendering components from your Ditto component library
 } from "ditto-react";
+```
+
+### Hooks (experimental)
+
+Hooks are also available for consuming data from a `<DittoProvider />`. The two hooks currently exposed have unpolished ergonomics due to the manner in which they evolved from legacy constraints.
+
+In future versions of `ditto-react`, a hooks-based API will be the primary way through which data is accessed (instead of components), and the API will likely have some differences from what is currently available.
+
+```js
+import { useDittoComponent, useDittoSingleText } from "ditto-react";
+
+const componentText = useDittoComponent({ componentId: "xxx-xxx" });
+const text = useDittoSingleText({ textId: "xxx-xxx" }); // assumes `projectId` was specified for an ancestor <DittoProvider />
 ```
 
 ## Additional Examples

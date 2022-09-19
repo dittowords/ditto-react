@@ -5,21 +5,15 @@ import { DittoComponentLibraryProps } from "./Ditto";
 export const DittoComponent = (props: DittoComponentLibraryProps) => {
   const { children, componentId, variables, count } = props;
 
-  const value = useDittoComponent({
+  const text = useDittoComponent({
     componentId,
-    alwaysReturnString: typeof children !== "function",
     variables: variables || {},
-    count
+    count,
   });
 
-  const text = useMemo(
-    () => (value !== null && typeof value === "object" ? value.text : value),
-    [value]
-  );
+  if (typeof text === "string" && typeof children === "function") {
+    return <>{children(text)}</>;
+  }
 
-  return (
-    <React.Fragment>
-      {typeof children === "function" ? children(text) : text}
-    </React.Fragment>
-  );
+  return <>{text}</>;
 };

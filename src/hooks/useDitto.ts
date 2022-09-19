@@ -3,7 +3,7 @@ import { DittoContext, SourceDetector, VariablesInput } from "../lib/context";
 import { filterFrame, filterBlock, nullError } from "../lib/utils";
 
 interface useDittoProps {
-  projectId?: string;
+  projectId?: string | null;
   frameId: string;
   blockId?: string;
   variables?: VariablesInput;
