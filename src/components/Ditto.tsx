@@ -17,7 +17,7 @@ export type Plurals = {
 }
 
 export interface DittoFrameProps {
-  projectId?: string;
+  projectId?: string | null;
   frameId: string;
   variables?: VariablesInput;
   count?: number;
@@ -25,7 +25,7 @@ export interface DittoFrameProps {
 }
 
 export interface DittoBlockProps {
-  projectId?: string;
+  projectId?: string | null;
   frameId: string;
   blockId: string;
   variables?: VariablesInput;

@@ -10,7 +10,7 @@ import {
 
 type Props = DittoFrameOrBlockProps;
 
-export const DittoFrameOrBlock = (props: Props) => {
+export const DittoFrameOrBlock = (props: Props): JSX.Element => {
   const { children, ...otherProps } = props;
   const data = useDitto(otherProps);
 

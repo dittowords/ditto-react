@@ -42,7 +42,7 @@ export function error(message: string, returnValue: any = message) {
 };
 
 export const nullError = (message: string): null => error(message, null);
-export const fragmentError = (message: string): React.ReactFragment => error(message, <Fragment />);
+export const fragmentError = (message: string): JSX.Element => error(message, <Fragment />);
 
 export const isProject = (
   props: DittoProps,
@@ -62,11 +62,11 @@ export const isFrameOrBlockComponent = (
   props: DittoProps
 ): props is DittoFrameOrBlockProps => "frameId" in props;
 
-export const useProjectId = (props: { projectId?: string }) => {
+export const useProjectId = (props: { projectId?: string | null }) => {
   const dittoContext = useContext(DittoContext);
   const projectId = dittoContext.projectId || props.projectId;
   if (!projectId) {
-    return fragmentError(
+    return nullError(
       "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
     );
   }

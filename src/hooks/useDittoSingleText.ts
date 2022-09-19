@@ -8,7 +8,7 @@ import {
 import { nullError, interpolateVariableText } from "../lib/utils";
 
 interface useDittoSingleTextProps {
-  projectId?: string;
+  projectId?: string | null;
   textId: string;
   variables: VariablesInput;
   count?: Count;
