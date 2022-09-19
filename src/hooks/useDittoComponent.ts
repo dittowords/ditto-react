@@ -4,7 +4,7 @@ import { nullError, interpolateVariableText } from "../lib/utils";
 
 interface Args {
   componentId: string;
-  variables: VariablesInput;
+  variables?: VariablesInput;
   count?: number;
 }
 
@@ -21,7 +21,7 @@ export const useDittoComponent = (props: Args): string | null => {
     const data = source?.ditto_component_library?.[variant];
     if (data && data[componentId]) {
       if (SourceDetector.isStructured(data)) {
-        return interpolateVariableText(data[componentId], variables, count)
+        return interpolateVariableText(data[componentId], variables || {}, count)
           .text;
       } else if (SourceDetector.isFlat(data)) {
         return data[componentId];
@@ -39,7 +39,7 @@ export const useDittoComponent = (props: Args): string | null => {
   }
 
   if (SourceDetector.isStructured(data)) {
-    return interpolateVariableText(data[componentId], variables, count).text;
+    return interpolateVariableText(data[componentId], variables || {}, count).text;
   }
 
   if (SourceDetector.isFlat(data)) {
