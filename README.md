@@ -1,6 +1,3 @@
-**This is the README for version 1.x.x of `ditto-react`. If you're on an earlier
-version, please [click here](https://github.com/dittowords/ditto-react/tree/e683c7aa8c49ccf6561d980888543c2ae34e49c9#readme).**
-
 # Ditto React
 
 `ditto-react` makes it easy to integrate a React app with Ditto.
@@ -19,7 +16,7 @@ You can install `ditto-react` from npm:
 npm install --save ditto-react
 ```
 
-`ditto-react` comes with TypeScript bindings out of the box.
+`ditto-react` is written in TypeScript and works with other TypeScript codebases out of the box.
 
 ## Getting Started
 
@@ -90,45 +87,79 @@ const App = () => {
 };
 ```
 
-## Interpolation
+## Variable Interpolation
 
-Support dynamic text by specifying variables:
+`ditto-react` integrates with Ditto Variables to support dynamic text. Learn how to create and configure Ditto Variables here: https://www.dittowords.com/docs/variables.
+
+Text items containing Ditto Variables default to rendering those variables as the variable name inside of a template tag:
 
 ```jsx
-<Ditto textId={textId} />
-// The cart contains {{itemName}}
-<Ditto textId={textId} variables={{ itemName: "apples" }}/>
-// The cart contains apples
-<Ditto textId={textId} variables={{ itemName: "pears" }}/>
-// The cart contains pears
+<Ditto textId={textId} />;
+output = "The cart contains {{itemName}}.";
 ```
 
-Learn how to configure Ditto variables: https://www.dittowords.com/docs/variables
-
-## Plurals
-
-Ditto pluralization can be utilized by passing in the `count` prop:
+Variable values will be automatically interpolated if a value for a given variable (keyed by the variable's name) is provided via the `variables` prop:
 
 ```jsx
-<Ditto textId={textId}/> // The cart contains {{numItems}} items
-<Ditto textId={textId} variables={{ numItems: 3 }} count={3}/> // The cart contains 3 items
-<Ditto textId={textId} variables={{ numItems: 1 }} count={1}/> // The cart contains 1 item
-<Ditto textId={textId} variables={{ numItems: 0 }} count={0}/> // The cart contains no items
+<Ditto textId={textId} variables={{ itemName: "apples" }} />
+output = "The cart contains apples."
+
+<Ditto textId={textId} variables={{ itemName: "pears" }} />
+output = "The cart contains pears."
+```
+
+If no value is provided for a variable, but that variable has a fallback value configured in Ditto, the fallback will be used:
+
+```jsx
+// if the variable `itemName` had "some fruit" configured as a fallback in Ditto
+<Ditto textId={textId} />;
+output = "The cart contains some fruit.";
+```
+
+## Pluralization
+
+`ditto-react` integrates with Ditto Plurals to support pluralized text. Learn how to create and configure Ditto Plurals here: https://www.dittowords.com/docs/pluralization.
+
+When a text item has plural forms, the default plural form will be used when that text item is rendered normally:
+
+```jsx
+<Ditto textId={textId} />;
+output = "The cart contains some items.";
+```
+
+When a `count` prop is provided, the plural form to render (of those that are configured in Ditto) will be inferred based off of that value:
+
+```jsx
+<Ditto textId={textId} count={3}/>
+output = "The cart contains a few items."
+
+<Ditto textId={textId} count={10}/>
+output = "The cart contains many items."
+
+<Ditto textId={textId} count={0}/>
+output = "The cart contains nothing."
+```
+
+Plurals can also be used in combination with [variables](#variable-interpolation):
+
+```jsx
+// If the "many" plural form is "The cart contains many {{adjective}} items."
+<Ditto textId={textId} variables={{ adjective: "fun" }} count={10} />;
+output = "The cart contains many fun items.";
 ```
 
 The `count` prop is indexed to the following plural keys:
-| Plural Form | count |
-| ---- | ---- |
-| zero | 0 |
-| one | 1 |
-| two | 2 |
-| few | 3, 4, 5 |
-| many | 6, 7, ..., 99 |
-| other | 100, 101, ... |
 
-If the provided `count` value does not fall in the range associated with a defined plural, the 'other' plural form will be used as a default if it is defined. If 'other' is not defined, the base text value will be used as a final fallback.
+| Plural Form | count         |
+| ----------- | ------------- |
+| zero        | 0             |
+| one         | 1             |
+| two         | 2             |
+| few         | 3, 4, 5       |
+| many        | 6, 7, ..., 99 |
+| other       | 100, 101, ... |
 
-To configure text plural forms in Ditto, please refer to: https://www.dittowords.com/docs/pluralization
+If the provided `count` value does not fall in the range associated with a defined plural, the "other" plural form will be used as a default if it is defined. If "other" is not defined, the base text value will be used as a final fallback.
 
 To read more about pluralization and see other examples of how it is used in i18n at large, please refer to the pluralization page in the i18next docs: https://www.i18next.com/translation-function/plurals
 
@@ -246,8 +277,23 @@ In future versions of `ditto-react`, a hooks-based API will be the primary way t
 ```js
 import { useDittoComponent, useDittoSingleText } from "ditto-react";
 
+// assumes `projectId` was specified for an ancestor <DittoProvider />
+const text = useDittoSingleText({ textId: "xxx-xxx" });
+
 const componentText = useDittoComponent({ componentId: "xxx-xxx" });
-const text = useDittoSingleText({ textId: "xxx-xxx" }); // assumes `projectId` was specified for an ancestor <DittoProvider />
+
+const { username } = useAppContext();
+const textWithVariables = useDittoComponent({
+  componentId: "xxx-xxx",
+  variables: { username },
+});
+
+const { cartItems } = useCartContext();
+const textPluralized = useDittoSingleText({
+  textId: "xxx-xxx",
+  projectId: "xxx-xxx",
+  count: cartItems.length,
+});
 ```
 
 ## Additional Examples
