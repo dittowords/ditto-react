@@ -116,6 +116,28 @@ If no value is provided for a variable, but that variable has a fallback value c
 output = "The cart contains some fruit.";
 ```
 
+It's important to note that interpolation will not occur if variable data corresponding to the the text item or component does not exist in the `source` passed to the `<DittoProvider />`. This guarantees to the user that when interpolation happens, the interpolation is being done using the linked Ditto data. **Since the `flat` format does not contain variable data, variable interpolation with the `flat` format is not currently supported.**
+
+```js
+// ✔️ source contains variable information, interpolation will occur
+{
+  "shopping-cart": {
+    "text": "The cart contains {{itemName}}.",
+    "variables": {
+      "itemName": {
+        "example": "pears",
+        "fallback": "some stuff",
+      }
+    }
+  }
+}
+
+// ✕ source doesn't contain variable information, interpolation won't occur
+{
+  "shopping-cart": "The cart contains {{itemName}}."
+}
+```
+
 ## Pluralization
 
 `ditto-react` integrates with Ditto Plurals to support pluralized text. Learn how to create and configure Ditto Plurals here: https://www.dittowords.com/docs/pluralization.
@@ -205,7 +227,7 @@ Which method you use depends on how you've configured your CLI options. Please r
 | Prop          | Type              | Description                                                                                                                                                                                                                                             |
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `componentId` | string            | The API ID of a component in your component library. If a `variant` prop is passed to an ancestor `DittoProvider`, will attempt to display the specified variant's value for the passed `componentId`; otherwise, will default to displaying base text. |
-| `variables`   | object (optional) | This prop contains a map of all the variable key-value pairs you wish to pass into your text                                                                                                                                                            |
+| `variables`   | object (optional) | A map of variable key-value pairs to interpolate in your text. (not supported for the `flat` source format)                                                                                                                                             |
 | `count`       | number (optional) | This value is used to specify which plural case you wish to use                                                                                                                                                                                         |
 
 ##### Example
@@ -227,7 +249,7 @@ Which method you use depends on how you've configured your CLI options. Please r
 | `frameId`   | string (optional)      | ID of a frame in Ditto                                                                                          |                                     |
 | `blockId`   | string (optional)      | ID of a block in Ditto                                                                                          |                                     |
 | `filters`   | object (optional)      | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]}                |
-| `variables` | object (optional)      | This prop contains a map of all the variable key-value pairs you wish to pass into your text                    | { email: "support@dittowords.com" } |
+| `variables` | object (optional)      | A map of variable key-value pairs to interpolate in your text. (not supported for the `flat` source format)     | { email: "support@dittowords.com" } |
 | `count`     | number (optional)      | This value is used to specify which plural case you wish to use                                                 | 1                                   |
 
 ##### Examples
