@@ -75,10 +75,10 @@ export const useProjectId = (props: { projectId?: string | null }) => {
 };
 
 /**
- * 
+ *
  * @param data
  * text data
- * @param count 
+ * @param count
  * the variable number used to determine which plural case to use
  * zero = 0
  * one = 1
@@ -113,20 +113,23 @@ const getPluralText = (data: TextData, count: Count) => {
 
 export const interpolateVariableText = (data: TextData, variables: VariablesInput, count: Count) => {
   const variablesWithFallbacks = Object.keys(data?.variables || {}).reduce((acc, curr) => {
-    if (variables[curr]) {
-      acc[curr] = variables[curr]
-    } else {
-      const { fallback, text } = data.variables[curr]
-      acc[curr] = fallback || text
-    }
-    return acc;
-  }, {})
-  const pluralText = getPluralText(data, count)
+      if (variables[curr] !== undefined) {
+        acc[curr] = variables[curr];
+      } else {
+        const { fallback, text } = data.variables[curr];
+        acc[curr] = fallback || text;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  const pluralText = getPluralText(data, count);
   return {
     ...data,
-    text: generateVariableText(pluralText, variablesWithFallbacks)
-  }
-}
+    text: generateVariableText(pluralText, variablesWithFallbacks),
+  };
+};
 
 const HANDLEBAR_REGEX = /\{\{([a-z0-9_]+)\}\}/gi;
 
@@ -157,8 +160,8 @@ const forEachVariable = (text, callback) => {
 };
 
 const getVariable = (variableName, variables) => {
-  const variable = variables[variableName]
-  if (!variable) {
+  const variable = variables[variableName];
+  if (variable === undefined || variable === null) {
     return null;
   }
 
@@ -185,8 +188,10 @@ const generateVariableText = (text, variables) => {
   let lastIndex = 0;
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {
-    const variableValue = getVariable(name, variables) || getVariablePlaceholder(name);
-    if (variableValue) {
+    const variableValue =
+      getVariable(name, variables) ?? getVariablePlaceholder(name);
+
+    if (variableValue !== undefined && variableValue !== null) {
       updatedText += text.substring(lastIndex, start) + variableValue;
     } else {
       updatedText += text.substr(lastIndex, end + 1);
