@@ -113,12 +113,16 @@ const getPluralText = (data: TextData, count: Count) => {
 
 export const interpolateVariableText = (
   // data from the Ditto source
-  data: TextData, 
+  _data: TextData | string, 
   // variables passed via prop by the user
   variables: VariablesInput, 
   // count passed via prop by the user
   count: Count
 ) => {
+  const data: TextData = typeof _data === "string" ? 
+    { text: _data, plurals: {}, variables: {} } : 
+    _data;
+  
   let variablesWithFallbacks: Record<string, VariablesInput[string]> = { ...variables };
 
   Object.keys(data?.variables || {}).forEach((curr) => {

@@ -26,12 +26,8 @@ export const useDittoSingleText = (
   if (variant) {
     const data = source?.[projectId]?.[variant];
     if (data) {
-      if (SourceDetector.isStructured(data)) {
+      if (SourceDetector.isStructured(data) || SourceDetector.isFlat(data)) {
         return interpolateVariableText(data[textId], variables || {}, count).text;
-      }
-
-      if (SourceDetector.isFlat(data)) {
-        return data[textId];
       }
 
       if (SourceDetector.isFrame(data)) {
@@ -62,12 +58,8 @@ export const useDittoSingleText = (
     return nullError(`Project not found with id "${projectId}"`);
   }
 
-  if (SourceDetector.isStructured(data)) {
+  if (SourceDetector.isStructured(data) || SourceDetector.isFlat(data)) {
     return interpolateVariableText(data[textId], variables || {}, count).text;
-  }
-
-  if (SourceDetector.isFlat(data)) {
-    return data[textId];
   }
 
   if (SourceDetector.isFrame(data)) {
