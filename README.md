@@ -98,7 +98,7 @@ Text items containing Ditto Variables default to rendering those variables as th
 output = "The cart contains {{itemName}}.";
 ```
 
-Variable values will be automatically interpolated if a value for a given variable (keyed by the variable's name) is provided via the `variables` prop:
+Template tags are automatically interpolated if a value for a given variable (keyed by the variable's name) is provided via the `variables` prop:
 
 ```jsx
 <Ditto textId={textId} variables={{ itemName: "apples" }} />
@@ -108,15 +108,13 @@ output = "The cart contains apples."
 output = "The cart contains pears."
 ```
 
-If no value is provided for a variable, but that variable has a fallback value configured in Ditto, the fallback will be used:
+If no value is provided for a variable, but that variable has a fallback value configured in the source data synced from Ditto (`structured` json format only), the fallback will be used:
 
 ```jsx
 // if the variable `itemName` had "some fruit" configured as a fallback in Ditto
-<Ditto textId={textId} />;
+<Ditto textId={textId} variables={{}} />;
 output = "The cart contains some fruit.";
 ```
-
-It's important to note that interpolation will not occur if variable data corresponding to the the text item or component does not exist in the `source` passed to the `<DittoProvider />`. This guarantees to the user that when interpolation happens, the interpolation is being done using the linked Ditto data. **Since the `flat` format does not contain variable data, variable interpolation with the `flat` format is not currently supported.**
 
 ```js
 // ✔️ source contains variable information, interpolation will occur
@@ -227,7 +225,7 @@ Which method you use depends on how you've configured your CLI options. Please r
 | Prop          | Type              | Description                                                                                                                                                                                                                                             |
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `componentId` | string            | The API ID of a component in your component library. If a `variant` prop is passed to an ancestor `DittoProvider`, will attempt to display the specified variant's value for the passed `componentId`; otherwise, will default to displaying base text. |
-| `variables`   | object (optional) | A map of variable key-value pairs to interpolate in your text. (not supported for the `flat` source format)                                                                                                                                             |
+| `variables`   | object (optional) | A map of variable key-value pairs to interpolate in your text.                                                                                                                                                                                          |
 | `count`       | number (optional) | This value is used to specify which plural case you wish to use                                                                                                                                                                                         |
 
 ##### Example
@@ -249,7 +247,7 @@ Which method you use depends on how you've configured your CLI options. Please r
 | `frameId`   | string (optional)      | ID of a frame in Ditto                                                                                          |                                     |
 | `blockId`   | string (optional)      | ID of a block in Ditto                                                                                          |                                     |
 | `filters`   | object (optional)      | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]}                |
-| `variables` | object (optional)      | A map of variable key-value pairs to interpolate in your text. (not supported for the `flat` source format)     | { email: "support@dittowords.com" } |
+| `variables` | object (optional)      | A map of variable key-value pairs to interpolate in your text.                                                  | { email: "support@dittowords.com" } |
 | `count`     | number (optional)      | This value is used to specify which plural case you wish to use                                                 | 1                                   |
 
 ##### Examples
