@@ -111,18 +111,23 @@ const getPluralText = (data: TextData, count: Count) => {
   }
 }
 
-export const interpolateVariableText = (data: TextData, variables: VariablesInput, count: Count) => {
-  const variablesWithFallbacks = Object.keys(data?.variables || {}).reduce((acc, curr) => {
-      if (variables[curr] !== undefined) {
-        acc[curr] = variables[curr];
-      } else {
-        const { fallback, text } = data.variables[curr];
-        acc[curr] = fallback || text;
-      }
-      return acc;
-    },
-    {}
-  );
+export const interpolateVariableText = (
+  // data from the Ditto source
+  data: TextData, 
+  // variables passed via prop by the user
+  variables: VariablesInput, 
+  // count passed via prop by the user
+  count: Count
+) => {
+  let variablesWithFallbacks: Record<string, VariablesInput[string]> = { ...variables };
+
+  Object.keys(data?.variables || {}).forEach((curr) => {
+    if (variablesWithFallbacks[curr]) return;
+
+    const { fallback, text } = data.variables[curr];
+    if (fallback || text)
+      variablesWithFallbacks[curr] = fallback || text!;
+  });
 
   const pluralText = getPluralText(data, count);
   return {
@@ -184,7 +189,7 @@ const getVariablePlaceholder = (variable) => {
   return null;
 };
 
-const generateVariableText = (text, variables) => {
+const generateVariableText = (text: string, variables: VariablesInput) => {
   let lastIndex = 0;
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {
