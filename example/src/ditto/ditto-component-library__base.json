@@ -1,0 +1,39 @@
+{
+  "shopping-cart": {
+    "name": "Shopping Cart",
+    "text": "There are  {{itemCount}} items in the cart",
+    "status": "NONE",
+    "folder": null,
+    "variables": {
+      "itemCount": {
+        "example": 10
+      }
+    },
+    "plurals": {
+      "other": "There are  {{itemCount}} items in the cart",
+      "one": "There is  {{itemCount}} item in the cart",
+      "zero": "The cart is empty"
+    },
+    "variants": {
+      "french": {
+        "text": "Il y a {{itemCount}} pommes dans le panier",
+        "variables": {
+          "itemCount": {
+            "example": 10
+          }
+        },
+        "plurals": {
+          "other": "Il y a {{itemCount}} pommes dans le panier",
+          "one": "il y a {{itemCount}} pomme dans le panier",
+          "zero": "le panier est vide"
+        }
+      }
+    }
+  },
+  "team-plan": {
+    "name": "Team Plan",
+    "text": "Our Team Plan includes everything in the Basic Plan, in addition to unlimited messages between members of your workspace.",
+    "status": "NONE",
+    "folder": null
+  }
+}
