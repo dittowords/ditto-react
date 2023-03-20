@@ -240,15 +240,15 @@ Which method you use depends on how you've configured your CLI options. Please r
 
 #### Project
 
-| Prop        | Type                   | Description                                                                                                     | Example                             |
-| ----------- | ---------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `projectId` | string (semi-required) | ID of a project in Ditto; required if a `projectId` isn't found in an ancestor `DittoProvider`                  |
-| `textId`    | string (optional)      | ID of a single text item in Ditto                                                                               |                                     |
-| `frameId`   | string (optional)      | ID of a frame in Ditto                                                                                          |                                     |
-| `blockId`   | string (optional)      | ID of a block in Ditto                                                                                          |                                     |
-| `filters`   | object (optional)      | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]}                |
-| `variables` | object (optional)      | A map of variable key-value pairs to interpolate in your text.                                                  | { email: "support@dittowords.com" } |
-| `count`     | number (optional)      | This value is used to specify which plural case you wish to use                                                 | 1                                   |
+| Prop        | Type                              | Description                                                                                                     | Example                             |
+| ----------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `projectId` | string (semi-required)            | ID of a project in Ditto; required if a `projectId` isn't found in an ancestor `DittoProvider`                  |
+| `textId`    | string (optional)                 | ID of a single text item in Ditto                                                                               |                                     |
+| `frameId`   | string (optional, **deprecated**) | ID of a frame in Ditto                                                                                          |                                     |
+| `blockId`   | string (optional, **deprecated**) | ID of a block in Ditto                                                                                          |                                     |
+| `filters`   | object (optional)                 | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]}                |
+| `variables` | object (optional)                 | A map of variable key-value pairs to interpolate in your text.                                                  | { email: "support@dittowords.com" } |
+| `count`     | number (optional)                 | This value is used to specify which plural case you wish to use                                                 | 1                                   |
 
 ##### Examples
 
@@ -261,7 +261,7 @@ If you pass `textId`, the specified text string will be rendered:
 />
 ```
 
-If you pass `frameId` and/or `blockId`, the specified frame/block object will be passed to a child function:
+**(deprecated)** If you pass `frameId` and/or `blockId`, the specified frame/block object will be passed to a child function:
 
 ```jsx
 <Ditto
@@ -281,8 +281,8 @@ In addition to the `<Ditto />` component, individual exports of each specific co
 
 ```js
 import {
-  DittoFrame,
-  DittoBlock,
+  DittoFrame, // deprecated
+  DittoBlock, // deprecated
   DittoText,
   DittoComponent, // rendering components from your Ditto component library
 } from "ditto-react";
@@ -315,89 +315,6 @@ const textPluralized = useDittoSingleText({
   count: cartItems.length,
 });
 ```
-
-## Additional Examples
-
-### Example: Single Text
-
-The `Ditto` component can be used to fetch a specific text item from the Ditto project using its API ID. Note that you can edit IDs for text, blocks, and frames directly the Ditto web app:
-
-```jsx
-<Ditto textId="text_601cc35c5bsdfe42cc3f6f8ac59" />
-```
-
-### Example: Fetch Block
-
-You can also fetch an entire Block in Ditto at once by specifying the `frameId` and the `blockId`.
-
-It will return as an entire JSON object of the frame. You can pull out specific IDs of text you'd like to pass to its children.
-
-```jsx
-<Ditto frameId="frame_601cc35d5be42cc3f6f8ad15" blockId="hero">
-  {({ hero_h1, text_601cc35c5be42cc3f6f8ac46, hero_cta }) => (
-    <div>
-      <h1>{hero_h1}</h1>
-      <h2>{text_601cc35c5be42cc3f6f8ac46}</h2>
-      <button>{hero_cta}</button>
-    </div>
-  )}
-</Ditto>
-```
-
-You can also iterate through the entire block (just as you can with any other object) to display each one.
-
-```jsx
-<Ditto frameId="header" blockId="navigation">
-  {(block) => {
-    return Object.keys(block).map((id) => (
-      <div key={block[id]}>{block[id]}</div>
-    ));
-  }}
-</Ditto>
-```
-
-### Example: Fetch Frame
-
-You can also fetch an entire Block in Ditto at once by just specifying the `frameId`. With it, you can fetch specific blocks, or iterate through all blocks and containing IDs as needed.
-
-```jsx
-<Ditto frameId="frame_601cc35d5be42cc3f6f8ad17">
-  {(frame) => {
-    return Object.keys(frame.blocks).map((blockId) => (
-      <div className={style.footerCol} key={blockId}>
-        {Object.keys(frame.blocks[blockId]).map((textId) => (
-          <div className={style.link} key={textId}>
-            {frame.blocks[blockId][textId]}
-          </div>
-        ))}
-      </div>
-    ));
-  }}
-</Ditto>
-```
-
-### Example: Filtering by Tags
-
-If you want to filter the text fetched by properties contained in the project itself, you can specify parameters to the `filter` prop of the `Ditto` component. This currently only supports the Tags field in Ditto, but will be expanded in the future to filter on any other metadata properties.
-
-```jsx
-// will only return text with the "TOP_NAV" tag
-<Ditto
-  frameId="frame_601cc35d5be42cc3f6f8ad15"
-  blockId="navigation"
-  filters={{ tags: ["TOP_NAV"] }}
->
-  {(block) => {
-    return Object.keys(block).map((id) => (
-      <div className={style.link} key={block[id]}>
-        {block[id]}
-      </div>
-    ));
-  }}
-</Ditto>
-```
-
----
 
 ## Source
 
