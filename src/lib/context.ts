@@ -3,12 +3,33 @@ import { Plurals } from "../components/Ditto";
 
 export type Count = number | undefined;
 
-export interface VariableData {
-  text?: string;
-  url?: string;
+type VariableList = string[];
+interface VariableString {
   example?: string;
   fallback?: string;
+  __type: "string";
 }
+interface VariableNumber {
+  example?: number;
+  fallback?: number;
+  __type: "number";
+}
+interface VariableHyperlink {
+  text: string;
+  url: string;
+  __type: "hyperlink";
+}
+interface VariableMap {
+  [key: string]: string;
+  __type: "map";
+}
+
+export type VariableData =
+  | VariableString
+  | VariableNumber
+  | VariableHyperlink
+  | VariableList
+  | VariableMap;
 
 type VariableType = string | number;
 export interface VariablesInput {

@@ -13,6 +13,7 @@ import {
   VariablesInput,
   Count,
   TextData,
+  VariableData,
 } from "./context";
 
 export const filterBlock = (
@@ -143,7 +144,7 @@ export const interpolateVariableText = (
   // data from the Ditto source
   _data: TextData | string,
   // variables passed via prop by the user
-  variables: VariablesInput,
+  variablesInput: VariablesInput,
   // count passed via prop by the user
   count: Count
 ) => {
@@ -152,23 +153,24 @@ export const interpolateVariableText = (
       ? { text: _data, plurals: {}, variables: {} }
       : _data;
 
-  let variablesWithFallbacks: Record<string, VariablesInput[string]> = {
-    ...variables,
-  };
-
-  Object.keys(data?.variables || {}).forEach((curr) => {
-    if (variablesWithFallbacks[curr]) return;
-
-    const { fallback, text } = data.variables[curr];
-    if (fallback || text) variablesWithFallbacks[curr] = fallback || text!;
-  });
-
   const pluralText = getPluralText(data, count);
+  const variablesFromDitto = data?.variables || {};
   return {
     ...data,
-    text: generateVariableText(pluralText, variablesWithFallbacks),
+    text: generateVariableText(pluralText, variablesInput, variablesFromDitto),
   };
 };
+
+// let variablesWithFallbacks: Record<string, VariablesInput[string]> = {
+//   ...variables,
+// };
+
+// Object.keys(data?.variables || {}).forEach((curr) => {
+//   if (variablesWithFallbacks[curr]) return;
+
+//   const { fallback, text } = data.variables[curr];
+//   if (fallback || text) variablesWithFallbacks[curr] = fallback || text!;
+// });
 
 const HANDLEBAR_REGEX = /\{\{([a-z0-9_]+)\}\}/gi;
 
@@ -198,7 +200,7 @@ const forEachVariable = (text, callback) => {
   }
 };
 
-const getVariable = (variableName, variables) => {
+const getVariable = (variableName: string, variables: TextData["variables"]) => {
   const variable = variables[variableName];
   if (variable === undefined || variable === null) {
     return null;
@@ -207,12 +209,49 @@ const getVariable = (variableName, variables) => {
   return variable;
 };
 
-const generateVariableText = (text: string, variables: VariablesInput) => {
-  console.log(variables);
+const getVariablePlaceholder = <V extends VariableData>(variableData: V | null, input: string | number | null) => {
+  if (!variableData) return input;
+
+  if (Array.isArray(variableData)) {
+    const s = String(input).toLowerCase();
+    const i =  variableData.findIndex(e => e.toLowerCase() === s);
+    const valid = i !== -1;
+    if (valid) {
+      return variableData[i];
+    }
+
+    console.error(`${input} does not exist in the specified \`list\` variable: ${variableData.join(', ')}.`)
+    return null;
+  }
+
+  if (variableData.__type === "number" || variableData.__type === "string") {
+    return String(variableData.example || variableData.fallback) || null;
+  }
+
+  if (variableData.__type === "hyperlink") {
+    return variableData.text || null;
+  }
+
+  if (variableData.__type === "map" && input) {
+    const value = variableData[input];
+    if (!value) {
+      console.error(`Key ${input} does not exist in the the specified \`map\` variable: ${Object.keys(variableData).join(', ')}.`)
+      return null;
+    }
+
+    return value;
+  }
+
+  return input;
+}
+
+const generateVariableText = (text: string, variablesInput: VariablesInput, variablesFromDitto: TextData['variables']) => {
   let lastIndex = 0;
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {
-    const variableValue = getVariable(name, variables);
+    const input = variablesInput[name];
+    const variableData = getVariable(name, variablesFromDitto);
+    const variableValue = getVariablePlaceholder(variableData, input);
 
     if (variableValue !== undefined && variableValue !== null) {
       updatedText += text.substring(lastIndex, start) + variableValue;
