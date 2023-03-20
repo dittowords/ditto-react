@@ -35,5 +35,24 @@
     "text": "Our Team Plan includes everything in the Basic Plan, in addition to unlimited messages between members of your workspace.",
     "status": "NONE",
     "folder": null
+  },
+  "user-welcome": {
+    "name": "User Welcome",
+    "text": "Welcome! Your role is {{userRole}}.",
+    "variables": {
+      "userRole": ["commenter", "editor", "admin"]
+    }
+  },
+  "permission-select": {
+    "name": "Permission Select",
+    "text": "You've selected the following permission: {{permission}}",
+    "variables": {
+      "permission": {
+        "fallback": "hi",
+        "commenter": "Commenter",
+        "editor": "Editor",
+        "admin": "Administrator"
+      }
+    }
   }
 }

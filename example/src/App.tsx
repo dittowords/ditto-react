@@ -1,16 +1,12 @@
 import { useState } from "react";
 import DittoProvider, {
   Ditto,
-  Frame,
-  Block,
   DittoText,
-  DittoFrame,
-  DittoBlock,
   DittoComponent,
   useDittoComponent,
   useDittoSingleText,
 } from "ditto-react";
-import source from "./ditto";
+import source from "./ditto/index.js";
 
 const variantOptions = ["base", "french"] as const;
 type Variant = typeof variantOptions[number];
@@ -37,6 +33,16 @@ const AppWrapper = () => {
 
 const App = (props: AppProps) => {
   const { onVariantChange } = props;
+
+  const componentHookTextWithMapVariable = useDittoComponent({
+    componentId: "user-welcome",
+    variables: { userRole: "admin" },
+  });
+
+  const componentHookTextWithEnumVariable = useDittoComponent({
+    componentId: "permission-select",
+    variables: { permission: "editor" },
+  });
 
   const componentHookTextNoVariables = useDittoComponent({
     componentId: "shopping-cart",
@@ -72,6 +78,14 @@ const App = (props: AppProps) => {
         <div>
           <h5>ShoppingCart</h5>
           <div>
+            <div className="dittoItem">
+              <pre>{`useDittoComponent({ componentId: "user-welcome", variables: { userRole: "admin" } });`}</pre>
+              {componentHookTextWithMapVariable}
+            </div>
+            <div className="dittoItem">
+              <pre>{`useDittoComponent({ componentId: "permission-select", variables: { permission: "editor" } });`}</pre>
+              {componentHookTextWithEnumVariable}
+            </div>
             <div className="dittoItem">
               <pre>{`useDittoComponent({ componentId: "shopping-cart" });`}</pre>
               <div>{componentHookTextNoVariables}</div>
@@ -137,156 +151,6 @@ const App = (props: AppProps) => {
         </div>
         <h4>Project</h4>
         <div>
-          <div className="dittoItem">
-            <pre>{`<Ditto frameId="frame_61e7238bbae5dc00fb66ddf5">`}</pre>
-            <Ditto frameId="frame_61e7238bbae5dc00fb66ddf5">
-              {(frame: Frame) => {
-                const markup: React.ReactNode[] = [];
-
-                Object.keys(frame.blocks).forEach((blockId) => {
-                  const block: Block = frame.blocks[blockId];
-
-                  Object.keys(block).forEach((textId) => {
-                    markup.push(
-                      <div key={`${blockId}-${textId}`}>{block[textId]}</div>
-                    );
-                  });
-                });
-
-                return markup;
-              }}
-            </Ditto>
-          </div>
-          <div className="dittoItem">
-            <pre>{`<Ditto frameId="frame_61e7238bbae5dc00fb66ddf1" variables={{ email: "support@example.com", minutes: 10 }}>`}</pre>
-            <Ditto
-              frameId="frame_61e7238bbae5dc00fb66ddf1"
-              variables={{ email: "support@example.com", minutes: 10 }}
-            >
-              {(frame: Frame) => {
-                const markup: React.ReactNode[] = [];
-
-                Object.keys(frame.blocks).forEach((blockId) => {
-                  const block: Block = frame.blocks[blockId];
-
-                  Object.keys(block).forEach((textId) => {
-                    markup.push(
-                      <div key={`${blockId}-${textId}`}>{block[textId]}</div>
-                    );
-                  });
-                });
-
-                return markup;
-              }}
-            </Ditto>
-          </div>
-          <div className="dittoItem">
-            <pre>{`<Ditto frameId="frame_61e7238bbae5dc00fb66ddf1" variables={{ email: "support@example.com", minutes: 1 }} count={1}>`}</pre>
-            <Ditto
-              frameId="frame_61e7238bbae5dc00fb66ddf1"
-              variables={{ email: "support@example.com", minutes: 1 }}
-              count={1}
-            >
-              {(frame: Frame) => {
-                const markup: React.ReactNode[] = [];
-
-                Object.keys(frame.blocks).forEach((blockId) => {
-                  const block: Block = frame.blocks[blockId];
-
-                  Object.keys(block).forEach((textId) => {
-                    markup.push(
-                      <div key={`${blockId}-${textId}`}>{block[textId]}</div>
-                    );
-                  });
-                });
-
-                return markup;
-              }}
-            </Ditto>
-          </div>
-          <div className="dittoItem">
-            <pre>{`<DittoFrame frameId="frame_61e7238bbae5dc00fb66ddf2">`}</pre>
-            <DittoFrame frameId="frame_61e7238bbae5dc00fb66ddf2">
-              {(frame) => {
-                const markup: React.ReactNode[] = [];
-
-                Object.keys(frame.blocks).forEach((blockId) => {
-                  const block: Block = frame.blocks[blockId];
-
-                  Object.keys(block).forEach((textId) => {
-                    markup.push(
-                      <div key={`${blockId}-${textId}`}>{block[textId]}</div>
-                    );
-                  });
-                });
-                return markup;
-              }}
-            </DittoFrame>
-          </div>
-          <div className="dittoItem">
-            <pre>{`<DittoFrame frameId="frame_61e7238bbae5dc00fb66ddf2" variables={{ planName: "Team", stepNumber: 3, totalSteps: 5 }}>`}</pre>
-            <DittoFrame
-              frameId="frame_61e7238bbae5dc00fb66ddf2"
-              variables={{ planName: "Team", stepNumber: 3, totalSteps: 5 }}
-            >
-              {(frame) => {
-                const markup: React.ReactNode[] = [];
-
-                Object.keys(frame.blocks).forEach((blockId) => {
-                  const block: Block = frame.blocks[blockId];
-
-                  Object.keys(block).forEach((textId) => {
-                    markup.push(
-                      <div key={`${blockId}-${textId}`}>{block[textId]}</div>
-                    );
-                  });
-                });
-                return markup;
-              }}
-            </DittoFrame>
-          </div>
-          <div className="dittoItem">
-            <pre>{`<DittoBlock frameId="frame_61e7238bbae5dc00fb66ddf2" blockId="header"> `}</pre>
-            <DittoBlock
-              frameId="frame_61e7238bbae5dc00fb66ddf2"
-              blockId="header"
-            >
-              {(block) => {
-                return Object.keys(block).map((key) => (
-                  <div key={key}>{block[key]}</div>
-                ));
-              }}
-            </DittoBlock>
-          </div>
-          <div className="dittoItem">
-            <pre>{`<DittoBlock frameId="frame_61e7238bbae5dc00fb66ddf2" blockId="header" variables={{ stepNumber: 1, totalSteps: 9 }}> `}</pre>
-            <DittoBlock
-              frameId="frame_61e7238bbae5dc00fb66ddf2"
-              blockId="header"
-              variables={{ stepNumber: 1, totalSteps: 9 }}
-            >
-              {(block) => {
-                return Object.keys(block).map((key) => (
-                  <div key={key}>{block[key]}</div>
-                ));
-              }}
-            </DittoBlock>
-          </div>
-          <div className="dittoItem">
-            <pre>{`<DittoBlock frameId="frame_61e7238bbae5dc00fb66ddf2" blockId="header" variables={{ stepNumber: 1, totalSteps: 9 }} count={1}>`}</pre>
-            <DittoBlock
-              frameId="frame_61e7238bbae5dc00fb66ddf2"
-              blockId="header"
-              variables={{ stepNumber: 1, totalSteps: 9 }}
-              count={1}
-            >
-              {(block) => {
-                return Object.keys(block).map((key) => (
-                  <div key={key}>{block[key]}</div>
-                ));
-              }}
-            </DittoBlock>
-          </div>
           <div className="dittoItem">
             <pre>{`<Ditto textId="text_61e7238bbae5dc00fb66de0b" />`}</pre>
             <Ditto textId="text_61e7238bbae5dc00fb66de0b" />
