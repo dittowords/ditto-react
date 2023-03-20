@@ -177,28 +177,12 @@ const getVariable = (variableName, variables) => {
   return variable;
 };
 
-const getVariablePlaceholder = (variable) => {
-  if (!(variable && variable.data)) {
-    return null;
-  }
-
-  if (variable.data.fallback) {
-    return String(variable.data.fallback);
-  }
-
-  if (variable.data.text) {
-    return String(variable.data.text);
-  }
-
-  return null;
-};
-
 const generateVariableText = (text: string, variables: VariablesInput) => {
   let lastIndex = 0;
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {
     const variableValue =
-      getVariable(name, variables) ?? getVariablePlaceholder(name);
+      getVariable(name, variables);
 
     if (variableValue !== undefined && variableValue !== null) {
       updatedText += text.substring(lastIndex, start) + variableValue;
