@@ -51,7 +51,8 @@
         "fallback": "hi",
         "commenter": "Commenter",
         "editor": "Editor",
-        "admin": "Administrator"
+        "admin": "Administrator",
+        "__type": "map"
       }
     }
   }

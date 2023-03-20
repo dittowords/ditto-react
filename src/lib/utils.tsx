@@ -6,10 +6,21 @@ import {
   DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
-import { DittoContext, Frame, Block, VariablesInput, Count, TextData } from "./context";
+import {
+  DittoContext,
+  Frame,
+  Block,
+  VariablesInput,
+  Count,
+  TextData,
+} from "./context";
 
-export const filterBlock = (blockObj: Block, variables: VariablesInput, count: Count, filters) => {
-
+export const filterBlock = (
+  blockObj: Block,
+  variables: VariablesInput,
+  count: Count,
+  filters
+) => {
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
@@ -19,30 +30,48 @@ export const filterBlock = (blockObj: Block, variables: VariablesInput, count: C
       );
     })
     .reduce((obj, id) => {
-      const interpolatedText = interpolateVariableText(blockObj[id], variables, count).text
-      return { ...obj, [id]: interpolatedText }
+      const interpolatedText = interpolateVariableText(
+        blockObj[id],
+        variables,
+        count
+      ).text;
+      return { ...obj, [id]: interpolatedText };
     }, {} as Block);
 };
 
-export const filterFrame = (_frameObj: Frame, variables: VariablesInput, count: Count, filters) => {
+export const filterFrame = (
+  _frameObj: Frame,
+  variables: VariablesInput,
+  count: Count,
+  filters
+) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
   if (frameObj.blocks) {
     for (var blockId in frameObj.blocks) {
-      frameObj.blocks[blockId] = filterBlock(frameObj.blocks[blockId], variables, count, filters);
+      frameObj.blocks[blockId] = filterBlock(
+        frameObj.blocks[blockId],
+        variables,
+        count,
+        filters
+      );
     }
   }
 
-  return { ...frameObj, otherText: filterBlock(frameObj.otherText, variables, count, filters) };
+  return {
+    ...frameObj,
+    otherText: filterBlock(frameObj.otherText, variables, count, filters),
+  };
 };
 
 export function error(message: string, returnValue: any = message) {
   console.error(message);
   return returnValue;
-};
+}
 
 export const nullError = (message: string): null => error(message, null);
-export const fragmentError = (message: string): JSX.Element => error(message, <Fragment />);
+export const fragmentError = (message: string): JSX.Element =>
+  error(message, <Fragment />);
 
 export const isProject = (
   props: DittoProps,
@@ -91,46 +120,47 @@ export const useProjectId = (props: { projectId?: string | null }) => {
  * based off i8next: https://www.i18next.com/translation-function/plurals
  */
 const getPluralText = (data: TextData, count: Count) => {
-  if (count === undefined|| Object.keys(data?.plurals || {})?.length === 0) {
-    return data.text
-  }
-  else if (count === 0 && data.plurals.zero) {
-    return data.plurals.zero
+  if (count === undefined || Object.keys(data?.plurals || {})?.length === 0) {
+    return data.text;
+  } else if (count === 0 && data.plurals.zero) {
+    return data.plurals.zero;
   } else if (count === 1 && data.plurals.one) {
-    return data.plurals.one
+    return data.plurals.one;
   } else if (count === 2 && data.plurals.two) {
-    return data.plurals.two
+    return data.plurals.two;
   } else if (count >= 3 && count <= 5 && data.plurals.few) {
-    return data.plurals.few
+    return data.plurals.few;
   } else if (count >= 6 && count <= 99 && data.plurals.many) {
-    return data.plurals.many
+    return data.plurals.many;
   } else {
     // default to 'other', fallback to base text
-    if (data.plurals.other) return data.plurals.other
-    return data.text
+    if (data.plurals.other) return data.plurals.other;
+    return data.text;
   }
-}
+};
 
 export const interpolateVariableText = (
   // data from the Ditto source
-  _data: TextData | string, 
+  _data: TextData | string,
   // variables passed via prop by the user
-  variables: VariablesInput, 
+  variables: VariablesInput,
   // count passed via prop by the user
   count: Count
 ) => {
-  const data: TextData = typeof _data === "string" ? 
-    { text: _data, plurals: {}, variables: {} } : 
-    _data;
-  
-  let variablesWithFallbacks: Record<string, VariablesInput[string]> = { ...variables };
+  const data: TextData =
+    typeof _data === "string"
+      ? { text: _data, plurals: {}, variables: {} }
+      : _data;
+
+  let variablesWithFallbacks: Record<string, VariablesInput[string]> = {
+    ...variables,
+  };
 
   Object.keys(data?.variables || {}).forEach((curr) => {
     if (variablesWithFallbacks[curr]) return;
 
     const { fallback, text } = data.variables[curr];
-    if (fallback || text)
-      variablesWithFallbacks[curr] = fallback || text!;
+    if (fallback || text) variablesWithFallbacks[curr] = fallback || text!;
   });
 
   const pluralText = getPluralText(data, count);
@@ -178,11 +208,11 @@ const getVariable = (variableName, variables) => {
 };
 
 const generateVariableText = (text: string, variables: VariablesInput) => {
+  console.log(variables);
   let lastIndex = 0;
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {
-    const variableValue =
-      getVariable(name, variables);
+    const variableValue = getVariable(name, variables);
 
     if (variableValue !== undefined && variableValue !== null) {
       updatedText += text.substring(lastIndex, start) + variableValue;
