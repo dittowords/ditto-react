@@ -200,7 +200,10 @@ const forEachVariable = (text, callback) => {
   }
 };
 
-const getVariable = (variableName: string, variables: TextData["variables"]) => {
+const getVariable = (
+  variableName: string,
+  variables: TextData["variables"]
+) => {
   const variable = variables[variableName];
   if (variable === undefined || variable === null) {
     return null;
@@ -209,19 +212,26 @@ const getVariable = (variableName: string, variables: TextData["variables"]) => 
   return variable;
 };
 
-const getVariablePlaceholder = <V extends VariableData>(variableData: V | null, input: string | number | null) => {
+const getVariablePlaceholder = <V extends VariableData>(
+  variableData: V | null,
+  input: string | number | null
+) => {
   if (!variableData) return input;
 
   if (Array.isArray(variableData)) {
     const s = String(input).toLowerCase();
-    const i =  variableData.findIndex(e => e.toLowerCase() === s);
+    const i = variableData.findIndex((e) => e.toLowerCase() === s);
     const valid = i !== -1;
     if (valid) {
       return variableData[i];
     }
 
-    console.error(`${input} does not exist in the specified \`list\` variable: ${variableData.join(', ')}.`)
-    return null;
+    console.error(
+      `${input} does not exist in the specified \`list\` variable: ${variableData.join(
+        ", "
+      )}.`
+    );
+    return input;
   }
 
   if (variableData.__type === "number" || variableData.__type === "string") {
@@ -229,23 +239,31 @@ const getVariablePlaceholder = <V extends VariableData>(variableData: V | null, 
   }
 
   if (variableData.__type === "hyperlink") {
-    return variableData.text || null;
+    return variableData.text || input;
   }
 
   if (variableData.__type === "map" && input) {
     const value = variableData[input];
     if (!value) {
-      console.error(`Key ${input} does not exist in the the specified \`map\` variable: ${Object.keys(variableData).join(', ')}.`)
-      return null;
+      console.error(
+        `Key ${input} does not exist in the the specified \`map\` variable: ${Object.keys(
+          variableData
+        ).join(", ")}.`
+      );
+      return input;
     }
 
     return value;
   }
 
   return input;
-}
+};
 
-const generateVariableText = (text: string, variablesInput: VariablesInput, variablesFromDitto: TextData['variables']) => {
+const generateVariableText = (
+  text: string,
+  variablesInput: VariablesInput,
+  variablesFromDitto: TextData["variables"]
+) => {
   let lastIndex = 0;
   let updatedText = "";
   forEachVariable(text, ({ name, start, end }) => {

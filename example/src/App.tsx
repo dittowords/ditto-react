@@ -35,13 +35,13 @@ const App = (props: AppProps) => {
   const { onVariantChange } = props;
 
   const componentHookTextWithMapVariable = useDittoComponent({
-    componentId: "user-welcome",
-    variables: { userRole: "admin" },
+    componentId: "shopping-cart-2",
+    variables: { item: "apples" },
   });
 
-  const componentHookTextWithEnumVariable = useDittoComponent({
-    componentId: "permission-select",
-    variables: { permission: "editor" },
+  const componentHookTextWithListVariable = useDittoComponent({
+    componentId: "role",
+    variables: { role: "admin" },
   });
 
   const componentHookTextNoVariables = useDittoComponent({
@@ -79,12 +79,12 @@ const App = (props: AppProps) => {
           <h5>ShoppingCart</h5>
           <div>
             <div className="dittoItem">
-              <pre>{`useDittoComponent({ componentId: "user-welcome", variables: { userRole: "admin" } });`}</pre>
+              <pre>{`useDittoComponent({ componentId: "shopping-cart-2", variables: { item: "apples" } });`}</pre>
               {componentHookTextWithMapVariable}
             </div>
             <div className="dittoItem">
               <pre>{`useDittoComponent({ componentId: "permission-select", variables: { permission: "editor" } });`}</pre>
-              {componentHookTextWithEnumVariable}
+              {componentHookTextWithListVariable}
             </div>
             <div className="dittoItem">
               <pre>{`useDittoComponent({ componentId: "shopping-cart" });`}</pre>

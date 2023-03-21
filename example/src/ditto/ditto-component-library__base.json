@@ -36,22 +36,21 @@
     "status": "NONE",
     "folder": null
   },
-  "user-welcome": {
-    "name": "User Welcome",
-    "text": "Welcome! Your role is {{userRole}}.",
+  "shopping-cart-2": {
+    "name": "Shopping Cart 2",
+    "text": "The cart is filled with {{item}}.",
     "variables": {
-      "userRole": ["commenter", "editor", "admin"]
+      "item": ["oranges", "pears", "apples"]
     }
   },
-  "permission-select": {
-    "name": "Permission Select",
-    "text": "You've selected the following permission: {{permission}}",
+  "role": {
+    "name": "Role",
+    "text": "You are {{role}} in this workspace.",
     "variables": {
-      "permission": {
-        "fallback": "hi",
-        "commenter": "Commenter",
-        "editor": "Editor",
-        "admin": "Administrator",
+      "role": {
+        "admin": "an administrator",
+        "editor": "an editor",
+        "commenter": "a commenter",
         "__type": "map"
       }
     }
