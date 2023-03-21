@@ -94,46 +94,100 @@ const App = () => {
 Text items containing Ditto Variables default to rendering those variables as the variable name inside of a template tag:
 
 ```jsx
-<Ditto textId={textId} />;
-output = "The cart contains {{itemName}}.";
+<Ditto componentId="shopping-cart" />;
+output === "The cart contains {{itemName}}.";
 ```
 
 Template tags are automatically interpolated if a value for a given variable (keyed by the variable's name) is provided via the `variables` prop:
 
 ```jsx
-<Ditto textId={textId} variables={{ itemName: "apples" }} />
-output = "The cart contains apples."
+<Ditto componentId="shopping-cart" variables={{ itemName: "apples" }} />
+output === "The cart contains apples."
 
-<Ditto textId={textId} variables={{ itemName: "pears" }} />
-output = "The cart contains pears."
+<Ditto componentId="shopping-cart" variables={{ itemName: "pears" }} />
+output === "The cart contains pears."
 ```
 
 If no value is provided for a variable, but that variable has a fallback value configured in the source data synced from Ditto (`structured` json format only), the fallback will be used:
 
 ```jsx
-// if the variable `itemName` had "some fruit" configured as a fallback in Ditto
-<Ditto textId={textId} variables={{}} />;
-output = "The cart contains some fruit.";
-```
-
-```js
-// ✔️ source contains variable information, interpolation will occur
-{
+const source = {
   "shopping-cart": {
     "text": "The cart contains {{itemName}}.",
     "variables": {
       "itemName": {
         "example": "pears",
-        "fallback": "some stuff",
+        // ✔️ variable source data has a fallback value
+        "fallback": "some fruit",
+        "__type": "string"
       }
     }
   }
 }
 
-// ✕ source doesn't contain variable information, interpolation won't occur
-{
-  "shopping-cart": "The cart contains {{itemName}}."
+...
+
+// ✔️ fallback value is used when variable value is not specified
+<Ditto componentId="shopping-cart" />;
+output === "The cart contains some fruit.";
+```
+
+When passing data for a `list` variable, an error is logged to the console if the passed data doesn't correspond to a value in the list.
+
+```js
+const source = {
+  "shopping-cart": {
+    "text": "The cart contains {{itemName}}.",
+    "variables": {
+      "itemName": [
+        "apples",
+        "pears",
+        "oranges"
+      ]
+    }
+  }
 }
+
+...
+
+// ✔ value in list, no error logged
+<Ditto componentId="shopping-cart" variables={{ itemName: "pears" }} />
+output === "The cart contains pears."
+
+// ❌ value NOT in list, error logged (but output retained)
+<Ditto componentId="shopping-cart" variables={{ itemName: "grapes" }} />
+output === "The cart contains pears."
+```
+
+When passing data for a `map` variable:
+
+- if the data corresponds to a map key, the corresponding value in the map is interpolated
+- if the data doesn't correspond to a map key, an error is logged to the console and the data is interpolated directly
+
+```js
+const source = {
+  "user-role": {
+    "text": "You are {{role}} in this workspace.",
+    "variables": {
+      "role": {
+        "admin": "an administrator",
+        "editor": "an editor",
+        "commenter": "a commenter",
+        "__type": "map"
+      }
+    }
+  }
+}
+
+...
+
+// ✔ in list, corresponding value interpolated
+<Ditto componentId="user-role" variables={{ role: "admin" }} />
+output === "You are an administrator in this workspace."
+
+// ❌ NOT in list, error logged, passed data directly interpolated
+<Ditto componentId="user-role" variables={{ role: "owner" }} />
+output === "You are owner in this workspace."
 ```
 
 ## Pluralization
@@ -144,20 +198,20 @@ When a text item has plural forms, the default plural form will be used when tha
 
 ```jsx
 <Ditto textId={textId} />;
-output = "The cart contains some items.";
+output === "The cart contains some items.";
 ```
 
 When a `count` prop is provided, the plural form to render (of those that are configured in Ditto) will be inferred based off of that value:
 
 ```jsx
 <Ditto textId={textId} count={3}/>
-output = "The cart contains a few items."
+output === "The cart contains a few items."
 
 <Ditto textId={textId} count={10}/>
-output = "The cart contains many items."
+output === "The cart contains many items."
 
 <Ditto textId={textId} count={0}/>
-output = "The cart contains nothing."
+output === "The cart contains nothing."
 ```
 
 Plurals can also be used in combination with [variables](#variable-interpolation):
@@ -165,7 +219,7 @@ Plurals can also be used in combination with [variables](#variable-interpolation
 ```jsx
 // If the "many" plural form is "The cart contains many {{adjective}} items."
 <Ditto textId={textId} variables={{ adjective: "fun" }} count={10} />;
-output = "The cart contains many fun items.";
+output === "The cart contains many fun items.";
 ```
 
 The `count` prop is indexed to the following plural keys:
@@ -261,7 +315,7 @@ If you pass `textId`, the specified text string will be rendered:
 />
 ```
 
-**(deprecated)** If you pass `frameId` and/or `blockId`, the specified frame/block object will be passed to a child function:
+**(deprecated)** If you pass `frameId` and/or `blockId`, **the specified** frame/block object will be passed to a child function:
 
 ```jsx
 <Ditto
