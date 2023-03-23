@@ -1,5 +1,7 @@
-projects:
-  - name: 'Onboarding Flow'
-    id: 61e72388365c930170607378
-components: true
-variants: true
+sources:
+  components: 
+    enabled: true
+  projects:
+    - name: 'Onboarding Flow'
+      id: 61e72388365c930170607378
+format: structured

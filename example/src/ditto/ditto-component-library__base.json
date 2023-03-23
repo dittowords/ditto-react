@@ -1,0 +1,60 @@
+{
+  "shopping-cart": {
+    "name": "Shopping Cart",
+    "text": "There are  {{itemCount}} items in the cart",
+    "status": "NONE",
+    "folder": null,
+    "variables": {
+      "itemCount": {
+        "example": 10,
+        "__type": "number"
+      }
+    },
+    "plurals": {
+      "other": "There are  {{itemCount}} items in the cart",
+      "one": "There is  {{itemCount}} item in the cart",
+      "zero": "The cart is empty"
+    },
+    "variants": {
+      "french": {
+        "text": "Il y a {{itemCount}} pommes dans le panier",
+        "variables": {
+          "itemCount": {
+            "example": 10,
+            "__type": "number"
+          }
+        },
+        "plurals": {
+          "other": "Il y a {{itemCount}} pommes dans le panier",
+          "one": "il y a {{itemCount}} pomme dans le panier",
+          "zero": "le panier est vide"
+        }
+      }
+    }
+  },
+  "team-plan": {
+    "name": "Team Plan",
+    "text": "Our Team Plan includes everything in the Basic Plan, in addition to unlimited messages between members of your workspace.",
+    "status": "NONE",
+    "folder": null
+  },
+  "shopping-cart-2": {
+    "name": "Shopping Cart 2",
+    "text": "The cart is filled with {{item}}.",
+    "variables": {
+      "item": ["oranges", "pears", "apples"]
+    }
+  },
+  "role": {
+    "name": "Role",
+    "text": "You are {{role}} in this workspace.",
+    "variables": {
+      "role": {
+        "admin": "an administrator",
+        "editor": "an editor",
+        "commenter": "a commenter",
+        "__type": "map"
+      }
+    }
+  }
+}

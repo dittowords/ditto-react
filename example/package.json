@@ -24,9 +24,6 @@
     "react-scripts": "link:../node_modules/react-scripts",
     "typescript": "link:../node_modules/typescript"
   },
-  "devDependencies": {
-    "@dittowords/cli": "^2.1.2"
-  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -41,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@dittowords/cli": "^3.0.0"
   }
 }

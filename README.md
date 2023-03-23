@@ -94,46 +94,100 @@ const App = () => {
 Text items containing Ditto Variables default to rendering those variables as the variable name inside of a template tag:
 
 ```jsx
-<Ditto textId={textId} />;
-output = "The cart contains {{itemName}}.";
+<Ditto componentId="shopping-cart" />;
+output === "The cart contains {{itemName}}.";
 ```
 
 Template tags are automatically interpolated if a value for a given variable (keyed by the variable's name) is provided via the `variables` prop:
 
 ```jsx
-<Ditto textId={textId} variables={{ itemName: "apples" }} />
-output = "The cart contains apples."
+<Ditto componentId="shopping-cart" variables={{ itemName: "apples" }} />
+output === "The cart contains apples."
 
-<Ditto textId={textId} variables={{ itemName: "pears" }} />
-output = "The cart contains pears."
+<Ditto componentId="shopping-cart" variables={{ itemName: "pears" }} />
+output === "The cart contains pears."
 ```
 
 If no value is provided for a variable, but that variable has a fallback value configured in the source data synced from Ditto (`structured` json format only), the fallback will be used:
 
 ```jsx
-// if the variable `itemName` had "some fruit" configured as a fallback in Ditto
-<Ditto textId={textId} variables={{}} />;
-output = "The cart contains some fruit.";
-```
-
-```js
-// ✔️ source contains variable information, interpolation will occur
-{
+const source = {
   "shopping-cart": {
     "text": "The cart contains {{itemName}}.",
     "variables": {
       "itemName": {
         "example": "pears",
-        "fallback": "some stuff",
+        // ✔️ variable source data has a fallback value
+        "fallback": "some fruit",
+        "__type": "string"
       }
     }
   }
 }
 
-// ✕ source doesn't contain variable information, interpolation won't occur
-{
-  "shopping-cart": "The cart contains {{itemName}}."
+...
+
+// ✔️ fallback value is used when variable value is not specified
+<Ditto componentId="shopping-cart" />;
+output === "The cart contains some fruit.";
+```
+
+When passing data for a `list` variable, an error is logged to the console if the passed data doesn't correspond to a value in the list.
+
+```js
+const source = {
+  "shopping-cart": {
+    "text": "The cart contains {{itemName}}.",
+    "variables": {
+      "itemName": [
+        "apples",
+        "pears",
+        "oranges"
+      ]
+    }
+  }
 }
+
+...
+
+// ✔ value in list, no error logged
+<Ditto componentId="shopping-cart" variables={{ itemName: "pears" }} />
+output === "The cart contains pears."
+
+// ❌ value NOT in list, error logged (but output retained)
+<Ditto componentId="shopping-cart" variables={{ itemName: "grapes" }} />
+output === "The cart contains pears."
+```
+
+When passing data for a `map` variable:
+
+- if the data corresponds to a map key, the corresponding value in the map is interpolated
+- if the data doesn't correspond to a map key, an error is logged to the console and the data is interpolated directly
+
+```js
+const source = {
+  "user-role": {
+    "text": "You are {{role}} in this workspace.",
+    "variables": {
+      "role": {
+        "admin": "an administrator",
+        "editor": "an editor",
+        "commenter": "a commenter",
+        "__type": "map"
+      }
+    }
+  }
+}
+
+...
+
+// ✔ in list, corresponding value interpolated
+<Ditto componentId="user-role" variables={{ role: "admin" }} />
+output === "You are an administrator in this workspace."
+
+// ❌ NOT in list, error logged, passed data directly interpolated
+<Ditto componentId="user-role" variables={{ role: "owner" }} />
+output === "You are owner in this workspace."
 ```
 
 ## Pluralization
@@ -144,20 +198,20 @@ When a text item has plural forms, the default plural form will be used when tha
 
 ```jsx
 <Ditto textId={textId} />;
-output = "The cart contains some items.";
+output === "The cart contains some items.";
 ```
 
 When a `count` prop is provided, the plural form to render (of those that are configured in Ditto) will be inferred based off of that value:
 
 ```jsx
 <Ditto textId={textId} count={3}/>
-output = "The cart contains a few items."
+output === "The cart contains a few items."
 
 <Ditto textId={textId} count={10}/>
-output = "The cart contains many items."
+output === "The cart contains many items."
 
 <Ditto textId={textId} count={0}/>
-output = "The cart contains nothing."
+output === "The cart contains nothing."
 ```
 
 Plurals can also be used in combination with [variables](#variable-interpolation):
@@ -165,7 +219,7 @@ Plurals can also be used in combination with [variables](#variable-interpolation
 ```jsx
 // If the "many" plural form is "The cart contains many {{adjective}} items."
 <Ditto textId={textId} variables={{ adjective: "fun" }} count={10} />;
-output = "The cart contains many fun items.";
+output === "The cart contains many fun items.";
 ```
 
 The `count` prop is indexed to the following plural keys:
@@ -240,15 +294,15 @@ Which method you use depends on how you've configured your CLI options. Please r
 
 #### Project
 
-| Prop        | Type                   | Description                                                                                                     | Example                             |
-| ----------- | ---------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `projectId` | string (semi-required) | ID of a project in Ditto; required if a `projectId` isn't found in an ancestor `DittoProvider`                  |
-| `textId`    | string (optional)      | ID of a single text item in Ditto                                                                               |                                     |
-| `frameId`   | string (optional)      | ID of a frame in Ditto                                                                                          |                                     |
-| `blockId`   | string (optional)      | ID of a block in Ditto                                                                                          |                                     |
-| `filters`   | object (optional)      | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]}                |
-| `variables` | object (optional)      | A map of variable key-value pairs to interpolate in your text.                                                  | { email: "support@dittowords.com" } |
-| `count`     | number (optional)      | This value is used to specify which plural case you wish to use                                                 | 1                                   |
+| Prop        | Type                              | Description                                                                                                     | Example                             |
+| ----------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `projectId` | string (semi-required)            | ID of a project in Ditto; required if a `projectId` isn't found in an ancestor `DittoProvider`                  |
+| `textId`    | string (optional)                 | ID of a single text item in Ditto                                                                               |                                     |
+| `frameId`   | string (optional, **deprecated**) | ID of a frame in Ditto                                                                                          |                                     |
+| `blockId`   | string (optional, **deprecated**) | ID of a block in Ditto                                                                                          |                                     |
+| `filters`   | object (optional)                 | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]}                |
+| `variables` | object (optional)                 | A map of variable key-value pairs to interpolate in your text.                                                  | { email: "support@dittowords.com" } |
+| `count`     | number (optional)                 | This value is used to specify which plural case you wish to use                                                 | 1                                   |
 
 ##### Examples
 
@@ -261,7 +315,7 @@ If you pass `textId`, the specified text string will be rendered:
 />
 ```
 
-If you pass `frameId` and/or `blockId`, the specified frame/block object will be passed to a child function:
+**(deprecated)** If you pass `frameId` and/or `blockId`, **the specified** frame/block object will be passed to a child function:
 
 ```jsx
 <Ditto
@@ -281,8 +335,8 @@ In addition to the `<Ditto />` component, individual exports of each specific co
 
 ```js
 import {
-  DittoFrame,
-  DittoBlock,
+  DittoFrame, // deprecated
+  DittoBlock, // deprecated
   DittoText,
   DittoComponent, // rendering components from your Ditto component library
 } from "ditto-react";
@@ -315,89 +369,6 @@ const textPluralized = useDittoSingleText({
   count: cartItems.length,
 });
 ```
-
-## Additional Examples
-
-### Example: Single Text
-
-The `Ditto` component can be used to fetch a specific text item from the Ditto project using its API ID. Note that you can edit IDs for text, blocks, and frames directly the Ditto web app:
-
-```jsx
-<Ditto textId="text_601cc35c5bsdfe42cc3f6f8ac59" />
-```
-
-### Example: Fetch Block
-
-You can also fetch an entire Block in Ditto at once by specifying the `frameId` and the `blockId`.
-
-It will return as an entire JSON object of the frame. You can pull out specific IDs of text you'd like to pass to its children.
-
-```jsx
-<Ditto frameId="frame_601cc35d5be42cc3f6f8ad15" blockId="hero">
-  {({ hero_h1, text_601cc35c5be42cc3f6f8ac46, hero_cta }) => (
-    <div>
-      <h1>{hero_h1}</h1>
-      <h2>{text_601cc35c5be42cc3f6f8ac46}</h2>
-      <button>{hero_cta}</button>
-    </div>
-  )}
-</Ditto>
-```
-
-You can also iterate through the entire block (just as you can with any other object) to display each one.
-
-```jsx
-<Ditto frameId="header" blockId="navigation">
-  {(block) => {
-    return Object.keys(block).map((id) => (
-      <div key={block[id]}>{block[id]}</div>
-    ));
-  }}
-</Ditto>
-```
-
-### Example: Fetch Frame
-
-You can also fetch an entire Block in Ditto at once by just specifying the `frameId`. With it, you can fetch specific blocks, or iterate through all blocks and containing IDs as needed.
-
-```jsx
-<Ditto frameId="frame_601cc35d5be42cc3f6f8ad17">
-  {(frame) => {
-    return Object.keys(frame.blocks).map((blockId) => (
-      <div className={style.footerCol} key={blockId}>
-        {Object.keys(frame.blocks[blockId]).map((textId) => (
-          <div className={style.link} key={textId}>
-            {frame.blocks[blockId][textId]}
-          </div>
-        ))}
-      </div>
-    ));
-  }}
-</Ditto>
-```
-
-### Example: Filtering by Tags
-
-If you want to filter the text fetched by properties contained in the project itself, you can specify parameters to the `filter` prop of the `Ditto` component. This currently only supports the Tags field in Ditto, but will be expanded in the future to filter on any other metadata properties.
-
-```jsx
-// will only return text with the "TOP_NAV" tag
-<Ditto
-  frameId="frame_601cc35d5be42cc3f6f8ad15"
-  blockId="navigation"
-  filters={{ tags: ["TOP_NAV"] }}
->
-  {(block) => {
-    return Object.keys(block).map((id) => (
-      <div className={style.link} key={block[id]}>
-        {block[id]}
-      </div>
-    ));
-  }}
-</Ditto>
-```
-
----
 
 ## Source
 
