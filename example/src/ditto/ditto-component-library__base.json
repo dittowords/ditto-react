@@ -6,7 +6,8 @@
     "folder": null,
     "variables": {
       "itemCount": {
-        "example": 10
+        "example": 10,
+        "__type": "number"
       }
     },
     "plurals": {
@@ -19,7 +20,8 @@
         "text": "Il y a {{itemCount}} pommes dans le panier",
         "variables": {
           "itemCount": {
-            "example": 10
+            "example": 10,
+            "__type": "number"
           }
         },
         "plurals": {

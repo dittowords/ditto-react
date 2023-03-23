@@ -83,7 +83,7 @@ const App = (props: AppProps) => {
               {componentHookTextWithMapVariable}
             </div>
             <div className="dittoItem">
-              <pre>{`useDittoComponent({ componentId: "permission-select", variables: { permission: "editor" } });`}</pre>
+              <pre>{`useDittoComponent({ componentId: "role", variables: { permission: "admin" } });`}</pre>
               {componentHookTextWithListVariable}
             </div>
             <div className="dittoItem">

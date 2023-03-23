@@ -161,17 +161,6 @@ export const interpolateVariableText = (
   };
 };
 
-// let variablesWithFallbacks: Record<string, VariablesInput[string]> = {
-//   ...variables,
-// };
-
-// Object.keys(data?.variables || {}).forEach((curr) => {
-//   if (variablesWithFallbacks[curr]) return;
-
-//   const { fallback, text } = data.variables[curr];
-//   if (fallback || text) variablesWithFallbacks[curr] = fallback || text!;
-// });
-
 const HANDLEBAR_REGEX = /\{\{([a-z0-9_]+)\}\}/gi;
 
 /**
@@ -244,6 +233,8 @@ const getVariablePlaceholder = <V extends VariableData>(
 
   if (variableData.__type === "map" && input) {
     const value = variableData[input];
+    // Ditto map values will always be strings, so it should be okay that we do
+    // a falsy check here. If we ever change that, we'll need to update this check.
     if (!value) {
       console.error(
         `Key ${input} does not exist in the the specified \`map\` variable: ${Object.keys(
