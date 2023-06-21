@@ -224,11 +224,11 @@ const getVariablePlaceholder = <V extends VariableData>(
   }
 
   if (variableData.__type === "number" || variableData.__type === "string") {
-    return String(variableData.example || variableData.fallback) || null;
+    return String(input || variableData.example || variableData.fallback) || null;
   }
 
   if (variableData.__type === "hyperlink") {
-    return variableData.text || input;
+    return  input || variableData.text;
   }
 
   if (variableData.__type === "map" && input) {
