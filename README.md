@@ -194,6 +194,8 @@ output === "You are owner in this workspace."
 
 `ditto-react` integrates with Ditto Plurals to support pluralized text. Learn how to create and configure Ditto Plurals here: https://www.dittowords.com/docs/pluralization.
 
+*Note: Pluralization will only work if the source file is in the `structured` format.*
+
 When a text item has plural forms, the default plural form will be used when that text item is rendered normally:
 
 ```jsx
