@@ -5,3 +5,4 @@ sources:
     - name: 'Onboarding Flow'
       id: 61e72388365c930170607378
 format: structured
+richText: true

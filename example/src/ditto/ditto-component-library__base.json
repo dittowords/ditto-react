@@ -2,6 +2,7 @@
   "role": {
     "name": "Role DO NOT MODIFY",
     "text": "You are {{role}} in this workspace.",
+    "rich_text": "<p>You are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"64e52580e5120107e7d21260\" data-name=\"role\" data-text=\"an administrator\" data-variable-type=\"map\">an administrator</span> in this workspace.</p>",
     "status": "NONE",
     "folder": null,
     "variables": {
@@ -16,6 +17,7 @@
   "shopping-cart-2": {
     "name": "Shopping Cart 2 DO NOT MODIFY",
     "text": "The cart is filled with {{item}}.",
+    "rich_text": "<p>The <strong>cart is filled</strong> with <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"64e5250c4f28ef74fe4fd2b4\" data-name=\"item\" data-text=\"oranges\" data-variable-type=\"list\">oranges</span>.</p>",
     "status": "NONE",
     "folder": null,
     "variables": {
@@ -29,6 +31,7 @@
   "shopping-cart": {
     "name": "Shopping Cart DO NOT MODIFY",
     "text": "There are {{itemCount}} items in the cart",
+    "rich_text": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items in the cart</p>",
     "status": "NONE",
     "folder": null,
     "variables": {
@@ -39,8 +42,11 @@
     },
     "plurals": {
       "other": "There are {{itemCount}} items in the cart",
+      "other_rich_text": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items in the cart</p>",
       "one": "There is {{itemCount}} item in the cart",
-      "zero": "The cart is empty"
+      "one_rich_text": "<p>There is <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> item in the cart</p>",
+      "zero": "The cart is empty",
+      "zero_rich_text": "<p>The cart is empty</p>"
     },
     "variants": {
       "french": {
@@ -53,8 +59,11 @@
         },
         "plurals": {
           "other": "Il y a {{itemCount}} pommes dans le panier",
+          "other_rich_text": "<p>Il y a <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> pommes dans le panier</p>",
           "one": "il y a {{itemCount}} pomme dans le panier",
-          "zero": "le panier est vide"
+          "one_rich_text": "<p>il y a <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> pomme dans le panier</p>",
+          "zero": "le panier est vide",
+          "zero_rich_text": "<p>le panier est vide</p>"
         }
       }
     }
@@ -62,6 +71,7 @@
   "team-plan": {
     "name": "Team Plan DO NOT MODIFY",
     "text": "Our Team Plan includes everything in the Basic Plan, in addition to unlimited messages between members of your workspace.",
+    "rich_text": "<p>Our Team Plan includes everything in the Basic Plan, in addition to unlimited messages between members of your workspace.</p>",
     "status": "WIP",
     "folder": null
   }
