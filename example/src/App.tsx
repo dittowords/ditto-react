@@ -138,6 +138,15 @@ const App = (props: AppProps) => {
                 variables={{ itemCount: 5 }}
               />
             </div>
+            <div className="dittoItem">
+              <pre>{`<Ditto componentId="shopping-cart" count={5} variables={{ itemCount: 5 }} richText />`}</pre>
+              <Ditto
+                componentId="shopping-cart"
+                count={5}
+                variables={{ itemCount: 5 }}
+                richText
+              />
+            </div>
           </div>
         </div>
         <div>

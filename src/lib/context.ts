@@ -42,6 +42,7 @@ export interface TextData {
   variables: {
     [variableName: string]: VariableData;
   };
+  rich_text?: string;
 }
 
 export interface Block {

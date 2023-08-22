@@ -11,10 +11,22 @@ import {
   isProject,
 } from "../lib/utils";
 
-type PluralId = "zero" | "one" | "two" | "few" | "many" | "other";
+type PluralId =
+  | "zero"
+  | "zero_rich_text"
+  | "one"
+  | "one_rich_text"
+  | "two"
+  | "two_rich_text"
+  | "few"
+  | "few_rich_text"
+  | "many"
+  | "many_rich_text"
+  | "other"
+  | "other_rich_text";
 export type Plurals = {
   [pluralId in PluralId]?: string;
-}
+};
 
 export interface DittoFrameProps {
   projectId?: string | null;
@@ -43,6 +55,7 @@ export interface DittoTextProps {
 
 export interface DittoComponentLibraryProps {
   componentId: string;
+  richText?: boolean;
   variables?: VariablesInput;
   count?: number;
   children?: (text: string) => React.ReactNode;
@@ -73,7 +86,7 @@ export function Ditto(props: DittoProps) {
     const projectId = props.projectId || dittoContext.projectId;
     if (!projectId) {
       return fragmentError(
-        "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
+        "No Project ID was provided to the <DittoProvider /> or <Ditto /> components.",
       );
     }
 
@@ -89,6 +102,6 @@ export function Ditto(props: DittoProps) {
   }
 
   return fragmentError(
-    'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"'
+    'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"',
   );
 }

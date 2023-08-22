@@ -42,7 +42,7 @@
     },
     "plurals": {
       "other": "There are {{itemCount}} items in the cart",
-      "other_rich_text": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items in the cart</p>",
+      "other_rich_text": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items <b>in the cart</b></p>",
       "one": "There is {{itemCount}} item in the cart",
       "one_rich_text": "<p>There is <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> item in the cart</p>",
       "zero": "The cart is empty",
