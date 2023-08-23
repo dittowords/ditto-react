@@ -13,10 +13,6 @@ export const DittoComponent = (props: DittoComponentLibraryProps) => {
   });
 
   if (typeof text === "string" && typeof children === "function") {
-    if (richText) {
-      return <>{children(text)}</>;
-    }
-
     return <>{children(text)}</>;
   }
 
