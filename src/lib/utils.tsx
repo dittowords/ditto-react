@@ -20,14 +20,14 @@ export const filterBlock = (
   blockObj: Block,
   variables: VariablesInput,
   count: Count,
-  filters
+  filters,
 ) => {
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
 
       return filters.tags.every(
-        (tag) => blockObj[textId].tags && blockObj[textId].tags.includes(tag)
+        (tag) => blockObj[textId].tags && blockObj[textId].tags.includes(tag),
       );
     })
     .reduce((obj, id) => {
@@ -35,7 +35,7 @@ export const filterBlock = (
         blockObj[id],
         variables,
         count,
-        false
+        false,
       ).text;
       return { ...obj, [id]: interpolatedText };
     }, {} as Block);
@@ -45,7 +45,7 @@ export const filterFrame = (
   _frameObj: Frame,
   variables: VariablesInput,
   count: Count,
-  filters
+  filters,
 ) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
@@ -55,7 +55,7 @@ export const filterFrame = (
         frameObj.blocks[blockId],
         variables,
         count,
-        filters
+        filters,
       );
     }
   }
@@ -77,20 +77,20 @@ export const fragmentError = (message: string): JSX.Element =>
 
 export const isProject = (
   props: DittoProps,
-  projectIdFromContext?: string
+  projectIdFromContext?: string,
 ): props is DittoProjectProps =>
   ("projectId" in props || !!projectIdFromContext) &&
   ("textId" in props || "frameId" in props || "blockId" in props);
 
 export const isComponentLibrary = (
-  props: DittoProps
+  props: DittoProps,
 ): props is DittoComponentLibraryProps => "componentId" in props;
 
 export const isText = (props: DittoProps): props is DittoTextProps =>
   "textId" in props;
 
 export const isFrameOrBlockComponent = (
-  props: DittoProps
+  props: DittoProps,
 ): props is DittoFrameOrBlockProps => "frameId" in props;
 
 export const useProjectId = (props: { projectId?: string | null }) => {
@@ -98,7 +98,7 @@ export const useProjectId = (props: { projectId?: string | null }) => {
   const projectId = dittoContext.projectId || props.projectId;
   if (!projectId) {
     return nullError(
-      "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
+      "No Project ID was provided to the <DittoProvider /> or <Ditto /> components.",
     );
   }
 
@@ -123,21 +123,34 @@ export const useProjectId = (props: { projectId?: string | null }) => {
  */
 const getPluralText = (data: TextData, count: Count, richText: boolean) => {
   if (count === undefined || Object.keys(data?.plurals || {})?.length === 0) {
-    return richText ? data.rich_text : data.text;
+    return richText && data.rich_text ? data.rich_text : data.text;
   } else if (count === 0 && data.plurals.zero) {
-    return richText ? data.plurals.zero_rich_text : data.plurals.zero;
+    return richText && data.plurals.zero_rich_text
+      ? data.plurals.zero_rich_text
+      : data.plurals.zero;
   } else if (count === 1 && data.plurals.one) {
-    return richText ? data.plurals.one_rich_text : data.plurals.one;
+    return richText && data.plurals.one_rich_text
+      ? data.plurals.one_rich_text
+      : data.plurals.one;
   } else if (count === 2 && data.plurals.two) {
-    return richText ? data.plurals.two_rich_text : data.plurals.two;
+    return richText && data.plurals.two_rich_text
+      ? data.plurals.two_rich_text
+      : data.plurals.two;
   } else if (count >= 3 && count <= 5 && data.plurals.few) {
-    return richText ? data.plurals.few_rich_text : data.plurals.few;
+    return richText && data.plurals.few_rich_text
+      ? data.plurals.few_rich_text
+      : data.plurals.few;
   } else if (count >= 6 && count <= 99 && data.plurals.many) {
-    return richText ? data.plurals.many_rich_text : data.plurals.many;
+    return richText && data.plurals.many_rich_text
+      ? data.plurals.many_rich_text
+      : data.plurals.many;
   } else {
     // default to 'other', fallback to base text
-    if (data.plurals.other) return richText ? data.plurals.other_rich_text : data.plurals.other;
-    return richText ? data.rich_text : data.text;
+    if (data.plurals.other)
+      return richText && data.plurals.other_rich_text
+        ? data.plurals.other_rich_text
+        : data.plurals.other;
+    return richText && data.rich_text ? data.rich_text : data.text;
   }
 };
 
@@ -193,7 +206,7 @@ const forEachVariable = (text, callback) => {
 
 const getVariable = (
   variableName: string,
-  variables: TextData["variables"]
+  variables: TextData["variables"],
 ) => {
   const variable = variables[variableName];
   if (variable === undefined || variable === null) {
@@ -205,7 +218,7 @@ const getVariable = (
 
 const getVariablePlaceholder = <V extends VariableData>(
   variableData: V | null,
-  input: string | number | null
+  input: string | number | null,
 ) => {
   if (!variableData) return input;
 
@@ -219,18 +232,20 @@ const getVariablePlaceholder = <V extends VariableData>(
 
     console.error(
       `${input} does not exist in the specified \`list\` variable: ${variableData.join(
-        ", "
-      )}.`
+        ", ",
+      )}.`,
     );
     return input;
   }
 
   if (variableData.__type === "number" || variableData.__type === "string") {
-    return String(input || variableData.example || variableData.fallback) || null;
+    return (
+      String(input || variableData.example || variableData.fallback) || null
+    );
   }
 
   if (variableData.__type === "hyperlink") {
-    return  input || variableData.text;
+    return input || variableData.text;
   }
 
   if (variableData.__type === "map" && input) {
@@ -240,8 +255,8 @@ const getVariablePlaceholder = <V extends VariableData>(
     if (!value) {
       console.error(
         `Key ${input} does not exist in the the specified \`map\` variable: ${Object.keys(
-          variableData
-        ).join(", ")}.`
+          variableData,
+        ).join(", ")}.`,
       );
       return input;
     }

@@ -1,0 +1,9 @@
+{
+  "role": "<p>You are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"64e52580e5120107e7d21260\" data-name=\"role\" data-text=\"an administrator\" data-variable-type=\"map\">an administrator</span> in this workspace.</p>",
+  "shopping-cart-2": "<p>The <strong>cart is filled</strong> with <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"64e5250c4f28ef74fe4fd2b4\" data-name=\"item\" data-text=\"oranges\" data-variable-type=\"list\">oranges</span>.</p>",
+  "shopping-cart": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items <strong>in the cart</strong></p>",
+  "shopping-cart_other": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items <strong>in the cart</strong></p>",
+  "shopping-cart_one": "<p>There is <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> item in the cart</p>",
+  "shopping-cart_zero": "<p>The cart is empty</p>",
+  "team-plan": "<p>Our Team Plan includes everything in the Basic Plan, in addition to unlimited messages between members of your workspace.</p>"
+}
