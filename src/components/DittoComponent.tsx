@@ -21,7 +21,6 @@ export const DittoComponent = (props: DittoComponentLibraryProps) => {
   }
 
   if (richText) {
-    console.log(text)
     return <span dangerouslySetInnerHTML={{__html: text || "" }} />;
   }
 
