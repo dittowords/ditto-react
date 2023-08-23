@@ -243,6 +243,15 @@ To read more about pluralization and see other examples of how it is used in i18
 
 To see a working React app utilizing the [Ditto CLI](https://github.com/dittowords/cli) and `ditto-react`, please refer to the Ditto Demo project: https://github.com/dittowords/ditto-demo.
 
+## Rich Text
+
+Ditto's [rich text](https://www.dittowords.com/docs/rich-text) functionality is currently available for Ditto Components in `ditto-react`. By using the `richText` property on `<Ditto />` or `<DittoComponent />`, `ditto-react` will automatically render the rich text versions of the components.
+
+### Example
+```
+<Ditto componentId="shopping-cart" richText />
+```
+
 ---
 
 ## Reference
