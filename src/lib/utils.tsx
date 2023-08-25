@@ -1,4 +1,5 @@
 import { Fragment, useContext } from "react";
+import * as DOMPurify from "dompurify";
 import {
   DittoComponentLibraryProps,
   DittoProjectProps,
@@ -168,7 +169,12 @@ export const interpolateVariableText = (
       ? { text: _data, plurals: {}, variables: {} }
       : _data;
 
-  const pluralText = getPluralText(data, count, richText) || "";
+  let pluralText = getPluralText(data, count, richText) || "";
+
+  if (richText) {
+    pluralText = DOMPurify.sanitize(pluralText);
+  }
+
   const variablesFromDitto = data?.variables || {};
   return {
     ...data,
