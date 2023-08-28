@@ -15,7 +15,7 @@ interface useDittoSingleTextProps {
 }
 
 export const useDittoSingleText = (
-  props: useDittoSingleTextProps
+  props: useDittoSingleTextProps,
 ): string | null => {
   const { textId, variables, count } = props;
   const { source, variant } = useContext(DittoContext);
@@ -27,7 +27,12 @@ export const useDittoSingleText = (
     const data = source?.[projectId]?.[variant];
     if (data) {
       if (SourceDetector.isStructured(data) || SourceDetector.isFlat(data)) {
-        return interpolateVariableText(data[textId], variables || {}, count).text;
+        return interpolateVariableText(
+          data[textId],
+          variables || {},
+          count,
+          false,
+        ).text;
       }
 
       if (SourceDetector.isFrame(data)) {
@@ -38,15 +43,20 @@ export const useDittoSingleText = (
             const block = frame.blocks[blockId];
 
             if (textId in block)
-              return interpolateVariableText(block[textId], variables || {}, count)
-                .text;
+              return interpolateVariableText(
+                block[textId],
+                variables || {},
+                count,
+                false,
+              ).text;
           }
 
           if (frame.otherText && textId in frame.otherText)
             return interpolateVariableText(
               frame.otherText[textId],
               variables || {},
-              count
+              count,
+              false,
             ).text;
         }
       }
@@ -59,7 +69,8 @@ export const useDittoSingleText = (
   }
 
   if (SourceDetector.isStructured(data) || SourceDetector.isFlat(data)) {
-    return interpolateVariableText(data[textId], variables || {}, count).text;
+    return interpolateVariableText(data[textId], variables || {}, count, false)
+      .text;
   }
 
   if (SourceDetector.isFrame(data)) {
@@ -70,14 +81,20 @@ export const useDittoSingleText = (
         const block = frame.blocks[blockId];
 
         if (textId in block)
-          return interpolateVariableText(block[textId], variables || {}, count).text;
+          return interpolateVariableText(
+            block[textId],
+            variables || {},
+            count,
+            false,
+          ).text;
       }
 
       if (frame.otherText && textId in frame.otherText)
         return interpolateVariableText(
           frame.otherText[textId],
           variables || {},
-          count
+          count,
+          false,
         ).text;
     }
   }
