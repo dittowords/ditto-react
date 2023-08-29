@@ -6,10 +6,11 @@ interface Args {
   componentId: string;
   variables?: VariablesInput;
   count?: number;
+  richText?: boolean;
 }
 
 export const useDittoComponent = (props: Args): string | null => {
-  const { componentId, variables, count } = props;
+  const { componentId, variables, count, richText } = props;
   const { source, variant } = useContext(DittoContext);
   if (!("ditto_component_library" in source)) {
     throw new Error(
@@ -20,7 +21,7 @@ export const useDittoComponent = (props: Args): string | null => {
   if (variant) {
     const data = source?.ditto_component_library?.[variant];
     if (data && data[componentId]) {
-      return interpolateVariableText(data[componentId], variables || {}, count)
+      return interpolateVariableText(data[componentId], variables || {}, count, richText || false)
         .text;
     }
   }
@@ -35,7 +36,7 @@ export const useDittoComponent = (props: Args): string | null => {
   }
 
   if (SourceDetector.isStructured(data) || SourceDetector.isFlat(data)) {
-    return interpolateVariableText(data[componentId], variables || {}, count)
+    return interpolateVariableText(data[componentId], variables || {}, count, richText || false)
       .text;
   }
 

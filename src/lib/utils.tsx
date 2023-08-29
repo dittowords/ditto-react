@@ -1,4 +1,5 @@
 import { Fragment, useContext } from "react";
+import * as DOMPurify from "dompurify";
 import {
   DittoComponentLibraryProps,
   DittoProjectProps,
@@ -20,21 +21,22 @@ export const filterBlock = (
   blockObj: Block,
   variables: VariablesInput,
   count: Count,
-  filters
+  filters,
 ) => {
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
 
       return filters.tags.every(
-        (tag) => blockObj[textId].tags && blockObj[textId].tags.includes(tag)
+        (tag) => blockObj[textId].tags && blockObj[textId].tags.includes(tag),
       );
     })
     .reduce((obj, id) => {
       const interpolatedText = interpolateVariableText(
         blockObj[id],
         variables,
-        count
+        count,
+        false,
       ).text;
       return { ...obj, [id]: interpolatedText };
     }, {} as Block);
@@ -44,7 +46,7 @@ export const filterFrame = (
   _frameObj: Frame,
   variables: VariablesInput,
   count: Count,
-  filters
+  filters,
 ) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
@@ -54,7 +56,7 @@ export const filterFrame = (
         frameObj.blocks[blockId],
         variables,
         count,
-        filters
+        filters,
       );
     }
   }
@@ -76,20 +78,20 @@ export const fragmentError = (message: string): JSX.Element =>
 
 export const isProject = (
   props: DittoProps,
-  projectIdFromContext?: string
+  projectIdFromContext?: string,
 ): props is DittoProjectProps =>
   ("projectId" in props || !!projectIdFromContext) &&
   ("textId" in props || "frameId" in props || "blockId" in props);
 
 export const isComponentLibrary = (
-  props: DittoProps
+  props: DittoProps,
 ): props is DittoComponentLibraryProps => "componentId" in props;
 
 export const isText = (props: DittoProps): props is DittoTextProps =>
   "textId" in props;
 
 export const isFrameOrBlockComponent = (
-  props: DittoProps
+  props: DittoProps,
 ): props is DittoFrameOrBlockProps => "frameId" in props;
 
 export const useProjectId = (props: { projectId?: string | null }) => {
@@ -97,7 +99,7 @@ export const useProjectId = (props: { projectId?: string | null }) => {
   const projectId = dittoContext.projectId || props.projectId;
   if (!projectId) {
     return nullError(
-      "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
+      "No Project ID was provided to the <DittoProvider /> or <Ditto /> components.",
     );
   }
 
@@ -120,23 +122,36 @@ export const useProjectId = (props: { projectId?: string | null }) => {
  * in future we should also user's to define their own middleware for picking plurals
  * based off i8next: https://www.i18next.com/translation-function/plurals
  */
-const getPluralText = (data: TextData, count: Count) => {
+const getPluralText = (data: TextData, count: Count, richText: boolean) => {
   if (count === undefined || Object.keys(data?.plurals || {})?.length === 0) {
-    return data.text;
+    return richText && data.rich_text ? data.rich_text : data.text;
   } else if (count === 0 && data.plurals.zero) {
-    return data.plurals.zero;
+    return richText && data.plurals.zero_rich_text
+      ? data.plurals.zero_rich_text
+      : data.plurals.zero;
   } else if (count === 1 && data.plurals.one) {
-    return data.plurals.one;
+    return richText && data.plurals.one_rich_text
+      ? data.plurals.one_rich_text
+      : data.plurals.one;
   } else if (count === 2 && data.plurals.two) {
-    return data.plurals.two;
+    return richText && data.plurals.two_rich_text
+      ? data.plurals.two_rich_text
+      : data.plurals.two;
   } else if (count >= 3 && count <= 5 && data.plurals.few) {
-    return data.plurals.few;
+    return richText && data.plurals.few_rich_text
+      ? data.plurals.few_rich_text
+      : data.plurals.few;
   } else if (count >= 6 && count <= 99 && data.plurals.many) {
-    return data.plurals.many;
+    return richText && data.plurals.many_rich_text
+      ? data.plurals.many_rich_text
+      : data.plurals.many;
   } else {
     // default to 'other', fallback to base text
-    if (data.plurals.other) return data.plurals.other;
-    return data.text;
+    if (data.plurals.other)
+      return richText && data.plurals.other_rich_text
+        ? data.plurals.other_rich_text
+        : data.plurals.other;
+    return richText && data.rich_text ? data.rich_text : data.text;
   }
 };
 
@@ -146,14 +161,20 @@ export const interpolateVariableText = (
   // variables passed via prop by the user
   variablesInput: VariablesInput,
   // count passed via prop by the user
-  count: Count
+  count: Count,
+  richText: boolean,
 ) => {
   const data: TextData =
     typeof _data === "string"
       ? { text: _data, plurals: {}, variables: {} }
       : _data;
 
-  const pluralText = getPluralText(data, count);
+  let pluralText = getPluralText(data, count, richText) || "";
+
+  if (richText) {
+    pluralText = DOMPurify.sanitize(pluralText);
+  }
+
   const variablesFromDitto = data?.variables || {};
   return {
     ...data,
@@ -191,7 +212,7 @@ const forEachVariable = (text, callback) => {
 
 const getVariable = (
   variableName: string,
-  variables: TextData["variables"]
+  variables: TextData["variables"],
 ) => {
   const variable = variables[variableName];
   if (variable === undefined || variable === null) {
@@ -203,7 +224,7 @@ const getVariable = (
 
 const getVariablePlaceholder = <V extends VariableData>(
   variableData: V | null,
-  input: string | number | null
+  input: string | number | null,
 ) => {
   if (!variableData) return input;
 
@@ -217,18 +238,20 @@ const getVariablePlaceholder = <V extends VariableData>(
 
     console.error(
       `${input} does not exist in the specified \`list\` variable: ${variableData.join(
-        ", "
-      )}.`
+        ", ",
+      )}.`,
     );
     return input;
   }
 
   if (variableData.__type === "number" || variableData.__type === "string") {
-    return String(input || variableData.example || variableData.fallback) || null;
+    return (
+      String(input || variableData.example || variableData.fallback) || null
+    );
   }
 
   if (variableData.__type === "hyperlink") {
-    return  input || variableData.text;
+    return input || variableData.text;
   }
 
   if (variableData.__type === "map" && input) {
@@ -238,8 +261,8 @@ const getVariablePlaceholder = <V extends VariableData>(
     if (!value) {
       console.error(
         `Key ${input} does not exist in the the specified \`map\` variable: ${Object.keys(
-          variableData
-        ).join(", ")}.`
+          variableData,
+        ).join(", ")}.`,
       );
       return input;
     }
@@ -253,7 +276,7 @@ const getVariablePlaceholder = <V extends VariableData>(
 const generateVariableText = (
   text: string,
   variablesInput: VariablesInput,
-  variablesFromDitto: TextData["variables"]
+  variablesFromDitto: TextData["variables"],
 ) => {
   let lastIndex = 0;
   let updatedText = "";

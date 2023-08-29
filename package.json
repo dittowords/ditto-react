@@ -70,5 +70,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "dompurify": "^3.0.5"
+  }
 }
