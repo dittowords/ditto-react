@@ -194,7 +194,7 @@ output === "You are owner in this workspace."
 
 `ditto-react` integrates with Ditto Plurals to support pluralized text. Learn how to create and configure Ditto Plurals here: https://www.dittowords.com/docs/pluralization.
 
-*Note: Pluralization will only work if the source file is in the `structured` format.*
+_Note: Pluralization will only work if the source file is in the `structured` format._
 
 When a text item has plural forms, the default plural form will be used when that text item is rendered normally:
 
@@ -245,11 +245,20 @@ To see a working React app utilizing the [Ditto CLI](https://github.com/dittowor
 
 ## Rich Text
 
-Ditto's [rich text](https://www.dittowords.com/docs/rich-text) functionality is currently available for Ditto Components in `ditto-react`. By using the `richText` property on `<Ditto />` or `<DittoComponent />`, `ditto-react` will automatically render the rich text versions of the components.
+Ditto's [rich text](https://www.dittowords.com/docs/rich-text) functionality can be enabled on `<Ditto />`, `<DittoText />` or `<DittoComponent />` via the `richText` property. Once enabled, `ditto-react` will automatically render the rich text versions of the text item/component.
 
-### Example
+### Examples
+
 ```
 <Ditto componentId="shopping-cart" richText />
+```
+
+```
+<DittoText textId="text_61e7238bbae5dc00fb66de15" variables={{ itemCount: 5 }} richText/>
+```
+
+```
+<DittoComponent componentId="shopping-cart" count={5} variables={{ itemCount: 5 }} richText />
 ```
 
 ---
@@ -287,11 +296,12 @@ Which method you use depends on how you've configured your CLI options. Please r
 
 #### Component Library (recommended)
 
-| Prop          | Type              | Description                                                                                                                                                                                                                                             |
-| ------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `componentId` | string            | The API ID of a component in your component library. If a `variant` prop is passed to an ancestor `DittoProvider`, will attempt to display the specified variant's value for the passed `componentId`; otherwise, will default to displaying base text. |
-| `variables`   | object (optional) | A map of variable key-value pairs to interpolate in your text.                                                                                                                                                                                          |
-| `count`       | number (optional) | This value is used to specify which plural case you wish to use                                                                                                                                                                                         |
+| Prop          | Type               | Description                                                                                                                                                                                                                                             |
+| ------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `componentId` | string             | The API ID of a component in your component library. If a `variant` prop is passed to an ancestor `DittoProvider`, will attempt to display the specified variant's value for the passed `componentId`; otherwise, will default to displaying base text. |
+| `variables`   | object (optional)  | A map of variable key-value pairs to interpolate in your text.                                                                                                                                                                                          |
+| `count`       | number (optional)  | This value is used to specify which plural case you wish to use                                                                                                                                                                                         |
+| `richText`    | boolean (optional) | This value is used to enable rich text rendering                                                                                                                                                                                                        |
 
 ##### Example
 
@@ -314,6 +324,7 @@ Which method you use depends on how you've configured your CLI options. Please r
 | `filters`   | object (optional)                 | object of filters for text items returned. Currently supports a single parameter: tags, an array of tag strings | { tags: ["SELECTS"]}                |
 | `variables` | object (optional)                 | A map of variable key-value pairs to interpolate in your text.                                                  | { email: "support@dittowords.com" } |
 | `count`     | number (optional)                 | This value is used to specify which plural case you wish to use                                                 | 1                                   |
+| `richText`  | boolean (optional)                | This value is used to enable rich text rendering                                                                |
 
 ##### Examples
 

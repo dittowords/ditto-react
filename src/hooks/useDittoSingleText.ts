@@ -12,10 +12,11 @@ interface useDittoSingleTextProps {
   textId: string;
   variables?: VariablesInput;
   count?: Count;
+  richText?: boolean;
 }
 
 export const useDittoSingleText = (
-  props: useDittoSingleTextProps,
+  props: useDittoSingleTextProps
 ): string | null => {
   const { textId, variables, count } = props;
   const { source, variant } = useContext(DittoContext);
@@ -31,7 +32,7 @@ export const useDittoSingleText = (
           data[textId],
           variables || {},
           count,
-          false,
+          Boolean(props.richText)
         ).text;
       }
 
@@ -47,7 +48,7 @@ export const useDittoSingleText = (
                 block[textId],
                 variables || {},
                 count,
-                false,
+                Boolean(props.richText)
               ).text;
           }
 
@@ -56,7 +57,7 @@ export const useDittoSingleText = (
               frame.otherText[textId],
               variables || {},
               count,
-              false,
+              Boolean(props.richText)
             ).text;
         }
       }
@@ -85,7 +86,7 @@ export const useDittoSingleText = (
             block[textId],
             variables || {},
             count,
-            false,
+            Boolean(props.richText)
           ).text;
       }
 
@@ -94,7 +95,7 @@ export const useDittoSingleText = (
           frame.otherText[textId],
           variables || {},
           count,
-          false,
+          Boolean(props.richText)
         ).text;
     }
   }

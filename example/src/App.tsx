@@ -155,6 +155,15 @@ const App = (props: AppProps) => {
                 richText
               />
             </div>
+            <div className="dittoItem">
+              <pre>{`<DittoComponent componentId="shopping-cart" count={5} variables={{ itemCount: 5 }} richText />`}</pre>
+              <DittoComponent
+                componentId="shopping-cart"
+                count={5}
+                variables={{ itemCount: 5 }}
+                richText
+              />
+            </div>
           </div>
         </div>
         <div>
@@ -216,8 +225,24 @@ const App = (props: AppProps) => {
             />
           </div>
           <div className="dittoItem">
+            <pre>{`<DittoText textId="text_61e7238bbae5dc00fb66de15" variables={{ itemCount: 5 }} richText/>`}</pre>
+            <DittoText
+              textId="text_61e7238bbae5dc00fb66de15"
+              variables={{ itemCount: 5 }}
+              richText
+            />
+          </div>
+          <div className="dittoItem">
             <pre>{`<DittoText textId="text_61e7238bbae5dc00fb66ddff"/>`}</pre>
             <DittoText textId="text_61e7238bbae5dc00fb66ddff" />
+          </div>
+          <div className="dittoItem">
+            <pre>{`<Ditto textId="text_61e7238bbae5dc00fb66de15" variables={{ itemCount: 5 }} richText/>`}</pre>
+            <Ditto
+              textId="text_61e7238bbae5dc00fb66de15"
+              variables={{ itemCount: 5 }}
+              richText
+            />
           </div>
         </div>
       </div>
