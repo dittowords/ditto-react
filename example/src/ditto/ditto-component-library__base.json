@@ -2,7 +2,7 @@
   "role": {
     "name": "Role DO NOT MODIFY",
     "text": "You are {{role}} in this workspace.",
-    "rich_text": "<p>You are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"64e52580e5120107e7d21260\" data-name=\"role\" data-text=\"an administrator\" data-variable-type=\"map\">an administrator</span> in this workspace.</p>",
+    "rich_text": "<p>You are {{role}} in this workspace.</p>",
     "status": "NONE",
     "folder": null,
     "variables": {
@@ -17,7 +17,7 @@
   "shopping-cart-2": {
     "name": "Shopping Cart 2 DO NOT MODIFY",
     "text": "The cart is filled with {{item}}.",
-    "rich_text": "<p>The <strong>cart is filled</strong> with <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"64e5250c4f28ef74fe4fd2b4\" data-name=\"item\" data-text=\"oranges\" data-variable-type=\"list\">oranges</span>.</p>",
+    "rich_text": "<p>The <strong>cart is filled</strong> with {{item}}.</p>",
     "status": "NONE",
     "folder": null,
     "variables": {
@@ -31,7 +31,7 @@
   "shopping-cart": {
     "name": "Shopping Cart DO NOT MODIFY",
     "text": "There are {{itemCount}} items in the cart",
-    "rich_text": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items <b>in the cart</b></p>",
+    "rich_text": "<p>There are {{itemCount}} items <b>in the cart</b></p>",
     "status": "NONE",
     "folder": null,
     "variables": {
@@ -42,9 +42,9 @@
     },
     "plurals": {
       "other": "There are {{itemCount}} items in the cart",
-      "other_rich_text": "<p>There are <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> items <b>in the cart</b></p>",
+      "other_rich_text": "<p>There are {{itemCount}} items <b>in the cart</b></p>",
       "one": "There is {{itemCount}} item in the cart",
-      "one_rich_text": "<p>There is <span data-type=\"variable\" data-grammarly-skip class=\"\" data-variable-id=\"61e72483efde2400db6ac3cb\" data-name=\"itemCount\" data-text=\"10\" data-variable-type=\"number\">10</span> item in the cart</p>",
+      "one_rich_text": "<p>There is {{itemCount}} item in the cart</p>",
       "zero": "The cart is empty",
       "zero_rich_text": "<p>The cart is empty</p>"
     },

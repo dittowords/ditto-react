@@ -11,10 +11,15 @@ export const DittoText = (props: DittoTextProps) => {
     textId,
     variables: variables || {},
     count,
+    richText: props.richText === true,
   });
 
   if (typeof text === "string" && typeof children === "function") {
     return <>{children(text)}</>;
+  }
+
+  if (props.richText) {
+    return <span dangerouslySetInnerHTML={{ __html: text || "" }}></span>;
   }
 
   return <>{text}</>;

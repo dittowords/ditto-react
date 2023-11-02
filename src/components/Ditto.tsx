@@ -50,6 +50,7 @@ export interface DittoTextProps {
   textId: string;
   variables?: VariablesInput;
   count?: number;
+  richText?: boolean;
   children?: (text: string) => React.ReactNode;
 }
 
@@ -86,7 +87,7 @@ export function Ditto(props: DittoProps) {
     const projectId = props.projectId || dittoContext.projectId;
     if (!projectId) {
       return fragmentError(
-        "No Project ID was provided to the <DittoProvider /> or <Ditto /> components.",
+        "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
       );
     }
 
@@ -102,6 +103,6 @@ export function Ditto(props: DittoProps) {
   }
 
   return fragmentError(
-    'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"',
+    'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"'
   );
 }

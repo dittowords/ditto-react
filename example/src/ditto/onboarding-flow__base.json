@@ -63,6 +63,7 @@
   },
   "text_61e7238bbae5dc00fb66de15": {
     "text": "There are {{itemCount}} puppies",
+    "rich_text": "<p><strong><em>There are</em></strong> {{itemCount}} <u>puppies</u></p>",
     "variables": {
       "itemCount": {
         "example": 10,
