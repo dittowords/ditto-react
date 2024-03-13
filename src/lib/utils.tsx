@@ -1,5 +1,5 @@
 import { Fragment, useContext } from "react";
-import * as DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import {
   DittoComponentLibraryProps,
   DittoProjectProps,
