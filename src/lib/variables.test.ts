@@ -17,7 +17,7 @@ describe("interpolateVariableText", () => {
       },
       variables,
       undefined,
-      false
+      false,
     );
     expect(result.text).toEqual("Hello World!");
   });
@@ -33,7 +33,7 @@ describe("interpolateVariableText", () => {
       },
       variables,
       undefined,
-      false
+      false,
     );
     expect(result.text).toEqual("Hello World!");
   });
@@ -56,7 +56,7 @@ describe("interpolateVariableText", () => {
       },
       variables,
       undefined,
-      false
+      false,
     );
     expect(result.text).toEqual("This is the number zero: 0");
   });

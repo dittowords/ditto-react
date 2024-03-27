@@ -1,11 +1,6 @@
 import { useContext } from "react";
-import {
-  DittoContext,
-  SourceDetector,
-  VariablesInput,
-  Count,
-} from "../lib/context";
-import { nullError, interpolateVariableText, useProjectId } from "../lib/utils";
+import { Count, DittoContext, SourceDetector, VariablesInput } from "../lib/context";
+import { interpolateVariableText, nullError, useProjectId } from "../lib/utils";
 
 interface useDittoSingleTextProps {
   projectId?: string | null;
@@ -15,9 +10,7 @@ interface useDittoSingleTextProps {
   richText?: boolean;
 }
 
-export const useDittoSingleText = (
-  props: useDittoSingleTextProps
-): string | null => {
+export const useDittoSingleText = (props: useDittoSingleTextProps): string | null => {
   const { textId, variables, count } = props;
   const { source, variant } = useContext(DittoContext);
 
@@ -32,7 +25,7 @@ export const useDittoSingleText = (
           data[textId],
           variables || {},
           count,
-          Boolean(props.richText)
+          Boolean(props.richText),
         ).text;
       }
 
@@ -48,7 +41,7 @@ export const useDittoSingleText = (
                 block[textId],
                 variables || {},
                 count,
-                Boolean(props.richText)
+                Boolean(props.richText),
               ).text;
           }
 
@@ -57,7 +50,7 @@ export const useDittoSingleText = (
               frame.otherText[textId],
               variables || {},
               count,
-              Boolean(props.richText)
+              Boolean(props.richText),
             ).text;
         }
       }
@@ -70,8 +63,7 @@ export const useDittoSingleText = (
   }
 
   if (SourceDetector.isStructured(data) || SourceDetector.isFlat(data)) {
-    return interpolateVariableText(data[textId], variables || {}, count, false)
-      .text;
+    return interpolateVariableText(data[textId], variables || {}, count, false).text;
   }
 
   if (SourceDetector.isFrame(data)) {
@@ -86,7 +78,7 @@ export const useDittoSingleText = (
             block[textId],
             variables || {},
             count,
-            Boolean(props.richText)
+            Boolean(props.richText),
           ).text;
       }
 
@@ -95,7 +87,7 @@ export const useDittoSingleText = (
           frame.otherText[textId],
           variables || {},
           count,
-          Boolean(props.richText)
+          Boolean(props.richText),
         ).text;
     }
   }
