@@ -1,12 +1,7 @@
 import React from "react";
 import { useDitto } from "../hooks/useDitto";
 import { fragmentError, useProjectId } from "../lib/utils";
-import {
-  DittoBlockProps,
-  DittoFilters,
-  DittoFrameOrBlockProps,
-  DittoFrameProps,
-} from "./Ditto";
+import { DittoBlockProps, DittoFilters, DittoFrameOrBlockProps, DittoFrameProps } from "./Ditto";
 
 type Props = DittoFrameOrBlockProps;
 
@@ -16,7 +11,7 @@ export const DittoFrameOrBlock = (props: Props): JSX.Element => {
 
   if (typeof children !== "function") {
     return fragmentError(
-      `Please provide either a textId or function child to your Ditto component.`
+      `Please provide either a textId or function child to your Ditto component.`,
     );
   }
 

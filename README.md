@@ -331,10 +331,7 @@ Which method you use depends on how you've configured your CLI options. Please r
 If you pass `textId`, the specified text string will be rendered:
 
 ```jsx
-<Ditto
-  textId="text_6151fa25151df3024333a8cb"
-  projectId="project_613a9b8fd268f614cae17469"
-/>
+<Ditto textId="text_6151fa25151df3024333a8cb" projectId="project_613a9b8fd268f614cae17469" />
 ```
 
 **(deprecated)** If you pass `frameId` and/or `blockId`, **the specified** frame/block object will be passed to a child function:
@@ -345,9 +342,7 @@ If you pass `textId`, the specified text string will be rendered:
   blockId="my_block"
   projectId="project_613a9b8fd268f614cae17469"
 >
-  {(block) =>
-    Object.keys(block).map((id) => <div key={block[id]}>{block[id]}</div>)
-  }
+  {(block) => Object.keys(block).map((id) => <div key={block[id]}>{block[id]}</div>)}
 </Ditto>
 ```
 

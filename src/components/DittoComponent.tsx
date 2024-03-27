@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useDittoComponent } from "../hooks/useDittoComponent";
 import { DittoComponentLibraryProps } from "./Ditto";
 
@@ -9,7 +9,7 @@ export const DittoComponent = (props: DittoComponentLibraryProps) => {
     componentId,
     variables: variables || {},
     count,
-    richText
+    richText,
   });
 
   if (typeof text === "string" && typeof children === "function") {
@@ -17,7 +17,7 @@ export const DittoComponent = (props: DittoComponentLibraryProps) => {
   }
 
   if (richText) {
-    return <span dangerouslySetInnerHTML={{__html: text || "" }} />;
+    return <span dangerouslySetInnerHTML={{ __html: text || "" }} />;
   }
 
   return <>{text}</>;

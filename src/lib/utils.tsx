@@ -1,28 +1,23 @@
-import { Fragment, useContext } from "react";
 import DOMPurify from "dompurify";
+import { Fragment, useContext } from "react";
 import {
   DittoComponentLibraryProps,
+  DittoFrameOrBlockProps,
   DittoProjectProps,
   DittoProps,
-  DittoFrameOrBlockProps,
   DittoTextProps,
 } from "../components/Ditto";
 import {
+  Block,
+  Count,
   DittoContext,
   Frame,
-  Block,
-  VariablesInput,
-  Count,
   TextData,
   VariableData,
+  VariablesInput,
 } from "./context";
 
-export const filterBlock = (
-  blockObj: Block,
-  variables: VariablesInput,
-  count: Count,
-  filters,
-) => {
+export const filterBlock = (blockObj: Block, variables: VariablesInput, count: Count, filters) => {
   return Object.keys(blockObj)
     .filter((textId) => {
       if (!filters?.tags) return true;
@@ -32,32 +27,17 @@ export const filterBlock = (
       );
     })
     .reduce((obj, id) => {
-      const interpolatedText = interpolateVariableText(
-        blockObj[id],
-        variables,
-        count,
-        false,
-      ).text;
+      const interpolatedText = interpolateVariableText(blockObj[id], variables, count, false).text;
       return { ...obj, [id]: interpolatedText };
     }, {} as Block);
 };
 
-export const filterFrame = (
-  _frameObj: Frame,
-  variables: VariablesInput,
-  count: Count,
-  filters,
-) => {
+export const filterFrame = (_frameObj: Frame, variables: VariablesInput, count: Count, filters) => {
   const frameObj = JSON.parse(JSON.stringify(_frameObj));
 
   if (frameObj.blocks) {
     for (var blockId in frameObj.blocks) {
-      frameObj.blocks[blockId] = filterBlock(
-        frameObj.blocks[blockId],
-        variables,
-        count,
-        filters,
-      );
+      frameObj.blocks[blockId] = filterBlock(frameObj.blocks[blockId], variables, count, filters);
     }
   }
 
@@ -73,8 +53,7 @@ export function error(message: string, returnValue: any = message) {
 }
 
 export const nullError = (message: string): null => error(message, null);
-export const fragmentError = (message: string): JSX.Element =>
-  error(message, <Fragment />);
+export const fragmentError = (message: string): JSX.Element => error(message, <Fragment />);
 
 export const isProject = (
   props: DittoProps,
@@ -83,16 +62,13 @@ export const isProject = (
   ("projectId" in props || !!projectIdFromContext) &&
   ("textId" in props || "frameId" in props || "blockId" in props);
 
-export const isComponentLibrary = (
-  props: DittoProps,
-): props is DittoComponentLibraryProps => "componentId" in props;
+export const isComponentLibrary = (props: DittoProps): props is DittoComponentLibraryProps =>
+  "componentId" in props;
 
-export const isText = (props: DittoProps): props is DittoTextProps =>
-  "textId" in props;
+export const isText = (props: DittoProps): props is DittoTextProps => "textId" in props;
 
-export const isFrameOrBlockComponent = (
-  props: DittoProps,
-): props is DittoFrameOrBlockProps => "frameId" in props;
+export const isFrameOrBlockComponent = (props: DittoProps): props is DittoFrameOrBlockProps =>
+  "frameId" in props;
 
 export const useProjectId = (props: { projectId?: string | null }) => {
   const dittoContext = useContext(DittoContext);
@@ -130,17 +106,11 @@ const getPluralText = (data: TextData, count: Count, richText: boolean) => {
       ? data.plurals.zero_rich_text
       : data.plurals.zero;
   } else if (count === 1 && data.plurals.one) {
-    return richText && data.plurals.one_rich_text
-      ? data.plurals.one_rich_text
-      : data.plurals.one;
+    return richText && data.plurals.one_rich_text ? data.plurals.one_rich_text : data.plurals.one;
   } else if (count === 2 && data.plurals.two) {
-    return richText && data.plurals.two_rich_text
-      ? data.plurals.two_rich_text
-      : data.plurals.two;
+    return richText && data.plurals.two_rich_text ? data.plurals.two_rich_text : data.plurals.two;
   } else if (count >= 3 && count <= 5 && data.plurals.few) {
-    return richText && data.plurals.few_rich_text
-      ? data.plurals.few_rich_text
-      : data.plurals.few;
+    return richText && data.plurals.few_rich_text ? data.plurals.few_rich_text : data.plurals.few;
   } else if (count >= 6 && count <= 99 && data.plurals.many) {
     return richText && data.plurals.many_rich_text
       ? data.plurals.many_rich_text
@@ -165,9 +135,7 @@ export const interpolateVariableText = (
   richText: boolean,
 ) => {
   const data: TextData =
-    typeof _data === "string"
-      ? { text: _data, plurals: {}, variables: {} }
-      : _data;
+    typeof _data === "string" ? { text: _data, plurals: {}, variables: {} } : _data;
 
   let pluralText = getPluralText(data, count, richText) || "";
 
@@ -210,10 +178,7 @@ const forEachVariable = (text, callback) => {
   }
 };
 
-const getVariable = (
-  variableName: string,
-  variables: TextData["variables"],
-) => {
+const getVariable = (variableName: string, variables: TextData["variables"]) => {
   const variable = variables[variableName];
   if (variable === undefined || variable === null) {
     return null;
@@ -237,17 +202,13 @@ const getVariablePlaceholder = <V extends VariableData>(
     }
 
     console.error(
-      `${input} does not exist in the specified \`list\` variable: ${variableData.join(
-        ", ",
-      )}.`,
+      `${input} does not exist in the specified \`list\` variable: ${variableData.join(", ")}.`,
     );
     return input;
   }
 
   if (variableData.__type === "number" || variableData.__type === "string") {
-    return (
-      String(input || variableData.example || variableData.fallback) || null
-    );
+    return String(input || variableData.example || variableData.fallback) || null;
   }
 
   if (variableData.__type === "hyperlink") {

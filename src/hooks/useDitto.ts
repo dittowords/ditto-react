@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { DittoContext, SourceDetector, VariablesInput } from "../lib/context";
-import { filterFrame, filterBlock, nullError } from "../lib/utils";
+import { filterBlock, filterFrame, nullError } from "../lib/utils";
 
 interface useDittoProps {
   projectId?: string | null;
@@ -43,9 +43,7 @@ export const useDitto = (props: useDittoProps) => {
   }
 
   if (!SourceDetector.isFrame(data)) {
-    return nullError(
-      `Default format must be used if passing "frameId" or "blockId"`
-    );
+    return nullError(`Default format must be used if passing "frameId" or "blockId"`);
   }
 
   if (!frameId) {
@@ -53,17 +51,14 @@ export const useDitto = (props: useDittoProps) => {
   }
 
   const frame = data[frameId];
-  if (!frame)
-    return nullError(
-      `Frame "${frameId}" not found this project "${projectId}"`
-    );
+  if (!frame) return nullError(`Frame "${frameId}" not found this project "${projectId}"`);
 
   if (!blockId) return filterFrame(frame, variables || {}, count, filters);
 
   const block = frame.blocks[blockId];
   if (!block)
     return nullError(
-      `Block "${blockId}" not found in frame "${frameId}" in project "${projectId}"`
+      `Block "${blockId}" not found in frame "${frameId}" in project "${projectId}"`,
     );
 
   return filterBlock(block, variables || {}, count, filters);
