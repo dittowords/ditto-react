@@ -21,11 +21,7 @@
     "status": "NONE",
     "folder": null,
     "variables": {
-      "item": [
-        "oranges",
-        "pears",
-        "apples"
-      ]
+      "item": ["oranges", "pears", "apples"]
     }
   },
   "shopping-cart": {

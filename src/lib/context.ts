@@ -94,10 +94,7 @@ interface FormatFlat {
   [apiId: string]: string;
 }
 
-export type ProjectFormat =
-  | FormatDefaultProject
-  | FormatFlat
-  | FormatStructuredProject;
+export type ProjectFormat = FormatDefaultProject | FormatFlat | FormatStructuredProject;
 
 export type ComponentLibraryFormat =
   | FormatDefaultComponentLibrary

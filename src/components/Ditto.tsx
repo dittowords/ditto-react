@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import { DittoText } from "./DittoText";
-import { DittoFrameOrBlock } from "./DittoFrameOrBlock";
-import { DittoComponent } from "./DittoComponent";
 import { Block, DittoContext, Frame, VariablesInput } from "../lib/context";
 import {
-  isFrameOrBlockComponent,
-  isText,
   fragmentError,
   isComponentLibrary,
+  isFrameOrBlockComponent,
   isProject,
+  isText,
 } from "../lib/utils";
+import { DittoComponent } from "./DittoComponent";
+import { DittoFrameOrBlock } from "./DittoFrameOrBlock";
+import { DittoText } from "./DittoText";
 
 type PluralId =
   | "zero"
@@ -68,11 +68,9 @@ export interface DittoFilters {
   };
 }
 
-export type DittoFrameOrBlockProps = DittoFilters &
-  (DittoFrameProps | DittoBlockProps);
+export type DittoFrameOrBlockProps = DittoFilters & (DittoFrameProps | DittoBlockProps);
 
-export type DittoProjectProps = DittoFilters &
-  (DittoFrameProps | DittoBlockProps | DittoTextProps);
+export type DittoProjectProps = DittoFilters & (DittoFrameProps | DittoBlockProps | DittoTextProps);
 
 export type DittoProps = DittoProjectProps | DittoComponentLibraryProps;
 
@@ -87,7 +85,7 @@ export function Ditto(props: DittoProps) {
     const projectId = props.projectId || dittoContext.projectId;
     if (!projectId) {
       return fragmentError(
-        "No Project ID was provided to the <DittoProvider /> or <Ditto /> components."
+        "No Project ID was provided to the <DittoProvider /> or <Ditto /> components.",
       );
     }
 
@@ -103,6 +101,6 @@ export function Ditto(props: DittoProps) {
   }
 
   return fragmentError(
-    'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"'
+    'Invalid props provided to Ditto component; please provide "componentId", "textId" or "frameId"',
   );
 }
