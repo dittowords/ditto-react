@@ -22,7 +22,7 @@
   "scripts": {
     "build": "microbundle --no-compress --format modern,cjs",
     "start": "microbundle watch --no-compress --format modern,cjs",
-    "test": "jest src/**/*.test.ts",
+    "test": "jest src/**",
     "prepare": "husky",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
