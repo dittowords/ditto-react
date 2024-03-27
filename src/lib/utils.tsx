@@ -246,7 +246,7 @@ const getVariablePlaceholder = <V extends VariableData>(
 
   if (variableData.__type === "number" || variableData.__type === "string") {
     return (
-      String(input || variableData.example || variableData.fallback) || null
+      String(input ?? variableData.example ?? variableData.fallback) ?? null
     );
   }
 
