@@ -4,7 +4,12 @@ export { DittoBlock, DittoFrame } from "./components/DittoFrameOrBlock";
 export { DittoText } from "./components/DittoText";
 export { useDittoComponent } from "./hooks/useDittoComponent";
 export { useDittoSingleText } from "./hooks/useDittoSingleText";
-export { Block, Frame } from "./lib/context";
+export {
+  Block,
+  Frame,
+  VariableData as DittoVariableData,
+  VariableTypeGuards as DittoVariableTypeGuards,
+} from "./lib/context";
 export { DittoProvider };
 import { DittoProvider } from "./components/DittoProvider";
 

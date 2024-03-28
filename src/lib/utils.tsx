@@ -1,5 +1,6 @@
 import DOMPurify from "dompurify";
 import { Fragment, useContext } from "react";
+import ReactDOMServer from "react-dom/server";
 import {
   DittoComponentLibraryProps,
   DittoFrameOrBlockProps,
@@ -15,6 +16,7 @@ import {
   TextData,
   VariableData,
   VariablesInput,
+  VariableType,
 } from "./context";
 
 export const filterBlock = (blockObj: Block, variables: VariablesInput, count: Count, filters) => {
@@ -189,9 +191,14 @@ const getVariable = (variableName: string, variables: TextData["variables"]) => 
 
 const getVariablePlaceholder = <V extends VariableData>(
   variableData: V | null,
-  input: string | number | null,
+  input: VariableType | null,
 ) => {
   if (!variableData) return input;
+  if (typeof input === "function") {
+    const jsx = input(variableData);
+    if (!jsx) return "";
+    return ReactDOMServer.renderToStaticMarkup(jsx);
+  }
 
   if (Array.isArray(variableData)) {
     const s = String(input).toLowerCase();
@@ -208,7 +215,7 @@ const getVariablePlaceholder = <V extends VariableData>(
   }
 
   if (variableData.__type === "number" || variableData.__type === "string") {
-    return String(input || variableData.example || variableData.fallback) || null;
+    return String(input ?? variableData.example ?? variableData.fallback) ?? null;
   }
 
   if (variableData.__type === "hyperlink") {
