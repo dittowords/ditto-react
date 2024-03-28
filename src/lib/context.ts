@@ -31,7 +31,7 @@ export type VariableData =
   | VariableList
   | VariableMap;
 
-type VariableRenderPropType = (variable: VariableData) => JSX.Element;
+type VariableRenderPropType = (variable: VariableData) => JSX.Element | void;
 export type VariableType = string | number | VariableRenderPropType;
 export interface VariablesInput {
   [variableId: string]: VariableType;

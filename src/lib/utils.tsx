@@ -195,7 +195,9 @@ const getVariablePlaceholder = <V extends VariableData>(
 ) => {
   if (!variableData) return input;
   if (typeof input === "function") {
-    return ReactDOMServer.renderToStaticMarkup(input(variableData));
+    const jsx = input(variableData);
+    if (!jsx) return "";
+    return ReactDOMServer.renderToStaticMarkup(jsx);
   }
 
   if (Array.isArray(variableData)) {
