@@ -81,9 +81,9 @@ describe("interpolateVariableText", () => {
         },
       },
       {
-        link: (props: DittoVariableData) => {
-          if (DittoVariableTypeGuards.isHyperlink(props)) {
-            return <a href={props.url}>{props.text}</a>;
+        link: (variableMetaData?: DittoVariableData) => {
+          if (variableMetaData && DittoVariableTypeGuards.isHyperlink(variableMetaData)) {
+            return <a href={variableMetaData.url}>{variableMetaData.text}</a>;
           }
           return <></>;
         },
@@ -93,5 +93,50 @@ describe("interpolateVariableText", () => {
     );
 
     expect(result.text).toEqual(`This is a link: <a href="${linkUrl}">${linkText}</a>`);
+  });
+
+  it("should call the render function when passed regardless of format type", () => {
+    const variableText = "This is a link: {{link}}";
+    const linkUrl = "https://dittowords.com";
+    const linkText = "I am a link";
+
+    const result = interpolateVariableText(
+      {
+        plurals: {},
+        text: variableText,
+        variables: {}, // No variable info when using flat or icu format
+      },
+      {
+        link: (_variableMetaData) => {
+          return <a href={linkUrl}>{linkText}</a>;
+        },
+      },
+      undefined,
+      false,
+    );
+
+    expect(result.text).toEqual(`This is a link: <a href="${linkUrl}">${linkText}</a>`);
+  });
+
+  it("should allow render function to return a string", () => {
+    const variableText = "This is a string: {{stringVariable}}";
+    const text = "I am text";
+
+    const result = interpolateVariableText(
+      {
+        plurals: {},
+        text: variableText,
+        variables: {}, // No variable info when using flat or icu format
+      },
+      {
+        stringVariable: (_variableMetaData) => {
+          return text;
+        },
+      },
+      undefined,
+      false,
+    );
+
+    expect(result.text).toEqual(`This is a string: ${text}`);
   });
 });

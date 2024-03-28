@@ -193,12 +193,13 @@ const getVariablePlaceholder = <V extends VariableData>(
   variableData: V | null,
   input: VariableType | null,
 ) => {
-  if (!variableData) return input;
   if (typeof input === "function") {
-    const jsx = input(variableData);
-    if (!jsx) return "";
-    return ReactDOMServer.renderToStaticMarkup(jsx);
+    const placeholder = input(variableData ?? undefined);
+    if (!placeholder) return "";
+    if (typeof placeholder === "string") return placeholder;
+    return ReactDOMServer.renderToStaticMarkup(placeholder);
   }
+  if (!variableData) return input;
 
   if (Array.isArray(variableData)) {
     const s = String(input).toLowerCase();
