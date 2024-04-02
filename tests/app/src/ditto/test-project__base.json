@@ -1,0 +1,24 @@
+{
+  "text-item-example": {
+    "name": "Text Item Example",
+    "text": "This is an example text item with a {{numVariable}}",
+    "rich_text": "<p>This is an example component with a {{numVariable}}</p>",
+    "status": "NONE",
+    "folder": null,
+    "variables": {
+      "numVariable": {
+        "__type": "number",
+        "example": 0,
+        "fallback": 0
+      }
+    }
+  },
+  "rich-text-text-item": {
+    "name": "Rich Text Example",
+    "text": "This is a rich text text item example",
+    "rich_text": "<p>This is a <strong>rich text</strong> text item example</p>",
+    "status": "NONE",
+    "folder": null,
+    "variables": {}
+  }
+}

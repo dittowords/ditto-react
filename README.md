@@ -6,7 +6,7 @@
 - Offers support for localizing using Ditto variants
 - Works hand-in-hand with the [Ditto CLI](https://github.com/dittowords/cli)
 
-Ditto also works with many popular 3rd party i18n libraries. Check out [our demo repository](https://github.com/dittowords/ditto-demo) for an example of how Ditto can be integrated into development using [react-i18next](https://react.i18next.com/).
+Ditto also works with many popular 3rd party i18n libraries. Check out [our demo repository](https://github.com/dittowords/ditto-react-demo/tree/react-i18next) for an example of how Ditto can be integrated into development using [react-i18next](https://react.i18next.com/).
 
 ## Installation
 
@@ -240,8 +240,7 @@ If the provided `count` value does not fall in the range associated with a defin
 To read more about pluralization and see other examples of how it is used in i18n at large, please refer to the pluralization page in the i18next docs: https://www.i18next.com/translation-function/plurals
 
 ### Example
-
-To see a working React app utilizing the [Ditto CLI](https://github.com/dittowords/cli) and `ditto-react`, please refer to the Ditto Demo project: https://github.com/dittowords/ditto-demo.
+To see a working React app utilizing the [Ditto CLI](https://github.com/dittowords/cli) and `ditto-react`, please refer to the Ditto Demo project: https://github.com/dittowords/ditto-react-demo.
 
 ## Rich Text
 

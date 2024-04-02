@@ -1,5 +1,6 @@
 import DOMPurify from "dompurify";
 import { Fragment, useContext } from "react";
+import ReactDOMServer from "react-dom/server";
 import {
   DittoComponentLibraryProps,
   DittoFrameOrBlockProps,
@@ -15,6 +16,7 @@ import {
   TextData,
   VariableData,
   VariablesInput,
+  VariableType,
 } from "./context";
 
 export const filterBlock = (blockObj: Block, variables: VariablesInput, count: Count, filters) => {
@@ -189,8 +191,14 @@ const getVariable = (variableName: string, variables: TextData["variables"]) => 
 
 const getVariablePlaceholder = <V extends VariableData>(
   variableData: V | null,
-  input: string | number | null,
+  input: VariableType | null,
 ) => {
+  if (typeof input === "function") {
+    const placeholder = input(variableData ?? undefined);
+    if (!placeholder) return "";
+    if (typeof placeholder === "string") return placeholder;
+    return ReactDOMServer.renderToStaticMarkup(placeholder);
+  }
   if (!variableData) return input;
 
   if (Array.isArray(variableData)) {

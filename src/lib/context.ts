@@ -31,7 +31,8 @@ export type VariableData =
   | VariableList
   | VariableMap;
 
-type VariableType = string | number;
+type VariableRenderPropType = (variable?: VariableData) => JSX.Element | string | void;
+export type VariableType = string | number | VariableRenderPropType;
 export interface VariablesInput {
   [variableId: string]: VariableType;
 }
@@ -154,6 +155,24 @@ export const SourceDetector = {
 
     const value = source[Object.keys(source)[0]];
     return value !== null && typeof value === "object" && !this.isFrame(source);
+  },
+};
+
+export const VariableTypeGuards = {
+  isHyperlink: function (variableData: VariableData): variableData is VariableHyperlink {
+    return "__type" in variableData && variableData.__type === "hyperlink";
+  },
+  isList: function (variableData: VariableData): variableData is VariableList {
+    return Array.isArray(variableData) && variableData.every((item) => typeof item === "string");
+  },
+  isMap: function (variableData: VariableData): variableData is VariableMap {
+    return "__type" in variableData && variableData.__type === "map";
+  },
+  isNumber: function (variableData: VariableData): variableData is VariableNumber {
+    return "__type" in variableData && variableData.__type === "number";
+  },
+  isString: function (variableData: VariableData): variableData is VariableString {
+    return "__type" in variableData && variableData.__type === "string";
   },
 };
 

@@ -1,0 +1,37 @@
+{
+  "component-example": {
+    "name": "Component Example",
+    "text": "This is an example component with a {{stringVariable}}",
+    "rich_text": "<p>This is an example component with a {{stringVariable}}</p>",
+    "status": "NONE",
+    "folder": null,
+    "variables": {
+      "stringVariable": {
+        "__type": "string",
+        "example": "Example String Variable"
+      }
+    }
+  },
+  "plural-example": {
+    "name": "Plural Example",
+    "text": "Plural text for other",
+    "rich_text": "<p>Pural text for other</p>",
+    "status": "NONE",
+    "folder": null,
+    "variables": {},
+    "plurals": {
+      "other": "Plural text for other",
+      "other_rich_text": "<p>Plural text for other</p>",
+      "zero": "Plural text for zero",
+      "zero_rich_text": "<p>Plural text for zero</p>"
+    }
+  },
+  "rich-text-component-example": {
+    "name": "Rich Text Example",
+    "text": "This is a rich text component example",
+    "rich_text": "<p>This is a <strong>rich text</strong> component example</p>",
+    "status": "NONE",
+    "folder": null,
+    "variables": {}
+  }
+}
