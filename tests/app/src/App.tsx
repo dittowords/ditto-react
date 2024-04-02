@@ -1,5 +1,4 @@
 import { DittoProvider } from "ditto-react";
-import "./App.css";
 import text from "./ditto/index.js";
 import Tests from "./Tests";
 
