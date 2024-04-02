@@ -22,7 +22,7 @@
   "scripts": {
     "build": "microbundle --no-compress --format modern,cjs",
     "start": "microbundle watch --no-compress --format modern,cjs",
-    "test": "jest",
+    "test": "yarn build && yarn jest",
     "prepare": "husky"
   },
   "peerDependencies": {
