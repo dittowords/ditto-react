@@ -63,7 +63,8 @@ export const useDittoSingleText = (props: useDittoSingleTextProps): string | nul
   }
 
   if (SourceDetector.isStructured(data) || SourceDetector.isFlat(data)) {
-    return interpolateVariableText(data[textId], variables || {}, count, false).text;
+    return interpolateVariableText(data[textId], variables || {}, count, Boolean(props.richText))
+      .text;
   }
 
   if (SourceDetector.isFrame(data)) {

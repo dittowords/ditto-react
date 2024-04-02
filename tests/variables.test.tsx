@@ -1,6 +1,6 @@
 import React from "react";
 import { DittoVariableData, DittoVariableTypeGuards } from "..";
-import { interpolateVariableText } from "./utils";
+import { interpolateVariableText } from "../src/lib/utils";
 
 describe("interpolateVariableText", () => {
   it("should interpolate provided values when Ditto variable data exists", () => {
