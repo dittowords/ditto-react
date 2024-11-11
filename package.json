@@ -60,6 +60,6 @@
     "dist"
   ],
   "dependencies": {
-    "dompurify": "^3.0.5"
+    "dompurify": "^3.2.0"
   }
 }
