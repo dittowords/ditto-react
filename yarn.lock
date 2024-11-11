@@ -5197,10 +5197,10 @@ domhandler@^4.0.0, domhandler@^4.2.0:
   dependencies:
     domelementtype "^2.2.0"
 
-dompurify@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.0.5.tgz#eb3d9cfa10037b6e73f32c586682c4b2ab01fbed"
-  integrity sha512-F9e6wPGtY+8KNMRAVfxeCOHU0/NPWMSENNq4pQctuXRqqdEPW7q3CrLbR5Nse044WwacyjHGOMlvNsBe1y6z9A==
+dompurify@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.2.0.tgz#53c414317c51503183696fcdef6dd3f916c607ed"
+  integrity sha512-AMdOzK44oFWqHEi0wpOqix/fUNY707OmoeFDnbi3Q5I8uOpy21ufUA5cDJPr0bosxrflOVD/H2DMSvuGKJGfmQ==
 
 domutils@^1.7.0:
   version "1.7.0"
