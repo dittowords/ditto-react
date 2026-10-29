@@ -1,6 +1,6 @@
 {
   "name": "ditto-react",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "React SDK for using product copy from Ditto in development.",
   "author": "Ditto Tech Inc.",
   "license": "MIT",
@@ -60,6 +60,6 @@
     "dist"
   ],
   "dependencies": {
-    "dompurify": "^3.2.0"
+    "dompurify": "^3.4.17"
   }
 }
